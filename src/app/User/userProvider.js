@@ -1,40 +1,33 @@
-const { pool } = require("../../../config/database");
-const { logger } = require("../../../config/winston");
+const { pool } = require('../../../config/database');
+const { logger } = require('../../../config/winston');
 
-const userDao = require("./userDao");
+const userDao = require('./userDao');
 
 // Provider: Read 비즈니스 로직 처리
-
-exports.retrieveUserList = async function (email) {
-  if (!email) {
+exports.IdCheck = async function (Id) {
     const connection = await pool.getConnection(async (conn) => conn);
-    const userListResult = await userDao.selectUser(connection);
+    const IdCheckResult = await userDao.selectId(connection, Id);
     connection.release();
 
-    return userListResult;
+    return IdCheckResult;
+};
 
-  } else {
+// 계정상태 체크
+exports.accountCheck = async function (Id) {
     const connection = await pool.getConnection(async (conn) => conn);
-    const userListResult = await userDao.selectUserEmail(connection, email);
+    const userAccountResult = await userDao.selectUserAccount(connection, Id);
     connection.release();
 
-    return userListResult;
-  }
+    return userAccountResult;
 };
 
-exports.retrieveUser = async function (userId) {
-  const connection = await pool.getConnection(async (conn) => conn);
-  const userResult = await userDao.selectUserId(connection, userId);
-
-  connection.release();
-
-  return userResult[0];
-};
-
-exports.emailCheck = async function (email) {
-  const connection = await pool.getConnection(async (conn) => conn);
-  const emailCheckResult = await userDao.selectUserEmail(connection, email);
-  connection.release();
-
-  return emailCheckResult;
+// 비밀번호가 맞는지 체크
+exports.passwordCheck = async function (selectUserPasswordParams) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const passwordCheckResult = await userDao.selectUserPassword(
+        connection,
+        selectUserPasswordParams,
+    );
+    connection.release();
+    return passwordCheckResult[0];
 };

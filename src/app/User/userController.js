@@ -1,20 +1,11 @@
-const jwtMiddleware = require("../../../config/jwtMiddleware");
-const userProvider = require("../../app/User/userProvider");
-const userService = require("../../app/User/userService");
-const baseResponse = require("../../../config/baseResponseStatus");
-const {response, errResponse} = require("../../../config/response");
-
-const regexEmail = require("regex-email");
-const {emit} = require("nodemon");
-
-/**
- * API No. 0
- * API Name : 테스트 API
- * [GET] /app/test
- */
-// exports.getTest = async function (req, res) {
-//     return res.send(response(baseResponse.SUCCESS))
-// }
+const jwtMiddleware = require('../../../config/jwtMiddleware');
+const userProvider = require('../../app/User/userProvider');
+const userService = require('../../app/User/userService');
+const baseResponse = require('../../../config/baseResponseStatus');
+const { response, errResponse } = require('../../../config/response');
+const { emit } = require('nodemon');
+const regexEmail = require('regex-email');
+const IdRegExp = /^.*(?=.{6,16})(?=.*[0-9])(?=.*[a-zA-Z]).*$/; // 6~16 자 이내 숫자 + 영문
 
 /**
  * API No. 1
@@ -22,31 +13,65 @@ const {emit} = require("nodemon");
  * [POST] /app/users
  */
 exports.postUsers = async function (req, res) {
-
     /**
-     * Body: email, password, nickname
+     * Body: Id, password, email
      */
-    const {email, password, nickname} = req.body;
-
-    // 빈 값 체크
-    if (!email)
-        return res.send(response(baseResponse.SIGNUP_EMAIL_EMPTY));
-
-    // 길이 체크
-    if (email.length > 30)
-        return res.send(response(baseResponse.SIGNUP_EMAIL_LENGTH));
+    const { Id, password, name, email, phoneNumber, location, birth, sex } = req.body;
+    var num = password.search(/[0-9]/g);
+    var eng = password.search(/[a-z]/gi);
+    var spe = password.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
 
     // 형식 체크 (by 정규표현식)
-    if (!regexEmail.test(email))
+    if (!IdRegExp.test(Id)) return res.send(response(baseResponse.SIGNUP_ID_ERROR_TYPE));
+    if (password.length < 10) {
+        return res.send(response(baseResponse.SIGNUP_PASSWORD_ERROR_TYPE_LENGTH));
+    } else if (
+        password.search(/\s/) != -1 ||
+        (num < 0 && eng < 0) ||
+        (eng < 0 && spe < 0) ||
+        (spe < 0 && num < 0)
+    ) {
+        return res.send(response(baseResponse.SIGNUP_PASSWORD_ERROR_TYPE_VAL));
+    } else if (/(\w)\1\1/.test(password)) {
+        return res.send(response(baseResponse.SIGNUP_PASSWORD_ERROR_TYPE_CONTINUOUS));
+    }
+    if (!regexEmail.test(email)) {
         return res.send(response(baseResponse.SIGNUP_EMAIL_ERROR_TYPE));
-
-    // 기타 등등 - 추가하기
-
+    }
+    if (!Id) {
+        return res.send(response(baseResponse.SIGNUP_ID_ERROR_EMPTY));
+    }
+    if (!password) {
+        return res.send(response(baseResponse.SIGNUP_PASSWORD_ERROR_EMPTY));
+    }
+    if (!name) {
+        return res.send(response(baseResponse.SIGNUP_NAME_ERROR_EMPTY));
+    }
+    if (!email) {
+        return res.send(response(baseResponse.SIGNUP_EMAIL_ERROR_EMPTY));
+    }
+    if (!phoneNumber) {
+        return res.send(response(baseResponse.SIGNUP_PHONENUMBER_ERROR_EMPTY));
+    }
+    if (!location) {
+        return res.send(response(baseResponse.SIGNUP_LOCATION_ERROR_EMPTY));
+    }
+    if (!birth) {
+        return res.send(response(baseResponse.SIGNUP_BIRTH_ERROR_EMPTY));
+    }
+    if (!sex) {
+        return res.send(response(baseResponse.SIGNUP_SEX_ERROR_EMPTY));
+    }
 
     const signUpResponse = await userService.createUser(
-        email,
+        Id,
         password,
-        nickname
+        name,
+        email,
+        phoneNumber,
+        location,
+        birth,
+        sex,
     );
 
     return res.send(signUpResponse);
@@ -54,41 +79,42 @@ exports.postUsers = async function (req, res) {
 
 /**
  * API No. 2
- * API Name : 유저 조회 API (+ 이메일로 검색 조회)
- * [GET] /app/users
+ * API Name : ID 중복검사 API
+ * [POST] /app/users/Id
+ * body : Id
  */
-exports.getUsers = async function (req, res) {
+exports.chekId = async function (req, res) {
+    const { Id } = req.body;
 
-    /**
-     * Query String: email
-     */
-    const email = req.query.email;
+    if (!Id) {
+        return res.send(response(baseResponse.SIGNUP_ID_ERROR_EMPTY));
+    }
+    if (!IdRegExp.test(Id)) return res.send(response(baseResponse.SIGNUP_ID_ERROR_TYPE));
 
-    if (!email) {
-        // 유저 전체 조회
-        const userListResult = await userProvider.retrieveUserList();
-        return res.send(response(baseResponse.SUCCESS, userListResult));
+    const IdRows = await userProvider.IdCheck(Id);
+    if (IdRows.length > 0) {
+        return res.send(response(baseResponse.SIGNUP_REDUNDANT_ID));
     } else {
-        // 유저 검색 조회
-        const userListByEmail = await userProvider.retrieveUserList(email);
-        return res.send(response(baseResponse.SUCCESS, userListByEmail));
+        return res.send(response(baseResponse.SUCCESS, '사용가능한 아이디 입니다.'));
     }
 };
 
 /**
  * API No. 3
- * API Name : 특정 유저 조회 API
- * [GET] /app/users/{userId}
+ * API Name : 로그인 API
+ * [POST] /app/users/login
+ * body : Id, passsword
  */
-exports.getUserById = async function (req, res) {
+exports.login = async function (req, res) {
+    const { Id, password } = req.body;
 
-    /**
-     * Path Variable: userId
-     */
-    const userId = req.params.userId;
+    if (!Id) {
+        return res.send(response(baseResponse.SIGNUP_ID_ERROR_EMPTY));
+    } else if (!password) {
+        return res.send(response(baseResponse.SIGNUP_PASSWORD_ERROR_EMPTY));
+    }
 
-    if (!userId) return res.send(errResponse(baseResponse.USER_USERID_EMPTY));
+    const signInResponse = await userService.postSignIn(Id, password);
 
-    const userByUserId = await userProvider.retrieveUser(userId);
-    return res.send(response(baseResponse.SUCCESS, userByUserId));
+    return res.send(signInResponse);
 };
