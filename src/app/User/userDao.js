@@ -1,6 +1,5 @@
 // 유저 생성
 async function insertUserInfo(connection, insertUserInfoParams) {
-    console.log(insertUserInfoParams);
     const insertUserInfoQuery = `
       INSERT INTO User(Id,
         password,
