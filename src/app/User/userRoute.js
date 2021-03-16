@@ -15,5 +15,5 @@ module.exports = function (app) {
     app.get('/app/users/basket', jwtMiddleware, user.getBasketOnlyProduct);
 
     // 6. 자동 로그인 API
-    app.get('/app/auto-login', jwtMiddleware, user.check);
+    app.get('/app/users/auto-login', jwtMiddleware, user.check);
 };

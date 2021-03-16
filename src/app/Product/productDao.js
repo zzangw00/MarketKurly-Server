@@ -12,7 +12,7 @@ order by price
 // best 상품 조회(high_price)
 async function getHighPriceProduct(connection, value) {
     const highPriceQuery = `
-    select thumbnailImageUrl, productName, price, discountRate, price * (1-(discountRate / 100)) as salePrice, tag
+    select productId, thumbnailImageUrl, productName, price, discountRate, price * (1-(discountRate / 100)) as salePrice, tag
 from Product
 order by price desc
     `;
