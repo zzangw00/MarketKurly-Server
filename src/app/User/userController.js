@@ -120,11 +120,19 @@ exports.login = async function (req, res) {
  */
 exports.getBasketOnlyProduct = async function (req, res) {
     const userIdFromJWT = req.verifiedToken.userId;
-    const userId = req.params.userId;
-    if (userId != userIdFromJWT) {
-        return res.send(response(baseResponse.USER_ID_NOT_MATCH));
-    } else {
-        const basketProductResponse = await userProvider.getBasketProduct(userId);
-        return res.send(basketProductResponse);
-    }
+
+    const basketProductResponse = await userProvider.getBasketProduct(userIdFromJWT);
+
+    return res.send(basketProductResponse);
+};
+
+/**
+ * API No. 6
+ * API Name : 자동 로그인 API
+ * [GET] /app/auto-login
+ */
+exports.check = async function (req, res) {
+    const userIdFromJWT = req.verifiedToken.userId;
+    console.log(userIdFromJWT);
+    return res.send(response(baseResponse.TOKEN_VERIFICATION_SUCCESS));
 };

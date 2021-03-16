@@ -1,5 +1,11 @@
 module.exports = {
     SUCCESS: { isSuccess: true, code: 1000, message: '성공' },
+
+    // Common
+    TOKEN_EMPTY: { isSuccess: false, code: 2000, message: 'JWT 토큰을 입력해주세요.' },
+    TOKEN_VERIFICATION_FAILURE: { isSuccess: false, code: 3003, message: 'JWT 토큰 검증 실패' },
+    TOKEN_VERIFICATION_SUCCESS: { isSuccess: true, code: 1001, message: 'JWT 토큰 검증 성공' },
+
     //Request error
     SIGNUP_ID_ERROR_TYPE: {
         isSuccess: false,
@@ -66,6 +72,7 @@ module.exports = {
         code: 2013,
         message: '유저 아이디 값을 확인해 주세요.',
     },
+
     // Response error
     SIGNUP_REDUNDANT_ID: { isSuccess: false, code: 3000, message: '중복된 아이디 입니다.' },
     SIGNIN_WRONG: { isSuccess: false, code: 3001, message: '아이디 혹은 비밀번호가 틀렸습니다.' },

@@ -12,5 +12,8 @@ module.exports = function (app) {
     app.post('/app/users/login', user.login);
 
     // 4. 장바구니 조회 API
-    app.get('/app/users/:userId/basket/product', jwtMiddleware, user.getBasketOnlyProduct);
+    app.get('/app/users/basket', jwtMiddleware, user.getBasketOnlyProduct);
+
+    // 6. 자동 로그인 API
+    app.get('/app/auto-login', jwtMiddleware, user.check);
 };
