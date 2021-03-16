@@ -10,4 +10,7 @@ module.exports = function (app) {
 
     // 3. 로그인 API (JWT 생성)
     app.post('/app/users/login', user.login);
+
+    // 4. 장바구니 조회 API
+    app.get('/app/users/:userId/basket/product', jwtMiddleware, user.getBasketOnlyProduct);
 };

@@ -19,6 +19,7 @@ order by price desc
     const [productRows] = await connection.query(highPriceQuery, value);
     return productRows;
 }
+
 module.exports = {
     getRawPriceProduct,
     getHighPriceProduct,

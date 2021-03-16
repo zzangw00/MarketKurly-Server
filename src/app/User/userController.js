@@ -112,3 +112,19 @@ exports.login = async function (req, res) {
 
     return res.send(signInResponse);
 };
+
+/**
+ * API No. 5
+ * API Name : 장바구니 조회 API
+ * [GET] /app/users/:userId/basket
+ */
+exports.getBasketOnlyProduct = async function (req, res) {
+    const userIdFromJWT = req.verifiedToken.userId;
+    const userId = req.params.userId;
+    if (userId != userIdFromJWT) {
+        return res.send(response(baseResponse.USER_ID_NOT_MATCH));
+    } else {
+        const basketProductResponse = await userProvider.getBasketProduct(userId);
+        return res.send(basketProductResponse);
+    }
+};

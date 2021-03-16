@@ -31,3 +31,13 @@ exports.passwordCheck = async function (selectUserPasswordParams) {
     connection.release();
     return passwordCheckResult[0];
 };
+
+// 장바구니 조회(상품 정보만)
+exports.getBasketProduct = async function (userId) {
+    const connection = await pool.getConnection(async (conn) => conn);
+
+    const basketProductResult = await userDao.getBasketProductOnly(connection, userId);
+    connection.release();
+
+    return basketProductResult;
+};

@@ -12,6 +12,7 @@ const { emit } = require('nodemon');
  */
 exports.getBestProduct = async function (req, res) {
     const value = req.query.value;
+
     if (value == 'rawPrice') {
         const getBestProductResult = await productProvider.rawPriceProduct(value);
         return res.send(response(baseResponse.SUCCESS, getBestProductResult));

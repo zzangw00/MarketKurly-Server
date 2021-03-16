@@ -61,10 +61,25 @@ async function selectUserAccount(connection, Id) {
     const selectUserAccountRow = await connection.query(selectUserAccountQuery, Id);
     return selectUserAccountRow[0];
 }
+
+// 장바구니 조회(상품 정보만)
+async function getBasketProductOnly(connection, userId) {
+    const basketQuery = `
+    select basketId, b.userId, p.productStatus, p.productName, p.price, p.price * (1 - (p.discountRate / 100)) as salePrice, p.tag
+from Basket b
+         left join User u on b.userId = u.userId
+         left join Product p on b.productId = p.productId
+where b.userId = ?
+and b.status = 1
+    `;
+    const [productRows] = await connection.query(basketQuery, userId);
+    return productRows;
+}
 module.exports = {
     insertUserInfo,
     insertDeliveryLocation,
     selectId,
     selectUserPassword,
     selectUserAccount,
+    getBasketProductOnly,
 };

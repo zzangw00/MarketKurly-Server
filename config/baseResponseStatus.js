@@ -61,6 +61,11 @@ module.exports = {
         code: 2012,
         message: '아이디 중복확인을 확인해 주세요.',
     },
+    USER_ID_NOT_MATCH: {
+        isSuccess: false,
+        code: 2013,
+        message: '유저 아이디 값을 확인해 주세요.',
+    },
     // Response error
     SIGNUP_REDUNDANT_ID: { isSuccess: false, code: 3000, message: '중복된 아이디 입니다.' },
     SIGNIN_WRONG: { isSuccess: false, code: 3001, message: '아이디 혹은 비밀번호가 틀렸습니다.' },
