@@ -56,12 +56,6 @@ exports.postUsers = async function (req, res) {
     if (!location) {
         return res.send(response(baseResponse.SIGNUP_LOCATION_ERROR_EMPTY));
     }
-    if (!birth) {
-        return res.send(response(baseResponse.SIGNUP_BIRTH_ERROR_EMPTY));
-    }
-    if (!sex) {
-        return res.send(response(baseResponse.SIGNUP_SEX_ERROR_EMPTY));
-    }
 
     const signUpResponse = await userService.createUser(
         Id,

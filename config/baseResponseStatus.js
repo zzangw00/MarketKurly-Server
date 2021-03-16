@@ -51,24 +51,14 @@ module.exports = {
         code: 2010,
         message: '주소를 입력해주세요.',
     },
-    SIGNUP_BIRTH_ERROR_EMPTY: {
-        isSuccess: false,
-        code: 2011,
-        message: '생년월일을 입력해주세요.',
-    },
-    SIGNUP_SEX_ERROR_EMPTY: {
-        isSuccess: false,
-        code: 2012,
-        message: '성별을 입력해주세요.',
-    },
     SIGNUP_NAME_ERROR_EMPTY: {
         isSuccess: false,
-        code: 2013,
+        code: 2011,
         message: '이름을 입력해주세요.',
     },
     SIGNUP_ID_ERROR_CHECK: {
         isSuccess: false,
-        code: 2014,
+        code: 2012,
         message: '아이디 중복확인을 확인해 주세요.',
     },
     // Response error
