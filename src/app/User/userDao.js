@@ -65,12 +65,46 @@ async function selectUserAccount(connection, Id) {
 // 장바구니 조회(상품 정보만)
 async function getBasketProductOnly(connection, userIdFromJWT) {
     const basketQuery = `
-    select basketId, b.userId, p.productStatus, p.productName, p.price, p.price * (1 - (p.discountRate / 100)) as salePrice, p.tag
+    select basketId, p.productStatus, p.productName, p.price, p.price * (1 - (p.discountRate / 100)) as salePrice, p.tag
 from Basket b
          left join User u on b.userId = u.userId
          left join Product p on b.productId = p.productId
 where b.userId = ?
 and b.status = 1
+    `;
+    const [productRows] = await connection.query(basketQuery, userIdFromJWT);
+    return productRows;
+}
+
+// 장바구니 조회(나머지 정보)
+async function getBasketOther(connection, userIdFromJWT) {
+    const basketQuery = `
+    select ifnull(x.productCount, 0)                                                                     as productCount,
+       ifnull(sum(case when b.status = 1 then p.price end), 0)                                       as totalPrice,
+       ifnull(sum(case when b.status = 1 then p.price * (1 - (p.discountRate / 100)) end) -
+              ifnull(sum(case when b.status = 1 then p.price end), 0), 0)                            as salePrice,
+       if(productCount > 0, 3000, 0)                                                                 as deliveryCost,
+       ifnull(sum(case when b.status = 1 then p.price * (1 - (p.discountRate / 100)) end), 0)        as totalSalePrice,
+       ifnull(sum(case when b.status = 1 then p.price * (1 - (p.discountRate / 100)) end) * 0.05, 0) as savingCost
+from Basket b
+         join Product p on b.productId = p.productId
+         left join (select count(b.basketId) as productCount, b.userId
+                    from Basket b
+                    where userId = ?) as x on b.userId = x.userId
+where b.userId = ?;
+    `;
+    const params = [userIdFromJWT, userIdFromJWT];
+    const [productRows] = await connection.query(basketQuery, params);
+    return productRows;
+}
+// 배송지 조회
+async function getDeliveryLocation(connection, userIdFromJWT) {
+    const basketQuery = `
+    select locationId, location
+from DeliveryLocation dl
+         join User u on dl.userId = u.userId
+where u.userId = ?
+  and basicStatus = 1;
     `;
     const [productRows] = await connection.query(basketQuery, userIdFromJWT);
     return productRows;
@@ -82,4 +116,6 @@ module.exports = {
     selectUserPassword,
     selectUserAccount,
     getBasketProductOnly,
+    getBasketOther,
+    getDeliveryLocation,
 };

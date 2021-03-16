@@ -122,8 +122,15 @@ exports.getBasketOnlyProduct = async function (req, res) {
     const userIdFromJWT = req.verifiedToken.userId;
 
     const basketProductResponse = await userProvider.getBasketProduct(userIdFromJWT);
+    const basketOtherResponse = await userProvider.getBasketOthers(userIdFromJWT);
+    const deliveryResponse = await userProvider.getDeliveryLocation(userIdFromJWT);
+    const result = {
+        deliveryInfo: deliveryResponse,
+        productInfo: basketProductResponse,
+        otherInfo: basketOtherResponse,
+    };
 
-    return res.send(basketProductResponse);
+    return res.send(response(baseResponse.SUCCESS, result));
 };
 
 /**

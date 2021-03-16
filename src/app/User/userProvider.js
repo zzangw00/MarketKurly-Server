@@ -41,3 +41,23 @@ exports.getBasketProduct = async function (userIdFromJWT) {
 
     return basketProductResult;
 };
+
+// 장바구니 조회(나머지 정보)
+exports.getBasketOthers = async function (userIdFromJWT) {
+    const connection = await pool.getConnection(async (conn) => conn);
+
+    const basketOthersResult = await userDao.getBasketOther(connection, userIdFromJWT);
+    connection.release();
+
+    return basketOthersResult;
+};
+
+// 배송지 조회
+exports.getDeliveryLocation = async function (userIdFromJWT) {
+    const connection = await pool.getConnection(async (conn) => conn);
+
+    const deliveryLocationResult = await userDao.getDeliveryLocation(connection, userIdFromJWT);
+    connection.release();
+
+    return deliveryLocationResult;
+};
