@@ -6,7 +6,7 @@ module.exports = function (app) {
     app.post('/app/users', user.postUsers);
 
     // 2. Id 중복검사 API
-    app.get('/app/users/Id', user.chekId);
+    app.post('/app/users/Id', user.chekId);
 
     // 3. 로그인 API (JWT 생성)
     app.post('/app/users/login', user.login);
