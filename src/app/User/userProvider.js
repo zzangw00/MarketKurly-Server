@@ -69,3 +69,11 @@ exports.getCheckStatus = async function (basketId, userIdFromJWT) {
     connection.release();
     return checkResult;
 };
+
+// 장바구니 체크 상태 조회
+exports.getCheckAllStatus = async function (userIdFromJWT) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const checkResult = await userDao.getBasketAllCheck(connection, userIdFromJWT);
+    connection.release();
+    return checkResult;
+};

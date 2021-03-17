@@ -19,4 +19,7 @@ module.exports = function (app) {
 
     // 7. 장바구니 체크하기 API
     app.patch('/app/users/basket/:basketId/check', jwtMiddleware, user.basketCheck);
+
+    // 8. 장바구니 전체 체크하기 API
+    app.patch('/app/users/basket/check-all', jwtMiddleware, user.basketCheckAll);
 };

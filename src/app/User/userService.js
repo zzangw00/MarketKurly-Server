@@ -120,3 +120,19 @@ exports.checkDown = async function (basketId, userIdFromJWT) {
     connection.release();
     return checkDown;
 };
+
+exports.checkAllUp = async function (userIdFromJWT) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const checkUp = await userDao.updateAllCheckUp(connection, userIdFromJWT);
+
+    connection.release();
+    return checkUp;
+};
+
+exports.checkAllDown = async function (userIdFromJWT) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const checkDown = await userDao.updateAllCheckDown(connection, userIdFromJWT);
+
+    connection.release();
+    return checkDown;
+};

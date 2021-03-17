@@ -163,6 +163,39 @@ async function updateCheckDown(connection, params) {
     const [productRows] = await connection.query(basketQuery, params);
     return productRows;
 }
+// 장바구니 전체 체크 상태 조회
+async function getBasketAllCheck(connection, userIdFromJWT) {
+    const basketQuery = `
+    select checkStatus, basketId
+    from Basket
+    where userId = ?
+    and status = 1;
+    `;
+    const [productRows] = await connection.query(basketQuery, userIdFromJWT);
+    return productRows;
+}
+// 장바구니 전체 체크
+async function updateAllCheckUp(connection, params) {
+    const basketQuery = `
+    update Basket
+    set checkStatus = 1
+    where userId = ?
+      and status = 1;
+    `;
+    const [productRows] = await connection.query(basketQuery, params);
+    return productRows;
+}
+// 장바구니 전체 체크 해제
+async function updateAllCheckDown(connection, params) {
+    const basketQuery = `
+    update Basket
+    set checkStatus = 2
+    where userId = ?
+      and status = 1;
+    `;
+    const [productRows] = await connection.query(basketQuery, params);
+    return productRows;
+}
 module.exports = {
     insertUserInfo,
     insertDeliveryLocation,
@@ -175,4 +208,7 @@ module.exports = {
     getBasketCheck,
     updateCheckDown,
     updateCheckUp,
+    getBasketAllCheck,
+    updateAllCheckUp,
+    updateAllCheckDown,
 };
