@@ -127,6 +127,42 @@ where u.userId = ?
     const [productRows] = await connection.query(basketQuery, userIdFromJWT);
     return productRows;
 }
+// 장바구니 체크 상태 조회
+async function getBasketCheck(connection, basketId, userIdFromJWT) {
+    const basketQuery = `
+    select checkStatus, basketId
+from Basket
+where basketId = ?
+and userId = ?
+and status = 1
+    `;
+    const [productRows] = await connection.query(basketQuery, [basketId, userIdFromJWT]);
+    return productRows;
+}
+// 장바구니 체크
+async function updateCheckUp(connection, params) {
+    const basketQuery = `
+    update Basket
+    set checkStatus = 1
+    where basketId = ?
+      and userId = ?
+      and status = 1;
+    `;
+    const [productRows] = await connection.query(basketQuery, params);
+    return productRows;
+}
+// 장바구니 체크 해제
+async function updateCheckDown(connection, params) {
+    const basketQuery = `
+    update Basket
+    set checkStatus = 2
+    where basketId = ?
+      and userId = ?
+      and status = 1;
+    `;
+    const [productRows] = await connection.query(basketQuery, params);
+    return productRows;
+}
 module.exports = {
     insertUserInfo,
     insertDeliveryLocation,
@@ -136,4 +172,7 @@ module.exports = {
     getBasketProductOnly,
     getBasketOther,
     getDeliveryLocation,
+    getBasketCheck,
+    updateCheckDown,
+    updateCheckUp,
 };

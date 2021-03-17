@@ -116,7 +116,7 @@ exports.login = async function (req, res) {
 /**
  * API No. 5
  * API Name : 장바구니 조회 API
- * [GET] /app/users/:userId/basket
+ * [GET] /app/users/basket
  */
 exports.getBasketOnlyProduct = async function (req, res) {
     const userIdFromJWT = req.verifiedToken.userId;
@@ -143,3 +143,30 @@ exports.check = async function (req, res) {
     console.log(userIdFromJWT);
     return res.send(response(baseResponse.TOKEN_VERIFICATION_SUCCESS));
 };
+
+//체크 되어있는지 확인 먼저 체크 되어있으면 해제, 안되어 있으면 체크
+/**
+ * API No. 7
+ * API Name : 장바구니 체크하기 API
+ * [PATCH] /app/users/basket/check
+ */ exports.basketCheck = async function (req, res) {
+    const userIdFromJWT = req.verifiedToken.userId;
+    const basketId = req.params.basketId;
+    const basketCheckStatus = await userProvider.getCheckStatus(+basketId, userIdFromJWT);
+    if (basketCheckStatus[0].checkStatus == 1) {
+        const unCheck = await userService.checkDown(+basketId, userIdFromJWT);
+        return res.send(response(baseResponse.SUCCESS, '체크 해제 하였습니다.'));
+    } else {
+        const check = await userService.checkUp(+basketId, userIdFromJWT);
+        return res.send(response(baseResponse.SUCCESS, '체크 하였습니다.'));
+    }
+
+    //const basketCheckResponse = await userProvider.getBasketProduct(userIdFromJWT);
+    //return res.send(response(baseResponse.TOKEN_VERIFICATION_SUCCESS));
+}; //그냥 상태 바꿔 버리기
+
+/**
+ * API No. 8
+ * API Name : 장바구니 전체 체크하기 API
+ * [PATCH] /app/users/basket/checkAll
+//  */

@@ -102,3 +102,21 @@ exports.postSignIn = async function (Id, password) {
         return errResponse(baseResponse.DB_ERROR);
     }
 };
+
+exports.checkUp = async function (basketId, userIdFromJWT) {
+    const params = [basketId, userIdFromJWT];
+    const connection = await pool.getConnection(async (conn) => conn);
+    const checkUp = await userDao.updateCheckUp(connection, params);
+
+    connection.release();
+    return checkUp;
+};
+
+exports.checkDown = async function (basketId, userIdFromJWT) {
+    const params = [basketId, userIdFromJWT];
+    const connection = await pool.getConnection(async (conn) => conn);
+    const checkDown = await userDao.updateCheckDown(connection, params);
+
+    connection.release();
+    return checkDown;
+};

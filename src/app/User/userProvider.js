@@ -61,3 +61,11 @@ exports.getDeliveryLocation = async function (userIdFromJWT) {
 
     return deliveryLocationResult;
 };
+
+// 장바구니 체크 상태 조회
+exports.getCheckStatus = async function (basketId, userIdFromJWT) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const checkResult = await userDao.getBasketCheck(connection, basketId, userIdFromJWT);
+    connection.release();
+    return checkResult;
+};

@@ -16,4 +16,7 @@ module.exports = function (app) {
 
     // 6. 자동 로그인 API
     app.get('/app/users/auto-login', jwtMiddleware, user.check);
+
+    // 7. 장바구니 체크하기 API
+    app.patch('/app/users/basket/:basketId/check', jwtMiddleware, user.basketCheck);
 };
