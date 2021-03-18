@@ -8,7 +8,7 @@ const { emit } = require('nodemon');
 /**
  * API No. 4
  * API Name : 베스트 상품 조회 API
- * [GET] /app/product?best=
+ * [GET] /app/product
  */
 exports.getBestProduct = async function (req, res) {
     const value = req.query.value;

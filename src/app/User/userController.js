@@ -182,3 +182,27 @@ exports.check = async function (req, res) {
         return res.send(response(baseResponse.SUCCESS, '전체 체크 해제 하였습니다.'));
     }
 };
+
+/**
+ * API No. 9
+ * API Name : 장바구니 상품 개수 증가 시키기 API
+ * [PATCH] /app/users/basket/:basketId/count-up
+ */ exports.updateProductCount = async function (req, res) {
+    const userIdFromJWT = req.verifiedToken.userId;
+    const basketId = req.params.basketId;
+    const basketCountUpResult = await userService.basketCountUp(userIdFromJWT, basketId);
+
+    return res.send(response(baseResponse.SUCCESS, '상품 개수를 증가 시켰습니다.'));
+};
+
+/**
+ * API No. 10
+ * API Name : 장바구니 상품 개수 증가 시키기 API
+ * [PATCH] /app/users/basket/:basketId/count-down
+ */ exports.updateProductCount = async function (req, res) {
+    const userIdFromJWT = req.verifiedToken.userId;
+    const basketId = req.params.basketId;
+    const basketCountDownResult = await userService.basketCountUp(userIdFromJWT, basketId);
+
+    return res.send(response(baseResponse.SUCCESS, '상품 개수를 증가 시켰습니다.'));
+};

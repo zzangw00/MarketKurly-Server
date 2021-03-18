@@ -102,7 +102,7 @@ exports.postSignIn = async function (Id, password) {
         return errResponse(baseResponse.DB_ERROR);
     }
 };
-
+// 장바구니 체크 하기
 exports.checkUp = async function (basketId, userIdFromJWT) {
     const params = [basketId, userIdFromJWT];
     const connection = await pool.getConnection(async (conn) => conn);
@@ -111,7 +111,7 @@ exports.checkUp = async function (basketId, userIdFromJWT) {
     connection.release();
     return checkUp;
 };
-
+// 장바구니 체크 취소 하기
 exports.checkDown = async function (basketId, userIdFromJWT) {
     const params = [basketId, userIdFromJWT];
     const connection = await pool.getConnection(async (conn) => conn);
@@ -120,7 +120,7 @@ exports.checkDown = async function (basketId, userIdFromJWT) {
     connection.release();
     return checkDown;
 };
-
+// 전체 장바구니 체크 하기
 exports.checkAllUp = async function (userIdFromJWT) {
     const connection = await pool.getConnection(async (conn) => conn);
     const checkUp = await userDao.updateAllCheckUp(connection, userIdFromJWT);
@@ -128,11 +128,18 @@ exports.checkAllUp = async function (userIdFromJWT) {
     connection.release();
     return checkUp;
 };
-
+// 전체 장바구니 체크 취소 하기
 exports.checkAllDown = async function (userIdFromJWT) {
     const connection = await pool.getConnection(async (conn) => conn);
     const checkDown = await userDao.updateAllCheckDown(connection, userIdFromJWT);
 
     connection.release();
     return checkDown;
+};
+// 장바구니 상품 개수 증가 시키기
+exports.basketCountUp = async function (userIdFromJWT, basketId) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const countUp = await userDao.basketCountUpDown(connection, userIdFromJWT, basketId);
+    connection.release();
+    return countUp;
 };

@@ -196,6 +196,17 @@ async function updateAllCheckDown(connection, params) {
     const [productRows] = await connection.query(basketQuery, params);
     return productRows;
 }
+// 장바구니 상품 개수 증가 시키기
+async function basketCountUpDown(connection, userIdFromJWT, basketId) {
+    const basketQuery = `
+    update Basket
+    set detailCount = detailCount + 1
+    where userId = ?
+    and basketId = ?;
+    `;
+    const [productRows] = await connection.query(basketQuery, [userIdFromJWT, basketId]);
+    return productRows;
+}
 module.exports = {
     insertUserInfo,
     insertDeliveryLocation,
@@ -211,4 +222,5 @@ module.exports = {
     getBasketAllCheck,
     updateAllCheckUp,
     updateAllCheckDown,
+    basketCountUpDown,
 };

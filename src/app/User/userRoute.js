@@ -22,4 +22,7 @@ module.exports = function (app) {
 
     // 8. 장바구니 전체 체크하기 API
     app.patch('/app/users/basket/check-all', jwtMiddleware, user.basketCheckAll);
+
+    // 9. 장바구니 상품 개수 증가 시키기 API
+    app.patch('/app/users/basket/:basketId/count-up', jwtMiddleware, user.updateProductCount);
 };
