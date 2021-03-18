@@ -139,7 +139,14 @@ exports.checkAllDown = async function (userIdFromJWT) {
 // 장바구니 상품 개수 증가 시키기
 exports.basketCountUp = async function (userIdFromJWT, basketId) {
     const connection = await pool.getConnection(async (conn) => conn);
-    const countUp = await userDao.basketCountUpDown(connection, userIdFromJWT, basketId);
+    const countUp = await userDao.basketCountUp(connection, userIdFromJWT, basketId);
     connection.release();
     return countUp;
+};
+// 장바구니 상품 개수 감소 시키기
+exports.basketCountDown = async function (userIdFromJWT, basketId) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const countDown = await userDao.basketCountDown(connection, userIdFromJWT, basketId);
+    connection.release();
+    return countDown;
 };

@@ -187,7 +187,7 @@ exports.check = async function (req, res) {
  * API No. 9
  * API Name : 장바구니 상품 개수 증가 시키기 API
  * [PATCH] /app/users/basket/:basketId/count-up
- */ exports.updateProductCount = async function (req, res) {
+ */ exports.updateProductCountUp = async function (req, res) {
     const userIdFromJWT = req.verifiedToken.userId;
     const basketId = req.params.basketId;
     const basketCountUpResult = await userService.basketCountUp(userIdFromJWT, basketId);
@@ -197,12 +197,12 @@ exports.check = async function (req, res) {
 
 /**
  * API No. 10
- * API Name : 장바구니 상품 개수 증가 시키기 API
+ * API Name : 장바구니 상품 개수 감소 시키기 API
  * [PATCH] /app/users/basket/:basketId/count-down
- */ exports.updateProductCount = async function (req, res) {
+ */ exports.updateProductCountDown = async function (req, res) {
     const userIdFromJWT = req.verifiedToken.userId;
     const basketId = req.params.basketId;
-    const basketCountDownResult = await userService.basketCountUp(userIdFromJWT, basketId);
+    const basketCountDownResult = await userService.basketCountDown(userIdFromJWT, basketId);
 
-    return res.send(response(baseResponse.SUCCESS, '상품 개수를 증가 시켰습니다.'));
+    return res.send(response(baseResponse.SUCCESS, '상품 개수를 감소 시켰습니다.'));
 };

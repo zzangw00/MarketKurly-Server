@@ -197,10 +197,21 @@ async function updateAllCheckDown(connection, params) {
     return productRows;
 }
 // 장바구니 상품 개수 증가 시키기
-async function basketCountUpDown(connection, userIdFromJWT, basketId) {
+async function basketCountUp(connection, userIdFromJWT, basketId) {
     const basketQuery = `
     update Basket
     set detailCount = detailCount + 1
+    where userId = ?
+    and basketId = ?;
+    `;
+    const [productRows] = await connection.query(basketQuery, [userIdFromJWT, basketId]);
+    return productRows;
+}
+// 장바구니 상품 개수 감소 시키기
+async function basketCountDown(connection, userIdFromJWT, basketId) {
+    const basketQuery = `
+    update Basket
+    set detailCount = detailCount - 1
     where userId = ?
     and basketId = ?;
     `;
@@ -222,5 +233,6 @@ module.exports = {
     getBasketAllCheck,
     updateAllCheckUp,
     updateAllCheckDown,
-    basketCountUpDown,
+    basketCountUp,
+    basketCountDown,
 };

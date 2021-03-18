@@ -24,5 +24,8 @@ module.exports = function (app) {
     app.patch('/app/users/basket/check-all', jwtMiddleware, user.basketCheckAll);
 
     // 9. 장바구니 상품 개수 증가 시키기 API
-    app.patch('/app/users/basket/:basketId/count-up', jwtMiddleware, user.updateProductCount);
+    app.patch('/app/users/basket/:basketId/count-up', jwtMiddleware, user.updateProductCountUp);
+
+    // 10. 장바구니 상품 개수 감소 시키기 API
+    app.patch('/app/users/basket/:basketId/count-down', jwtMiddleware, user.updateProductCountDown);
 };
