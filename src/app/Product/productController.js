@@ -34,3 +34,18 @@ exports.getPreBasket = async function (req, res) {
 
     return res.send(response(baseResponse.SUCCESS, preBasketResponse[0]));
 };
+
+/**
+ * API No. 12
+ * API Name : 예비 장바구니 상품 개수 증가 시키기 API
+ * [PATCH] /app/product/preBasket/:preBasketId/count-up
+ */ exports.updateProductCountUp = async function (req, res) {
+    const preBasketId = req.params.preBasketId;
+    const preBasketCountUpResult = await productService.basketCountUp(preBasketId);
+    const countResult = await productProvider.getCountResult(preBasketId);
+    const result = {
+        countResult: countResult[0],
+        comment: '상품 개수를 증가 시켰습니다.',
+    };
+    return res.send(response(baseResponse.SUCCESS, result));
+};

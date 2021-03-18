@@ -12,3 +12,11 @@ const crypto = require('crypto');
 const { connect } = require('http2');
 
 // Service: Create, Update, Delete 비즈니스 로직 처리
+
+// 예비 장바구니 상품 개수 증가 시키기
+exports.basketCountUp = async function (preBasketId) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const countUp = await productDao.basketCountUp(connection, preBasketId);
+    connection.release();
+    return countUp;
+};

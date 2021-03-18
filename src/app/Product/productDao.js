@@ -35,8 +35,32 @@ where p.productId = ?
     const [productRows] = await connection.query(preBasketQuery, productId);
     return productRows;
 }
+// 예비 장바구니 상품 개수 증가 시키기
+async function basketCountUp(connection, preBasketId) {
+    const preBasketQuery = `
+    update PreBasket
+    set detailCount = detailCount + 1
+    where status = 1 
+    and preBasketId = ?;
+    `;
+    const [productRows] = await connection.query(preBasketQuery, preBasketId);
+    return productRows;
+}
+// 상품 상세 개수 조회
+async function getCountResult(connection, preBasketId) {
+    const basketQuery = `
+    select preBasketId, productId, detailCount
+    from PreBasket
+    where status = 1
+    and preBasketId = ?;
+    `;
+    const [productRows] = await connection.query(basketQuery, preBasketId);
+    return productRows;
+}
 module.exports = {
     getRawPriceProduct,
     getHighPriceProduct,
     getPreBasketInfo,
+    basketCountUp,
+    getCountResult,
 };

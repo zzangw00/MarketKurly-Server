@@ -30,3 +30,10 @@ exports.getPreBasketInfo = async function (productId) {
 
     return getPreBasketInfoResult;
 };
+// 상품 상세 개수 조회
+exports.getCountResult = async function (preBasketId) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const countResult = await productDao.getCountResult(connection, preBasketId);
+    connection.release();
+    return countResult;
+};
