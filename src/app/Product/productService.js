@@ -20,3 +20,10 @@ exports.basketCountUp = async function (preBasketId) {
     connection.release();
     return countUp;
 };
+// 예비 장바구니 상품 개수 감소 시키기
+exports.basketCountDown = async function (preBasketId) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const countDown = await productDao.basketCountDown(connection, preBasketId);
+    connection.release();
+    return countDown;
+};

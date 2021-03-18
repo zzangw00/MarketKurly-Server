@@ -10,4 +10,7 @@ module.exports = function (app) {
 
     // 12. 예비 장바구니 상품 개수 증가 시키기 API
     app.patch('/app/preBasket/:preBasketId/count-up', product.updateProductCountUp);
+
+    // 13. 예비 장바구니 상품 개수 감소 시키기 API
+    app.patch('/app/preBasket/:preBasketId/count-down', product.updateProductCountDown);
 };

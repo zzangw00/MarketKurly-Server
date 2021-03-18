@@ -46,6 +46,17 @@ async function basketCountUp(connection, preBasketId) {
     const [productRows] = await connection.query(preBasketQuery, preBasketId);
     return productRows;
 }
+// 예비 장바구니 상품 개수 감소 시키기
+async function basketCountDown(connection, preBasketId) {
+    const preBasketQuery = `
+    update PreBasket
+    set detailCount = detailCount - 1
+    where status = 1 
+    and preBasketId = ?;
+    `;
+    const [productRows] = await connection.query(preBasketQuery, preBasketId);
+    return productRows;
+}
 // 상품 상세 개수 조회
 async function getCountResult(connection, preBasketId) {
     const basketQuery = `
@@ -62,5 +73,6 @@ module.exports = {
     getHighPriceProduct,
     getPreBasketInfo,
     basketCountUp,
+    basketCountDown,
     getCountResult,
 };
