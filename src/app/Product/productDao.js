@@ -19,8 +19,24 @@ order by price desc
     const [productRows] = await connection.query(highPriceQuery, value);
     return productRows;
 }
-
+// 예비 장바구니 조회
+async function getPreBasketInfo(connection, productId) {
+    const preBasketQuery = `
+    select productName,
+       pb.productId,
+       detailCount,
+       p.price,
+       p.price * (1 - (p.discountRate / 100)) as salePrice,
+       p.price * (1 - (p.discountRate / 100)) * 0.05 as savingPrice
+from Product p
+         join PreBasket pb on p.productId = pb.productId
+where p.productId = ?
+    `;
+    const [productRows] = await connection.query(preBasketQuery, productId);
+    return productRows;
+}
 module.exports = {
     getRawPriceProduct,
     getHighPriceProduct,
+    getPreBasketInfo,
 };

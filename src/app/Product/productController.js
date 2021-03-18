@@ -21,3 +21,16 @@ exports.getBestProduct = async function (req, res) {
         return res.send(response(baseResponse.SUCCESS, getBestProductResult));
     }
 };
+
+/**
+ * API No. 11
+ * API Name : 예비 장바구니 조회 API
+ * [GET] /app/product/:productId/pre-basket
+ */
+exports.getPreBasket = async function (req, res) {
+    const productId = req.params.productId;
+
+    const preBasketResponse = await productProvider.getPreBasketInfo(productId);
+
+    return res.send(response(baseResponse.SUCCESS, preBasketResponse[0]));
+};

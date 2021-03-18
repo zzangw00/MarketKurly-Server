@@ -193,7 +193,7 @@ exports.check = async function (req, res) {
     const basketCountUpResult = await userService.basketCountUp(userIdFromJWT, basketId);
     const countResult = await userProvider.getCountResult(userIdFromJWT, basketId);
     const result = {
-        countResult: countResult,
+        countResult: countResult[0],
         comment: '상품 개수를 증가 시켰습니다.',
     };
     return res.send(response(baseResponse.SUCCESS, result));
@@ -209,7 +209,7 @@ exports.check = async function (req, res) {
     const basketCountDownResult = await userService.basketCountDown(userIdFromJWT, basketId);
     const countResult = await userProvider.getCountResult(userIdFromJWT, basketId);
     const result = {
-        countResult: countResult,
+        countResult: countResult[0],
         comment: '상품 개수를 감소 시켰습니다.',
     };
     return res.send(response(baseResponse.SUCCESS, result));

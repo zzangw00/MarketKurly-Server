@@ -21,3 +21,12 @@ exports.HighPriceProduct = async function (value) {
 
     return bestProductResult;
 };
+// 예비 장바구니 조회
+exports.getPreBasketInfo = async function (productId) {
+    const connection = await pool.getConnection(async (conn) => conn);
+
+    const getPreBasketInfoResult = await productDao.getPreBasketInfo(connection, productId);
+    connection.release();
+
+    return getPreBasketInfoResult;
+};
