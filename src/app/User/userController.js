@@ -191,8 +191,12 @@ exports.check = async function (req, res) {
     const userIdFromJWT = req.verifiedToken.userId;
     const basketId = req.params.basketId;
     const basketCountUpResult = await userService.basketCountUp(userIdFromJWT, basketId);
-
-    return res.send(response(baseResponse.SUCCESS, '상품 개수를 증가 시켰습니다.'));
+    const countResult = await userProvider.getCountResult(userIdFromJWT, basketId);
+    const result = {
+        countResult: countResult,
+        comment: '상품 개수를 증가 시켰습니다.',
+    };
+    return res.send(response(baseResponse.SUCCESS, result));
 };
 
 /**
@@ -203,6 +207,10 @@ exports.check = async function (req, res) {
     const userIdFromJWT = req.verifiedToken.userId;
     const basketId = req.params.basketId;
     const basketCountDownResult = await userService.basketCountDown(userIdFromJWT, basketId);
-
-    return res.send(response(baseResponse.SUCCESS, '상품 개수를 감소 시켰습니다.'));
+    const countResult = await userProvider.getCountResult(userIdFromJWT, basketId);
+    const result = {
+        countResult: countResult,
+        comment: '상품 개수를 감소 시켰습니다.',
+    };
+    return res.send(response(baseResponse.SUCCESS, result));
 };

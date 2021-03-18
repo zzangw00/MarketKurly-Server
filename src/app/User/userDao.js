@@ -202,7 +202,8 @@ async function basketCountUp(connection, userIdFromJWT, basketId) {
     update Basket
     set detailCount = detailCount + 1
     where userId = ?
-    and basketId = ?;
+    and basketId = ?
+    and status = 1;
     `;
     const [productRows] = await connection.query(basketQuery, [userIdFromJWT, basketId]);
     return productRows;
@@ -213,7 +214,20 @@ async function basketCountDown(connection, userIdFromJWT, basketId) {
     update Basket
     set detailCount = detailCount - 1
     where userId = ?
-    and basketId = ?;
+    and basketId = ?
+    and status = 1;
+    `;
+    const [productRows] = await connection.query(basketQuery, [userIdFromJWT, basketId]);
+    return productRows;
+}
+// 상품 상세 개수 조회
+async function getCountResult(connection, userIdFromJWT, basketId) {
+    const basketQuery = `
+    select basketId, productId, detailCount
+    from Basket
+    where userId = ?
+    and basketId = 1
+    and status = 1
     `;
     const [productRows] = await connection.query(basketQuery, [userIdFromJWT, basketId]);
     return productRows;
@@ -235,4 +249,5 @@ module.exports = {
     updateAllCheckDown,
     basketCountUp,
     basketCountDown,
+    getCountResult,
 };
