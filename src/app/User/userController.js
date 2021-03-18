@@ -168,11 +168,17 @@ exports.check = async function (req, res) {
  */ exports.basketCheckAll = async function (req, res) {
     const userIdFromJWT = req.verifiedToken.userId;
     const basketCheckStatus = await userProvider.getCheckAllStatus(userIdFromJWT);
-    if (basketCheckStatus[0].checkStatus == 1) {
-        const unCheck = await userService.checkAllDown(userIdFromJWT);
-        return res.send(response(baseResponse.SUCCESS, '전체 체크 해제 하였습니다.'));
-    } else {
+    let count = 0;
+    for (let i = 0; i < basketCheckStatus.length; i++) {
+        if (basketCheckStatus[i].checkStatus == 2) {
+            count++;
+        }
+    }
+    if (count > 0) {
         const check = await userService.checkAllUp(userIdFromJWT);
         return res.send(response(baseResponse.SUCCESS, '전체 체크 하였습니다.'));
+    } else {
+        const unCheck = await userService.checkAllDown(userIdFromJWT);
+        return res.send(response(baseResponse.SUCCESS, '전체 체크 해제 하였습니다.'));
     }
 };
