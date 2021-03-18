@@ -23,14 +23,15 @@ order by price desc
 async function getPreBasketInfo(connection, productId) {
     const preBasketQuery = `
     select productName,
-       pb.productId,
-       detailCount,
-       p.price,
-       p.price * (1 - (p.discountRate / 100)) as salePrice,
-       p.price * (1 - (p.discountRate / 100)) * 0.05 as savingPrice
+    pb.productId,
+    detailCount,
+    p.price,
+    p.price * (1 - (p.discountRate / 100)) as salePrice,
+    p.price * (1 - (p.discountRate / 100)) * detailCount * 0.05 as savingPrice,
+    p.price * (1 - (p.discountRate / 100)) * detailCount as totalPrice
 from Product p
-         join PreBasket pb on p.productId = pb.productId
-where p.productId = ?
+      join PreBasket pb on p.productId = pb.productId
+where p.productId = ?;
     `;
     const [productRows] = await connection.query(preBasketQuery, productId);
     return productRows;
