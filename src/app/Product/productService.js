@@ -14,16 +14,23 @@ const { connect } = require('http2');
 // Service: Create, Update, Delete 비즈니스 로직 처리
 
 // 예비 장바구니 상품 개수 증가 시키기
-exports.basketCountUp = async function (preBasketId) {
+exports.basketCountUp = async function (userIdFromJWT, preBasketId) {
     const connection = await pool.getConnection(async (conn) => conn);
-    const countUp = await productDao.basketCountUp(connection, preBasketId);
+    const countUp = await productDao.basketCountUp(connection, userIdFromJWT, preBasketId);
     connection.release();
     return countUp;
 };
 // 예비 장바구니 상품 개수 감소 시키기
-exports.basketCountDown = async function (preBasketId) {
+exports.basketCountDown = async function (userIdFromJWT, preBasketId) {
     const connection = await pool.getConnection(async (conn) => conn);
-    const countDown = await productDao.basketCountDown(connection, preBasketId);
+    const countDown = await productDao.basketCountDown(connection, userIdFromJWT, preBasketId);
+    connection.release();
+    return countDown;
+};
+// 예비 장바구니 추가 시키기
+exports.inputPreBasket = async function (userIdFromJWT, productId) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const countDown = await productDao.inputPreBasket(connection, userIdFromJWT, productId);
     connection.release();
     return countDown;
 };

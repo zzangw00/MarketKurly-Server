@@ -28,11 +28,17 @@ exports.getBestProduct = async function (req, res) {
  * [GET] /app/product/:productId/pre-basket
  */
 exports.getPreBasket = async function (req, res) {
+    const userIdFromJWT = req.verifiedToken.userId;
     const productId = req.params.productId;
-
-    const preBasketResponse = await productProvider.getPreBasketInfo(productId);
-
-    return res.send(response(baseResponse.SUCCESS, preBasketResponse[0]));
+    const preBasketCheck = await productProvider.checkPreBasket(userIdFromJWT, productId);
+    if (preBasketCheck[0].exist == 0) {
+        const preBasketInput = await productService.inputPreBasket(userIdFromJWT, productId);
+        const preBasketResponse = await productProvider.getPreBasketInfo(userIdFromJWT, productId);
+        return res.send(response(baseResponse.SUCCESS, preBasketResponse[0]));
+    } else {
+        const preBasketResponse = await productProvider.getPreBasketInfo(userIdFromJWT, productId);
+        return res.send(response(baseResponse.SUCCESS, preBasketResponse[0]));
+    }
 };
 
 /**
@@ -40,9 +46,10 @@ exports.getPreBasket = async function (req, res) {
  * API Name : 예비 장바구니 상품 개수 증가 시키기 API
  * [PATCH] /app/product/preBasket/:preBasketId/count-up
  */ exports.updateProductCountUp = async function (req, res) {
+    const userIdFromJWT = req.verifiedToken.userId;
     const preBasketId = req.params.preBasketId;
-    const preBasketCountUpResult = await productService.basketCountUp(preBasketId);
-    const countResult = await productProvider.getCountResult(preBasketId);
+    const preBasketCountUpResult = await productService.basketCountUp(userIdFromJWT, preBasketId);
+    const countResult = await productProvider.getCountResult(userIdFromJWT, preBasketId);
     const result = {
         countResult: countResult[0],
         comment: '상품 개수를 증가 시켰습니다.',
@@ -55,9 +62,10 @@ exports.getPreBasket = async function (req, res) {
  * API Name : 예비 장바구니 상품 개수 감소 시키기 API
  * [PATCH] /app/product/preBasket/:preBasketId/count-down
  */ exports.updateProductCountDown = async function (req, res) {
+    const userIdFromJWT = req.verifiedToken.userId;
     const preBasketId = req.params.preBasketId;
-    const preBasketCountUpResult = await productService.basketCountDown(preBasketId);
-    const countResult = await productProvider.getCountResult(preBasketId);
+    const preBasketCountUpResult = await productService.basketCountDown(userIdFromJWT, preBasketId);
+    const countResult = await productProvider.getCountResult(userIdFromJWT, preBasketId);
     const result = {
         countResult: countResult[0],
         comment: '상품 개수를 감소 시켰습니다.',

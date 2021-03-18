@@ -20,7 +20,7 @@ order by price desc
     return productRows;
 }
 // 예비 장바구니 조회
-async function getPreBasketInfo(connection, productId) {
+async function getPreBasketInfo(connection, userIdFromJWT, productId) {
     const preBasketQuery = `
     select productName,
     pb.productId,
@@ -31,42 +31,65 @@ async function getPreBasketInfo(connection, productId) {
     p.price * (1 - (p.discountRate / 100)) * detailCount as totalPrice
 from Product p
       join PreBasket pb on p.productId = pb.productId
-where p.productId = ?;
+where userId = ? and p.productId = ?
     `;
-    const [productRows] = await connection.query(preBasketQuery, productId);
+    const [productRows] = await connection.query(preBasketQuery, [userIdFromJWT, productId]);
     return productRows;
 }
 // 예비 장바구니 상품 개수 증가 시키기
-async function basketCountUp(connection, preBasketId) {
+async function basketCountUp(connection, userIdFromJWT, preBasketId) {
     const preBasketQuery = `
     update PreBasket
     set detailCount = detailCount + 1
-    where status = 1 
+    where status = 1
+    and userId = ?
     and preBasketId = ?;
     `;
-    const [productRows] = await connection.query(preBasketQuery, preBasketId);
+    const [productRows] = await connection.query(preBasketQuery, [userIdFromJWT, preBasketId]);
     return productRows;
 }
 // 예비 장바구니 상품 개수 감소 시키기
-async function basketCountDown(connection, preBasketId) {
+async function basketCountDown(connection, userIdFromJWT, preBasketId) {
     const preBasketQuery = `
     update PreBasket
     set detailCount = detailCount - 1
-    where status = 1 
+    where status = 1
+    and userId = ?
     and preBasketId = ?;
     `;
-    const [productRows] = await connection.query(preBasketQuery, preBasketId);
+    const [productRows] = await connection.query(preBasketQuery, [userIdFromJWT, preBasketId]);
     return productRows;
 }
 // 상품 상세 개수 조회
-async function getCountResult(connection, preBasketId) {
+async function getCountResult(connection, userIdFromJWT, preBasketId) {
     const basketQuery = `
     select preBasketId, productId, detailCount
     from PreBasket
     where status = 1
+    and userId = ?
     and preBasketId = ?;
     `;
-    const [productRows] = await connection.query(basketQuery, preBasketId);
+    const [productRows] = await connection.query(basketQuery, [userIdFromJWT, preBasketId]);
+    return productRows;
+}
+// 예비 장바구니 있는지 체크
+async function checkPreBasket(connection, userIdFromJWT, productId) {
+    const basketQuery = `
+    select exists(select preBasketId
+        from PreBasket
+    where userId = ?
+    and productId= ?) as exist
+    `;
+    const [productRows] = await connection.query(basketQuery, [userIdFromJWT, productId]);
+    return productRows;
+}
+// 예비 장바구니 추가 시키기
+async function inputPreBasket(connection, userIdFromJWT, productId) {
+    const basketQuery = `
+    insert into PreBasket (userId, productId)
+    values (?, ?);
+    `;
+    const [productRows] = await connection.query(basketQuery, [userIdFromJWT, productId]);
     return productRows;
 }
 module.exports = {
@@ -76,4 +99,6 @@ module.exports = {
     basketCountUp,
     basketCountDown,
     getCountResult,
+    checkPreBasket,
+    inputPreBasket,
 };
