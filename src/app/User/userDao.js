@@ -65,7 +65,7 @@ async function selectUserAccount(connection, Id) {
 // 장바구니 조회(상품 정보만)
 async function getBasketProductOnly(connection, userIdFromJWT) {
     const basketQuery = `
-    select thumbnailImageUrl, detailCount, checkStatus, basketId, p.productId, p.status, p.productStatus, p.productName, p.price, p.price * (1 - (p.discountRate / 100)) as salePrice, p.tag
+    select thumbnailImageUrl, detailCount, checkStatus, basketId, p.productId, p.status, p.productStatus, p.productName, format(p.price, 0), format(p.price * (1 - (p.discountRate / 100)), 0) as salePrice, p.tag
 from Basket b
          left join User u on b.userId = u.userId
          left join Product p on b.productId = p.productId
@@ -81,23 +81,23 @@ async function getBasketOther(connection, userIdFromJWT) {
     const basketQuery = `
     select ifnull(y.checkProductCount, 0)                               as checkProductCount,
     ifnull(x.productCount, 0)                               as productCount,
-    ifnull(sum(case when b.status = 1 and b.checkStatus = 1 then p.price * detailCount end), 0) as totalPrice,
-    ifnull(sum(case when b.status = 1 and b.checkStatus = 1 then p.price * (1 - (p.discountRate / 100)) * detailCount end) -
+    format(ifnull(sum(case when b.status = 1 and b.checkStatus = 1 then p.price * detailCount end), 0), 0) as totalPrice,
+    format(ifnull(sum(case when b.status = 1 and b.checkStatus = 1 then p.price * (1 - (p.discountRate / 100)) * detailCount end) -
            ifnull(sum(case when b.status = 1 and b.checkStatus = 1 then p.price * detailCount end), 0),
-           0)                                               as salePrice,
-    if(sum(case when b.status = 1 and b.checkStatus = 1 then p.price * (1 - (p.discountRate / 100)) * detailCount end) < 20000 and checkProductCount > 0,
+           0), 0)                                               as salePrice,
+    format(if(sum(case when b.status = 1 and b.checkStatus = 1 then p.price * (1 - (p.discountRate / 100)) * detailCount end) < 20000 and checkProductCount > 0,
        3000,
-       0)                                                   as deliveryCost,
-    ifnull(sum(case when b.status = 1 and b.checkStatus = 1 then p.price * (1 - (p.discountRate / 100)) * detailCount end) +
+       0), 0)                                                   as deliveryCost,
+    format(ifnull(sum(case when b.status = 1 and b.checkStatus = 1 then p.price * (1 - (p.discountRate / 100)) * detailCount end) +
            if(sum(case when b.status = 1 and b.checkStatus = 1 then p.price * (1 - (p.discountRate / 100)) * detailCount end) < 20000 and
               checkProductCount > 0, 3000,
               0),
-           0)                                               as totalSalePrice,
-    ifnull((sum(case when b.status = 1 and b.checkStatus = 1 then p.price * (1 - (p.discountRate / 100)) * detailCount end) +
+           0), 0)                                               as totalSalePrice,
+    format(ifnull((sum(case when b.status = 1 and b.checkStatus = 1 then p.price * (1 - (p.discountRate / 100)) * detailCount end) +
             if(sum(case when b.status = 1 and b.checkStatus = 1 then p.price * (1 - (p.discountRate / 100)) * detailCount end) < 20000 and
                checkProductCount > 0, 3000,
                0)) * 0.05,
-           0)                                               as savingCost
+           0), 0)                                               as savingCost
 from Basket b
       join Product p on b.productId = p.productId
       left join (select count(b.basketId) as productCount, b.userId

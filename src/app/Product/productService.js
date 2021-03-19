@@ -41,3 +41,10 @@ exports.preBasketReset = async function (userIdFromJWT, productId) {
     connection.release();
     return countReset;
 };
+// 장바구니 추가 시키기
+exports.inputBasket = async function (userIdFromJWT, preBasketId) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const inputBasket = await productDao.inputBasket(connection, userIdFromJWT, preBasketId);
+    connection.release();
+    return inputBasket;
+};

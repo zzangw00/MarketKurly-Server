@@ -1,7 +1,7 @@
 // best 상품 조회(raw_price)
 async function getRawPriceProduct(connection, value) {
     const rowPriceQuery = `
-    select thumbnailImageUrl, productName, price, discountRate, price * (1-(discountRate / 100)) as salePrice, tag
+    select thumbnailImageUrl, productName, format(price, 0), discountRate, format(price * (1-(discountRate / 100)), 0) as salePrice, tag
 from Product
 order by price
     `;
@@ -12,7 +12,7 @@ order by price
 // best 상품 조회(high_price)
 async function getHighPriceProduct(connection, value) {
     const highPriceQuery = `
-    select productId, thumbnailImageUrl, productName, price, discountRate, price * (1-(discountRate / 100)) as salePrice, tag
+    select productId, thumbnailImageUrl, productName, format(price, 0), discountRate, format(price * (1-(discountRate / 100)), 0) as salePrice, tag
 from Product
 order by price desc
     `;
@@ -25,13 +25,14 @@ async function getPreBasketInfo(connection, userIdFromJWT, productId) {
     select productName,
     pb.productId,
     detailCount,
-    p.price,
-    p.price * (1 - (p.discountRate / 100)) as salePrice,
-    p.price * (1 - (p.discountRate / 100)) * detailCount * 0.05 as savingPrice,
-    p.price * (1 - (p.discountRate / 100)) * detailCount as totalPrice
+    format(p.price, 0) as price,
+    format(p.price * (1 - (p.discountRate / 100)), 0) as salePrice,
+    format(p.price * (1 - (p.discountRate / 100)) * detailCount * 0.05, 0) as savingPrice,
+    format(p.price * (1 - (p.discountRate / 100)) * detailCount, 0) as totalPrice
 from Product p
       join PreBasket pb on p.productId = pb.productId
-where userId = ? and p.productId = ?
+where userId = ?
+and p.productId = ?;
     `;
     const [productRows] = await connection.query(preBasketQuery, [userIdFromJWT, productId]);
     return productRows;
@@ -103,6 +104,17 @@ and preBasketId = ?;
     const [productRows] = await connection.query(basketQuery, [userIdFromJWT, productId]);
     return productRows;
 }
+// 장바구니 추가 시키기
+async function inputBasket(connection, userIdFromJWT, productId) {
+    const basketQuery = `
+    update PreBasket
+set detailCount = 1
+where userId = ?
+and preBasketId = ?;
+    `;
+    const [productRows] = await connection.query(basketQuery, [userIdFromJWT, productId]);
+    return productRows;
+}
 module.exports = {
     getRawPriceProduct,
     getHighPriceProduct,
@@ -113,4 +125,5 @@ module.exports = {
     checkPreBasket,
     inputPreBasket,
     resetPreBasket,
+    inputBasket,
 };
