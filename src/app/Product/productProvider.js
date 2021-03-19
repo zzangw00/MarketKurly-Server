@@ -34,7 +34,7 @@ exports.getPreBasketInfo = async function (userIdFromJWT, productId) {
 
     return getPreBasketInfoResult;
 };
-// 상품 상세 개수 조회
+// 예비 장바구니 상품 상세 개수 조회
 exports.getCountResult = async function (userIdFromJWT, preBasketId) {
     const connection = await pool.getConnection(async (conn) => conn);
     const countResult = await productDao.getCountResult(connection, userIdFromJWT, preBasketId);

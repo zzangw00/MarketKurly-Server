@@ -220,7 +220,7 @@ async function basketCountDown(connection, userIdFromJWT, basketId) {
     const [productRows] = await connection.query(basketQuery, [userIdFromJWT, basketId]);
     return productRows;
 }
-// 상품 상세 개수 조회
+// 장바구니 상품 상세 개수 조회
 async function getCountResult(connection, userIdFromJWT, basketId) {
     const basketQuery = `
     select basketId, productId, detailCount

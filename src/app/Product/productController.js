@@ -72,3 +72,19 @@ exports.getPreBasket = async function (req, res) {
     };
     return res.send(response(baseResponse.SUCCESS, result));
 };
+
+/**
+ * API No. 14
+ * API Name : 예비 장바구니 닫기 API
+ * [PATCH] /app/preBasket/:preBasketId/reset
+ */ exports.resetPreBasket = async function (req, res) {
+    const userIdFromJWT = req.verifiedToken.userId;
+    const preBasketId = req.params.preBasketId;
+    const resetPreBasketResult = await productService.preBasketReset(userIdFromJWT, preBasketId);
+    const countResult = await productProvider.getCountResult(userIdFromJWT, preBasketId);
+    const result = {
+        countResult: countResult[0],
+        comment: '상품 개수를 초기화 시켰습니다.',
+    };
+    return res.send(response(baseResponse.SUCCESS, result));
+};

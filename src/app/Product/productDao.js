@@ -60,7 +60,7 @@ async function basketCountDown(connection, userIdFromJWT, preBasketId) {
     const [productRows] = await connection.query(preBasketQuery, [userIdFromJWT, preBasketId]);
     return productRows;
 }
-// 상품 상세 개수 조회
+// 예비 장바구니 상품 상세 개수 조회
 async function getCountResult(connection, userIdFromJWT, preBasketId) {
     const basketQuery = `
     select preBasketId, productId, detailCount
@@ -92,6 +92,17 @@ async function inputPreBasket(connection, userIdFromJWT, productId) {
     const [productRows] = await connection.query(basketQuery, [userIdFromJWT, productId]);
     return productRows;
 }
+// 예비 장바구니 초기화 시키기
+async function resetPreBasket(connection, userIdFromJWT, productId) {
+    const basketQuery = `
+    update PreBasket
+set detailCount = 1
+where userId = ?
+and preBasketId = ?;
+    `;
+    const [productRows] = await connection.query(basketQuery, [userIdFromJWT, productId]);
+    return productRows;
+}
 module.exports = {
     getRawPriceProduct,
     getHighPriceProduct,
@@ -101,4 +112,5 @@ module.exports = {
     getCountResult,
     checkPreBasket,
     inputPreBasket,
+    resetPreBasket,
 };

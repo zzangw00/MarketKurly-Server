@@ -34,3 +34,10 @@ exports.inputPreBasket = async function (userIdFromJWT, productId) {
     connection.release();
     return countDown;
 };
+// 예비 장바구니 초기화 시키기
+exports.preBasketReset = async function (userIdFromJWT, productId) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const countReset = await productDao.resetPreBasket(connection, userIdFromJWT, productId);
+    connection.release();
+    return countReset;
+};

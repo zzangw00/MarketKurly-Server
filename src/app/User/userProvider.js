@@ -78,7 +78,7 @@ exports.getCheckAllStatus = async function (userIdFromJWT) {
     return checkResult;
 };
 
-// 상품 상세 개수 조회
+// 장바구니 상품 상세 개수 조회
 exports.getCountResult = async function (userIdFromJWT, basketId) {
     const connection = await pool.getConnection(async (conn) => conn);
     const countResult = await userDao.getCountResult(connection, userIdFromJWT, basketId);

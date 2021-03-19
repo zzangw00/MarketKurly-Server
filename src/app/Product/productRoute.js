@@ -17,4 +17,7 @@ module.exports = function (app) {
         jwtMiddleware,
         product.updateProductCountDown,
     );
+
+    // 14. 예비 장바구니 닫기 API
+    app.patch('/app/preBasket/:preBasketId/reset', jwtMiddleware, product.resetPreBasket);
 };
