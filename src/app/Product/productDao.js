@@ -1,7 +1,7 @@
 // best 상품 조회(raw_price)
 async function getRawPriceProduct(connection, value) {
     const rowPriceQuery = `
-    select thumbnailImageUrl, productName, format(price, 0), discountRate, format(price * (1-(discountRate / 100)), 0) as salePrice, tag
+    select thumbnailImageUrl, productName, format(price, 0) as price, discountRate, format(price * (1-(discountRate / 100)), 0) as salePrice, tag
 from Product
 order by price
     `;
@@ -12,7 +12,7 @@ order by price
 // best 상품 조회(high_price)
 async function getHighPriceProduct(connection, value) {
     const highPriceQuery = `
-    select productId, thumbnailImageUrl, productName, format(price, 0), discountRate, format(price * (1-(discountRate / 100)), 0) as salePrice, tag
+    select productId, thumbnailImageUrl, productName, format(price, 0) as price, discountRate, format(price * (1-(discountRate / 100)), 0) as salePrice, tag
 from Product
 order by price desc
     `;
