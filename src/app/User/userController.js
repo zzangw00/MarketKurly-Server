@@ -237,3 +237,31 @@ exports.check = async function (req, res) {
 
     return res.send(response(baseResponse.SUCCESS, '선택한 상품을 삭제 하였습니다.'));
 };
+
+/**
+ * API No. 18
+ * API Name : 배송지 조회 API
+ * [GET] /app/users/deliveryLocation
+ */ exports.getLocation = async function (req, res) {
+    const userIdFromJWT = req.verifiedToken.userId;
+    const getLocationResult = await userProvider.getLocation(userIdFromJWT);
+
+    return res.send(response(baseResponse.SUCCESS, getLocationResult));
+};
+
+/**
+ * API No. 19
+ * API Name : 배송지 선택 API
+ * [PATCH] /app/users/deliveryLocation/check
+ */ exports.checkLocation = async function (req, res) {
+    const userIdFromJWT = req.verifiedToken.userId;
+    const locationId = req.params.locationId;
+    const checkLocationResult1 = await userService.checkLocation1(userIdFromJWT);
+    const checkLocationResult2 = await userService.checkLocation2(userIdFromJWT, locationId);
+    const getCheckLocationResult = await userProvider.getCheckLocation(userIdFromJWT, locationId);
+    const result = {
+        countResult: getCheckLocationResult[0],
+        comment: '배송지로 선택 되었습니다.',
+    };
+    return res.send(response(baseResponse.SUCCESS, result));
+};

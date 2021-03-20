@@ -115,14 +115,14 @@ where b.userId = ?;
     const [productRows] = await connection.query(basketQuery, params);
     return productRows;
 }
-// 배송지 조회
+// 장바구니에서 배송지 조회
 async function getDeliveryLocation(connection, userIdFromJWT) {
     const basketQuery = `
-    select locationId, location
+    select locationId, location, basicStatus
 from DeliveryLocation dl
          join User u on dl.userId = u.userId
 where u.userId = ?
-  and basicStatus = 1;
+  and checkStatus = 1;
     `;
     const [productRows] = await connection.query(basketQuery, userIdFromJWT);
     return productRows;
@@ -256,6 +256,51 @@ and status = 1
     const [productRows] = await connection.query(basketQuery, userIdFromJWT);
     return productRows;
 }
+// 배송지 조회
+async function getLocation(connection, userIdFromJWT) {
+    const locationQuery = `
+    select locationId, location, checkStatus, basicStatus, name, phoneNumber
+from DeliveryLocation dl
+         join User u on dl.userId = u.userId
+where u.userId = ?
+  and dl.status = 1;
+    `;
+    const [productRows] = await connection.query(locationQuery, userIdFromJWT);
+    return productRows;
+}
+// 배송지 선택1
+async function checkLocation1(connection, userIdFromJWT) {
+    const locationQuery = `
+    update DeliveryLocation
+set checkStatus = 2
+where userId = ?
+and checkStatus = 1;
+    `;
+    const [productRows] = await connection.query(locationQuery, userIdFromJWT);
+    return productRows;
+}
+// 배송지 선택2
+async function checkLocation2(connection, userIdFromJWT, locationId) {
+    const locationQuery = `
+    update DeliveryLocation
+set checkStatus = 1
+where userId = ?
+and locationId = ?;
+    `;
+    const [productRows] = await connection.query(locationQuery, [userIdFromJWT, locationId]);
+    return productRows;
+}
+// 배송지 체크 조회
+async function getCheckLocation(connection, userIdFromJWT, locationId) {
+    const locationQuery = `
+    select locationId, location, checkStatus
+from DeliveryLocation
+where userId = ?
+and locationId = ?
+    `;
+    const [productRows] = await connection.query(locationQuery, [userIdFromJWT, locationId]);
+    return productRows;
+}
 module.exports = {
     insertUserInfo,
     insertDeliveryLocation,
@@ -276,4 +321,8 @@ module.exports = {
     getCountResult,
     basketDelete,
     checkBasketDelete,
+    getLocation,
+    checkLocation1,
+    checkLocation2,
+    getCheckLocation,
 };

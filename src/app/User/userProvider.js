@@ -85,3 +85,17 @@ exports.getCountResult = async function (userIdFromJWT, basketId) {
     connection.release();
     return countResult;
 };
+// 배송지 조회
+exports.getLocation = async function (userIdFromJWT) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const locationResult = await userDao.getLocation(connection, userIdFromJWT);
+    connection.release();
+    return locationResult;
+};
+// 배송지 체크 조회
+exports.getCheckLocation = async function (userIdFromJWT, locationId) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const locationResult = await userDao.getCheckLocation(connection, userIdFromJWT, locationId);
+    connection.release();
+    return locationResult;
+};

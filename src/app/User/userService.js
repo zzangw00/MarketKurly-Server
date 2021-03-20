@@ -164,3 +164,17 @@ exports.checkBasketDelete = async function (userIdFromJWT) {
     connection.release();
     return checkBasketDelete;
 };
+// 배송지 선택 하기1
+exports.checkLocation1 = async function (userIdFromJWT) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const checkLocation = await userDao.checkLocation1(connection, userIdFromJWT);
+    connection.release();
+    return checkLocation;
+};
+// 배송지 선택 하기2
+exports.checkLocation2 = async function (userIdFromJWT, locationId) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const checkLocation = await userDao.checkLocation2(connection, userIdFromJWT, locationId);
+    connection.release();
+    return checkLocation;
+};
