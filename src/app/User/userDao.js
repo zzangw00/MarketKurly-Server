@@ -301,6 +301,26 @@ and locationId = ?
     const [productRows] = await connection.query(locationQuery, [userIdFromJWT, locationId]);
     return productRows;
 }
+// 배송지 추가1
+async function addLocation1(connection, userIdFromJWT) {
+    const locationQuery = `
+    update DeliveryLocation
+set checkStatus = 2
+where userId = ?
+and checkStatus = 1;
+    `;
+    const [productRows] = await connection.query(locationQuery, userIdFromJWT);
+    return productRows;
+}
+// 배송지 추가2
+async function addLocation2(connection, userIdFromJWT, location) {
+    const locationQuery = `
+    insert into DeliveryLocation (userId, location)
+values (?, ?)
+    `;
+    const [productRows] = await connection.query(locationQuery, [userIdFromJWT, location]);
+    return productRows;
+}
 module.exports = {
     insertUserInfo,
     insertDeliveryLocation,
@@ -325,4 +345,6 @@ module.exports = {
     checkLocation1,
     checkLocation2,
     getCheckLocation,
+    addLocation1,
+    addLocation2,
 };

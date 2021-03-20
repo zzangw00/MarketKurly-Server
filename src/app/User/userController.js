@@ -265,3 +265,21 @@ exports.check = async function (req, res) {
     };
     return res.send(response(baseResponse.SUCCESS, result));
 };
+/**
+ * API No. 20
+ * API Name : 배송지 추가 API
+ * [PATCH] /app/users/deliveryLocation/check
+ */ exports.addLocation = async function (req, res) {
+    const userIdFromJWT = req.verifiedToken.userId;
+    const { location } = req.body;
+    const addLocationResult1 = await userService.addLocation1(userIdFromJWT);
+    const addLocationResult2 = await userService.addLocation2(userIdFromJWT, location);
+    console.log(addLocationResult2.insertId);
+    const result = {
+        locationId: addLocationResult2.insertId,
+        location: location,
+        comment: '배송지가 추가 되었습니다.',
+    };
+
+    return res.send(response(baseResponse.SUCCESS, result));
+};

@@ -40,4 +40,7 @@ module.exports = function (app) {
 
     // 19. 배송지 선택 API
     app.patch('/app/users/deliveryLocation/:locationId/check', jwtMiddleware, user.checkLocation);
+
+    // 20. 배송지 추가 API
+    app.post('/app/users/deliveryLocation/location', jwtMiddleware, user.addLocation);
 };

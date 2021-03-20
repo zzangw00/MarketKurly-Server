@@ -178,3 +178,17 @@ exports.checkLocation2 = async function (userIdFromJWT, locationId) {
     connection.release();
     return checkLocation;
 };
+// 배송지 추가 하기1
+exports.addLocation1 = async function (userIdFromJWT) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const addLocation = await userDao.addLocation1(connection, userIdFromJWT);
+    connection.release();
+    return addLocation;
+};
+// 배송지 추가 하기2
+exports.addLocation2 = async function (userIdFromJWT, location) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const addLocation = await userDao.addLocation2(connection, userIdFromJWT, location);
+    connection.release();
+    return addLocation;
+};
