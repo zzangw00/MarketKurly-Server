@@ -1,9 +1,9 @@
 // best 상품 조회(raw_price)
 async function getRawPriceProduct(connection, value) {
     const rowPriceQuery = `
-    select thumbnailImageUrl, productName, format(price, 0) as price, discountRate, format(price * (1-(discountRate / 100)), 0) as salePrice, tag
-from Product
-order by price
+    select productId, thumbnailImageUrl, productName, format(p.price, 0) as price, discountRate, format(p.price * (1-(discountRate / 100)), 0) as salePrice, tag
+from Product p
+order by price*1;
     `;
     const [productRows] = await connection.query(rowPriceQuery, value);
     return productRows;
@@ -12,9 +12,9 @@ order by price
 // best 상품 조회(high_price)
 async function getHighPriceProduct(connection, value) {
     const highPriceQuery = `
-    select productId, thumbnailImageUrl, productName, format(price, 0) as price, discountRate, format(price * (1-(discountRate / 100)), 0) as salePrice, tag
-from Product
-order by price desc
+    sselect productId, thumbnailImageUrl, productName, format(p.price, 0) as price, discountRate, format(p.price * (1-(discountRate / 100)), 0) as salePrice, tag
+    from Product p
+    order by price*1 desc;
     `;
     const [productRows] = await connection.query(highPriceQuery, value);
     return productRows;
