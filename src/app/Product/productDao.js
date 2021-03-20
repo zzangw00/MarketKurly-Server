@@ -22,7 +22,7 @@ order by price desc
 // 예비 장바구니 조회
 async function getPreBasketInfo(connection, userIdFromJWT, productId) {
     const preBasketQuery = `
-    select productName,
+    select preBasketId, productName,
     pb.productId,
     detailCount,
     format(p.price, 0) as price,

@@ -150,3 +150,10 @@ exports.basketCountDown = async function (userIdFromJWT, basketId) {
     connection.release();
     return countDown;
 };
+// 장바구니 상품 삭제 하기
+exports.basketDelete = async function (userIdFromJWT, basketId) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const basketDelete = await userDao.basketDelete(connection, userIdFromJWT, basketId);
+    connection.release();
+    return basketDelete;
+};

@@ -28,4 +28,7 @@ module.exports = function (app) {
 
     // 10. 장바구니 상품 개수 감소 시키기 API
     app.patch('/app/users/basket/:basketId/count-down', jwtMiddleware, user.updateProductCountDown);
+
+    // 16. 장바구니 상품 삭제 API
+    app.patch('/app/users/basket/:basketId/delete', jwtMiddleware, user.deleteBasket);
 };
