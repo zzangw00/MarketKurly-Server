@@ -48,3 +48,30 @@ exports.checkPreBasket = async function (userIdFromJWT, productId) {
     connection.release();
     return checkResult;
 };
+// 장바구니 있는지 체크
+exports.checkBasket = async function (userIdFromJWT, productId) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const checkResult = await productDao.checkBasket(connection, userIdFromJWT, productId);
+    connection.release();
+    return checkResult;
+};
+// 장바구니 상태 체크
+exports.checkBasketStatus = async function (userIdFromJWT, productId) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const checkResult = await productDao.checkBasketStatus(connection, userIdFromJWT, productId);
+    connection.release();
+    return checkResult;
+};
+// 장바구니 조회
+exports.inputBasketResult = async function (userIdFromJWT, productId) {
+    const connection = await pool.getConnection(async (conn) => conn);
+
+    const getBasketInfoResult = await productDao.getBasketInfo(
+        connection,
+        userIdFromJWT,
+        productId,
+    );
+    connection.release();
+
+    return getBasketInfoResult;
+};

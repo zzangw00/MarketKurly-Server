@@ -91,32 +91,54 @@ exports.getPreBasket = async function (req, res) {
 
 /**
  * API No. 15
- * API Name : 장바구니 추가 API
- * [POST] /app/preBasket/:preBasketId/basket
+ * API Name : 장바구니 추가 API 체크 했는데 없으면 추가, 있는데 현재 장바구니에 없으면 status = 1로 변경, 있는데 현재 장바구니에 있으면 detailCount +
+ * [POST] /app/product/:productId/basket
  */ exports.inputBasket = async function (req, res) {
     const userIdFromJWT = req.verifiedToken.userId;
-    const preBasketId = req.params.preBasketId;
-    const basketCheck = await productProvider.checkPreBasket(userIdFromJWT, productId);
-    const inputBasket = await productService.inputBasket(userIdFromJWT, preBasketId);
-    const inputBasketResult = await productProvider.inputBasketResult(userIdFromJWT, preBasketId);
-    const result = {
-        countResult: inputBasketResult[0],
-        comment: '장바구니에 상품을 담았습니다.',
-    };
-    return res.send(response(baseResponse.SUCCESS, result));
+    const productId = req.params.productId;
+    const basketCheck = await productProvider.checkBasket(userIdFromJWT, productId);
+    const basketStatus = await productProvider.checkBasketStatus(userIdFromJWT, productId);
+    if (basketCheck[0].exist == 0) {
+        const inputBasket = await productService.inputBasket(userIdFromJWT, productId);
+        const inputBasketResult = await productProvider.inputBasketResult(userIdFromJWT, productId);
+        const result = {
+            countResult: inputBasketResult[0],
+            comment: '장바구니에 상품을 담았습니다.',
+        };
+        return res.send(response(baseResponse.SUCCESS, result));
+    } else {
+        if (basketStatus[0].status == 2) {
+            const changeBasket = await productService.changeBasket(
+                userIdFromJWT,
+                productId,
+                userIdFromJWT,
+                productId,
+            );
+            const inputBasketResult = await productProvider.inputBasketResult(
+                userIdFromJWT,
+                productId,
+            );
+            const result = {
+                countResult: inputBasketResult[0],
+                comment: '장바구니에 상품을 담았습니다.',
+            };
+            return res.send(response(baseResponse.SUCCESS, result));
+        } else {
+            const updateBasket = await productService.updateBasket(
+                userIdFromJWT,
+                productId,
+                userIdFromJWT,
+                productId,
+            );
+            const inputBasketResult = await productProvider.inputBasketResult(
+                userIdFromJWT,
+                productId,
+            );
+            const result = {
+                countResult: inputBasketResult[0],
+                comment: '이미 장바구니에 있어 상품을 추가로 담았습니다.',
+            };
+            return res.send(response(baseResponse.SUCCESS, result));
+        }
+    }
 };
-// // 체크 했는데 없으면 추가, 있는데 현재 장바구니에 없으면 status = 1로 변경, 있는데 현재 장바구니에 있으면 detailCount +
-// exports.getPreBasket = async function (req, res) {
-//     const userIdFromJWT = req.verifiedToken.userId;
-//     const productId = req.params.productId;
-//     const preBasketCheck = await productProvider.checkPreBasket(userIdFromJWT, productId);
-//     if (preBasketCheck[0].exist == 0) {
-//         const preBasketInput = await productService.inputPreBasket(userIdFromJWT, productId); //추가
-//         const preBasketResponse = await productProvider.getPreBasketInfo(userIdFromJWT, productId);
-//         return res.send(response(baseResponse.SUCCESS, preBasketResponse[0]));
-//     } else {
-//         const preBasketInput = await productService.inputPreBasket(userIdFromJWT, productId); //status 1로 변경
-//         const preBasketResponse = await productProvider.inputBasketResult(userIdFromJWT, productId);
-//         return res.send(response(baseResponse.SUCCESS, preBasketResponse[0]));
-//     }
-// };

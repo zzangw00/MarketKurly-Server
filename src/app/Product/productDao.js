@@ -107,12 +107,79 @@ and preBasketId = ?;
 // 장바구니 추가 시키기
 async function inputBasket(connection, userIdFromJWT, productId) {
     const basketQuery = `
-    update PreBasket
-set detailCount = 1
-where userId = ?
-and preBasketId = ?;
+    insert into Basket (userId, productId, detailCount)
+    select p.userId, p.productId, p.detailCount
+    from PreBasket p
+    where p.userId = ?
+    and p.productId = ?;
     `;
     const [productRows] = await connection.query(basketQuery, [userIdFromJWT, productId]);
+    return productRows;
+}
+// 장바구니 있는지 체크
+async function checkBasket(connection, userIdFromJWT, productId) {
+    const basketQuery = `
+    select exists(select basketId
+        from Basket
+    where userId = ?
+    and productId= ?) as exist
+    `;
+    const [productRows] = await connection.query(basketQuery, [userIdFromJWT, productId]);
+    return productRows;
+}
+// 장바구니 상태 체크
+async function checkBasketStatus(connection, userIdFromJWT, productId) {
+    const basketQuery = `
+    select status
+from Basket
+where userId = ?
+and productId =?
+    `;
+    const [productRows] = await connection.query(basketQuery, [userIdFromJWT, productId]);
+    return productRows;
+}
+// 장바구니 추가 정보 가져오기
+async function getBasketInfo(connection, userIdFromJWT, productId) {
+    const basketQuery = `
+    select userId, productId, basketId
+from Basket
+where userId = ?
+and productId = ?
+and status = 1
+    `;
+    const [productRows] = await connection.query(basketQuery, [userIdFromJWT, productId]);
+    return productRows;
+}
+// 장바구니 상태 변경 시키기
+async function changeBasket(connection, userIdFromJWT, productId, userIdFromJWT, productId) {
+    const basketQuery = `
+    update Basket
+    set status = 1, detailCount = (select detailCount from PreBasket where userId = ? and productId = ?)
+    where userId = ?
+    and productId = ?;
+    `;
+    const [productRows] = await connection.query(basketQuery, [
+        userIdFromJWT,
+        productId,
+        userIdFromJWT,
+        productId,
+    ]);
+    return productRows;
+}
+// 장바구니 상품 개수 추가 시키기
+async function updateBasket(connection, userIdFromJWT, productId, userIdFromJWT, productId) {
+    const basketQuery = `
+    update Basket
+    set detailCount = detailCount + (select detailCount from PreBasket where userId = ? and productId = ?)
+    where userId = ?
+      and productId = ?;
+    `;
+    const [productRows] = await connection.query(basketQuery, [
+        userIdFromJWT,
+        productId,
+        userIdFromJWT,
+        productId,
+    ]);
     return productRows;
 }
 module.exports = {
@@ -126,4 +193,9 @@ module.exports = {
     inputPreBasket,
     resetPreBasket,
     inputBasket,
+    checkBasket,
+    getBasketInfo,
+    checkBasketStatus,
+    changeBasket,
+    updateBasket,
 };

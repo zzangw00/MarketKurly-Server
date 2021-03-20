@@ -21,5 +21,5 @@ module.exports = function (app) {
     app.patch('/app/preBasket/:preBasketId/reset', jwtMiddleware, product.resetPreBasket);
 
     // 15. 장바구니 추가 API
-    //app.post('/app/preBasket/:preBasketId/basket', jwtMiddleware, product.inputBasket);
+    app.post('/app/product/:productId/basket', jwtMiddleware, product.inputBasket);
 };

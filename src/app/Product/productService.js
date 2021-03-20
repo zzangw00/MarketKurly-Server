@@ -42,9 +42,35 @@ exports.preBasketReset = async function (userIdFromJWT, productId) {
     return countReset;
 };
 // 장바구니 추가 시키기
-exports.inputBasket = async function (userIdFromJWT, preBasketId) {
+exports.inputBasket = async function (userIdFromJWT, productId) {
     const connection = await pool.getConnection(async (conn) => conn);
-    const inputBasket = await productDao.inputBasket(connection, userIdFromJWT, preBasketId);
+    const inputBasket = await productDao.inputBasket(connection, userIdFromJWT, productId);
     connection.release();
     return inputBasket;
+};
+// 장바구니 상태 변경 시키기
+exports.changeBasket = async function (userIdFromJWT, productId, userIdFromJWT, productId) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const changeBasket = await productDao.changeBasket(
+        connection,
+        userIdFromJWT,
+        productId,
+        userIdFromJWT,
+        productId,
+    );
+    connection.release();
+    return changeBasket;
+};
+// 장바구니 상품 개수 추가 시키기
+exports.updateBasket = async function (userIdFromJWT, productId, userIdFromJWT, productId) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const updateBasket = await productDao.updateBasket(
+        connection,
+        userIdFromJWT,
+        productId,
+        userIdFromJWT,
+        productId,
+    );
+    connection.release();
+    return updateBasket;
 };
