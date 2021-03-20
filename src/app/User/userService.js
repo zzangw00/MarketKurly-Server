@@ -157,3 +157,10 @@ exports.basketDelete = async function (userIdFromJWT, basketId) {
     connection.release();
     return basketDelete;
 };
+// 장바구니 상품 선택 삭제 하기
+exports.checkBasketDelete = async function (userIdFromJWT) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const checkBasketDelete = await userDao.checkBasketDelete(connection, userIdFromJWT);
+    connection.release();
+    return checkBasketDelete;
+};

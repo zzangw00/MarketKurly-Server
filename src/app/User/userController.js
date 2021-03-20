@@ -226,3 +226,14 @@ exports.check = async function (req, res) {
 
     return res.send(response(baseResponse.SUCCESS, '상품을 삭제 하였습니다.'));
 };
+
+/**
+ * API No. 17
+ * API Name : 장바구니 상품 선택 삭제 API
+ * [PATCH] /app/users/basket/:basketId/delete-check
+ */ exports.deleteCheckBasket = async function (req, res) {
+    const userIdFromJWT = req.verifiedToken.userId;
+    const checkBasketDeleteResult = await userService.checkBasketDelete(userIdFromJWT);
+
+    return res.send(response(baseResponse.SUCCESS, '선택한 상품을 삭제 하였습니다.'));
+};

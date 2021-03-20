@@ -239,8 +239,21 @@ async function basketDelete(connection, userIdFromJWT, basketId) {
 set status = 2, detailCount = 1
 where userId = ?
 and basketId = ?
+and status = 1
     `;
     const [productRows] = await connection.query(basketQuery, [userIdFromJWT, basketId]);
+    return productRows;
+}
+// 장바구니 상품 선택 삭제 하기
+async function checkBasketDelete(connection, userIdFromJWT) {
+    const basketQuery = `
+    update Basket
+set status = 2, detailCount = 1
+where userId = ?
+and checkStatus = 1
+and status = 1
+    `;
+    const [productRows] = await connection.query(basketQuery, userIdFromJWT);
     return productRows;
 }
 module.exports = {
@@ -262,4 +275,5 @@ module.exports = {
     basketCountDown,
     getCountResult,
     basketDelete,
+    checkBasketDelete,
 };

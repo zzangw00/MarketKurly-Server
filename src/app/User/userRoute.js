@@ -31,4 +31,7 @@ module.exports = function (app) {
 
     // 16. 장바구니 상품 삭제 API
     app.patch('/app/users/basket/:basketId/delete', jwtMiddleware, user.deleteBasket);
+
+    // 17. 장바구니 상품 선택 삭제 API
+    app.patch('/app/users/basket/delete-check', jwtMiddleware, user.deleteCheckBasket);
 };
