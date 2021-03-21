@@ -182,6 +182,31 @@ async function updateBasket(connection, userIdFromJWT, productId, userIdFromJWT,
     ]);
     return productRows;
 }
+// 상품설명
+async function getProductInfo(connection, productId) {
+    const productQuery = `
+    select productId,
+       thumbnailImageUrl,
+       productName,
+       productNote,
+       format(price, 0) as price,
+       discountRate,
+       format(price * (1 - (discountRate / 100)), 0) as salePrice,
+       format(price * (1 - (discountRate / 100)) * 0.05, 0) as savingPrice,
+       unitOfSale,
+       weight,
+       deliveryClass,
+       packageType,
+       allergy,
+       expirationDate,
+       notice,
+       status
+from Product
+where productId = ?;
+    `;
+    const [productRows] = await connection.query(productQuery, productId);
+    return productRows;
+}
 module.exports = {
     getRawPriceProduct,
     getHighPriceProduct,
@@ -198,4 +223,5 @@ module.exports = {
     checkBasketStatus,
     changeBasket,
     updateBasket,
+    getProductInfo,
 };

@@ -75,3 +75,10 @@ exports.inputBasketResult = async function (userIdFromJWT, productId) {
 
     return getBasketInfoResult;
 };
+// 상품설명
+exports.getProductInfo = async function (productId) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const getProductInfo = await productDao.getProductInfo(connection, productId);
+    connection.release();
+    return getProductInfo;
+};

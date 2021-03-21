@@ -142,3 +142,13 @@ exports.getPreBasket = async function (req, res) {
         }
     }
 };
+/**
+ * API No. 21
+ * API Name : 상품설명 API
+ * [GET] /app/product/:productId/info
+ */ exports.getProductInfo = async function (req, res) {
+    const productId = req.params.productId;
+    const getProductInfoResult = await productProvider.getProductInfo(productId);
+
+    return res.send(response(baseResponse.SUCCESS, getProductInfoResult));
+};

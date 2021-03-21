@@ -22,4 +22,10 @@ module.exports = function (app) {
 
     // 15. 장바구니 추가 API
     app.post('/app/product/:productId/basket', jwtMiddleware, product.inputBasket);
+
+    // 21. 상품설명 API
+    app.get('/app/product/:productId/info', product.getProductInfo);
+
+    // 22. 상품이미지 API
+    app.get('/app/product/:productId/image', product.getProductImage);
 };
