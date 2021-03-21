@@ -28,4 +28,7 @@ module.exports = function (app) {
 
     // 22. 상품이미지 API
     app.get('/app/product/:productId/image', product.getProductImage);
+
+    // 23. 상품 상세정보 API
+    app.get('/app/product/:productId/detail', product.getProductDetail);
 };

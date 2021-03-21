@@ -153,7 +153,7 @@ exports.getPreBasket = async function (req, res) {
     return res.send(response(baseResponse.SUCCESS, getProductInfoResult));
 };
 /**
- * API No. 21
+ * API No. 22
  * API Name : 상품이미지 API
  * [GET] /app/product/:productId/image
  */ exports.getProductImage = async function (req, res) {
@@ -161,4 +161,14 @@ exports.getPreBasket = async function (req, res) {
     const getProductImageResult = await productProvider.getProductImage(productId);
 
     return res.send(response(baseResponse.SUCCESS, getProductImageResult));
+};
+/**
+ * API No. 23
+ * API Name : 상품 상세설명 API
+ * [GET] /app/product/:productId/detail
+ */ exports.getProductDetail = async function (req, res) {
+    const productId = req.params.productId;
+    const getProductDetailResult = await productProvider.getProductDetail(productId);
+
+    return res.send(response(baseResponse.SUCCESS, getProductDetailResult));
 };

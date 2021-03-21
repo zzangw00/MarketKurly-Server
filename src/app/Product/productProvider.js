@@ -89,3 +89,10 @@ exports.getProductImage = async function (productId) {
     connection.release();
     return getProductImage;
 };
+// 상품 상세설명
+exports.getProductDetail = async function (productId) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const getProductDetail = await productDao.getProductDetail(connection, productId);
+    connection.release();
+    return getProductDetail;
+};
