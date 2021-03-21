@@ -207,6 +207,17 @@ where productId = ?;
     const [productRows] = await connection.query(productQuery, productId);
     return productRows;
 }
+// 상품설명
+async function getProductImage(connection, productId) {
+    const productQuery = `
+    select productId, content
+from ProductImage
+where productId = ?
+and status = 1;
+    `;
+    const [productRows] = await connection.query(productQuery, productId);
+    return productRows;
+}
 module.exports = {
     getRawPriceProduct,
     getHighPriceProduct,
@@ -224,4 +235,5 @@ module.exports = {
     changeBasket,
     updateBasket,
     getProductInfo,
+    getProductImage,
 };

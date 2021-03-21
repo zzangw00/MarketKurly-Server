@@ -152,3 +152,13 @@ exports.getPreBasket = async function (req, res) {
 
     return res.send(response(baseResponse.SUCCESS, getProductInfoResult));
 };
+/**
+ * API No. 21
+ * API Name : 상품이미지 API
+ * [GET] /app/product/:productId/image
+ */ exports.getProductImage = async function (req, res) {
+    const productId = req.params.productId;
+    const getProductImageResult = await productProvider.getProductImage(productId);
+
+    return res.send(response(baseResponse.SUCCESS, getProductImageResult));
+};
