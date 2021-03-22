@@ -229,6 +229,20 @@ and status = 1;
     const [productRows] = await connection.query(productQuery, productId);
     return productRows;
 }
+// 후기 전반적인 화면
+async function getProductReview(connection, productId) {
+    const productQuery = `
+    select pr.userId, name, grade, title, date_format(pr.createdAt, '%Y.%m.%d') as createdAt
+from ProductReviews pr
+         join User u on pr.userId = u.userId
+where productId = ?
+  and pr.status = 1
+order by pr.createdAt desc
+limit 5;
+    `;
+    const [productRows] = await connection.query(productQuery, productId);
+    return productRows;
+}
 module.exports = {
     getRawPriceProduct,
     getHighPriceProduct,
@@ -248,4 +262,5 @@ module.exports = {
     getProductInfo,
     getProductImage,
     getProductDetail,
+    getProductReview,
 };

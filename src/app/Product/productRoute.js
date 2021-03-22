@@ -31,4 +31,7 @@ module.exports = function (app) {
 
     // 23. 상품 상세정보 API
     app.get('/app/product/:productId/detail', product.getProductDetail);
+
+    // 24. 후기 전반적인 화면 API
+    app.get('/app/product/:productId/review', product.getProductReview);
 };
