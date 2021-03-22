@@ -158,3 +158,10 @@ exports.postProductInquireInfo = async function (productId) {
     connection.release();
     return postProductInquireInfo;
 };
+// 상위 카테고리 조회
+exports.getProductCategory = async function () {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const getProductCategory = await productDao.getProductCategory(connection);
+    connection.release();
+    return getProductCategory;
+};

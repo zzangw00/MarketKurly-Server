@@ -65,4 +65,7 @@ module.exports = function (app) {
         jwtMiddleware,
         product.postProductInquireInfo,
     );
+
+    // 33. 상위 카테고리 조회 API
+    app.get('/app/product/productCategory', product.getProductCategory);
 };

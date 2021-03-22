@@ -381,6 +381,16 @@ where productId = ?;
     const [productRows] = await connection.query(productQuery, productId);
     return productRows;
 }
+// 상위 카테고리 조회
+async function getProductCategory(connection) {
+    const productQuery = `
+    select productCategoryId, categoryName
+from ProductCategory
+where status = 1
+    `;
+    const [productRows] = await connection.query(productQuery);
+    return productRows;
+}
 module.exports = {
     getRawPriceProduct,
     getHighPriceProduct,
@@ -409,4 +419,5 @@ module.exports = {
     getProductInquireDetail,
     postProductInquire,
     postProductInquireInfo,
+    getProductCategory,
 };

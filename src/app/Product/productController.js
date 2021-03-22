@@ -280,3 +280,12 @@ exports.getPreBasket = async function (req, res) {
     const postProductInquireInfoResult = await productProvider.postProductInquireInfo(productId);
     return res.send(response(baseResponse.SUCCESS, postProductInquireInfoResult[0]));
 };
+/**
+ * API No. 33
+ * API Name : 상위 카테고리 조회 API
+ * [GET] /app/product/productCategory
+ */ exports.getProductCategory = async function (req, res) {
+    const productCategoryResult = await productProvider.getProductCategory();
+    return res.send(response(baseResponse.SUCCESS, productCategoryResult));
+};
+//[GET] /app/productCategory/:productCategory/product
