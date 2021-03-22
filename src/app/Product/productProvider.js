@@ -127,3 +127,10 @@ exports.getProductReviewDetail = async function (productReviewId) {
     connection.release();
     return getProductReviewDetail;
 };
+// 상품 문의 전반적인 화면
+exports.getProductInquire = async function (productId) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const getProductInquire = await productDao.getProductInquire(connection, productId);
+    connection.release();
+    return getProductInquire;
+};

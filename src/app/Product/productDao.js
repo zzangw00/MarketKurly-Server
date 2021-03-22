@@ -289,6 +289,27 @@ where productReviewId = ?
     const [productRows] = await connection.query(productQuery, productReviewId);
     return productRows;
 }
+// 후기 전체보기
+async function getProductInquire(connection, productId) {
+    const productQuery = `
+    select productId,
+       productInquireId,
+       title,
+       pi.userId,
+       name,
+       answerStatus,
+       secretStatus,
+       date_format(pi.createdAt, '%Y.%m.%d') as createdAt
+from ProductInquire pi
+         join User u on pi.userId = u.userId
+where productId = ?
+  and pi.status = 1
+order by pi.createdAt desc
+limit 5;
+    `;
+    const [productRows] = await connection.query(productQuery, productId);
+    return productRows;
+}
 module.exports = {
     getRawPriceProduct,
     getHighPriceProduct,
@@ -312,4 +333,5 @@ module.exports = {
     getProductReviewCount,
     getProductReviewAll,
     getProductReviewDetail,
+    getProductInquire,
 };
