@@ -224,3 +224,13 @@ exports.getPreBasket = async function (req, res) {
 
     return res.send(response(baseResponse.SUCCESS, getProductInquireResult));
 };
+/**
+ * API No. 29
+ * API Name : 문의 전체보기 API
+ * [GET] /app/product/:productId/inquire-all
+ */ exports.getProductInquireAll = async function (req, res) {
+    const productId = req.params.productId;
+    const getProductInquireAllResult = await productProvider.getProductInquireAll(productId);
+
+    return res.send(response(baseResponse.SUCCESS, getProductInquireAllResult));
+};
