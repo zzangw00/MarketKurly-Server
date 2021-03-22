@@ -18,23 +18,12 @@ exports.createUser = async function (Id, password, name, email, phoneNumber, loc
         // 비밀번호 암호화
         const hashedPassword = await crypto.createHash('sha512').update(password).digest('hex');
 
-        const insertUserInfoParams = [
-            Id,
-            hashedPassword,
-            name,
-            email,
-            phoneNumber,
-            location,
-            birth,
-            sex,
-        ];
-
+        const insertUserInfoParams = [Id, hashedPassword, name, email, phoneNumber, birth, sex];
         const connection = await pool.getConnection(async (conn) => conn);
         try {
             connection.beginTransaction(); // 트랜잭션 적용 시작
             const num = 1;
             const a = await userDao.insertUserInfo(connection, insertUserInfoParams);
-            console.log(a[0].insertId);
             const b = await userDao.insertDeliveryLocation(
                 connection,
                 a[0].insertId,

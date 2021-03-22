@@ -6,10 +6,9 @@ async function insertUserInfo(connection, insertUserInfoParams) {
         name,
         email,
         phoneNumber,
-        location,
         birth,
         sex)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+      VALUES (?, ?, ?, ?, ?, ?, ?);
   `;
     const insertUserInfoRow = await connection.query(insertUserInfoQuery, insertUserInfoParams);
     return insertUserInfoRow;

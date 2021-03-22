@@ -20,7 +20,6 @@ exports.postUsers = async function (req, res) {
     var num = password.search(/[0-9]/g);
     var eng = password.search(/[a-z]/gi);
     var spe = password.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
-
     // 형식 체크 (by 정규표현식)
     if (!IdRegExp.test(Id)) return res.send(response(baseResponse.SIGNUP_ID_ERROR_TYPE));
     if (password.length < 10) {
