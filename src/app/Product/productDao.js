@@ -243,6 +243,21 @@ limit 5;
     const [productRows] = await connection.query(productQuery, productId);
     return productRows;
 }
+// 후기 개수
+async function getProductReviewCount(connection, productId) {
+    const productQuery = `
+    select z.productId, ifnull(z.reviewCount, 0) as reviewCount
+from (select productReviewId, count(productReviewId) as reviewCount, productId
+      from ProductReviews
+      where productId = ?
+        and status = 1
+      group by productId) as z
+where z.productId = ?;
+    `;
+    params = [productId, productId];
+    const [productRows] = await connection.query(productQuery, params);
+    return productRows;
+}
 module.exports = {
     getRawPriceProduct,
     getHighPriceProduct,
@@ -263,4 +278,5 @@ module.exports = {
     getProductImage,
     getProductDetail,
     getProductReview,
+    getProductReviewCount,
 };

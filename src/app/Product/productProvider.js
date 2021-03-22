@@ -103,3 +103,10 @@ exports.getProductReview = async function (productId) {
     connection.release();
     return getProductReview;
 };
+// 후기 개수
+exports.getProductReviewCount = async function (productId) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const getProductReviewCount = await productDao.getProductReviewCount(connection, productId);
+    connection.release();
+    return getProductReviewCount;
+};

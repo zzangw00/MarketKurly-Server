@@ -182,3 +182,13 @@ exports.getPreBasket = async function (req, res) {
 
     return res.send(response(baseResponse.SUCCESS, getProductReviewResult));
 };
+/**
+ * API No. 25
+ * API Name : 후기 개수 API
+ * [GET] /app/product/:productId/review-count
+ */ exports.getProductReviewCount = async function (req, res) {
+    const productId = req.params.productId;
+    const getProductReviewCountResult = await productProvider.getProductReviewCount(productId);
+
+    return res.send(response(baseResponse.SUCCESS, getProductReviewCountResult));
+};
