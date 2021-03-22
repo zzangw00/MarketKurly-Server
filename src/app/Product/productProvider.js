@@ -151,3 +151,10 @@ exports.getProductInquireDetail = async function (productInquireId) {
     connection.release();
     return getProductInquireDetail;
 };
+// 상품 문의하기 화면
+exports.postProductInquireInfo = async function (productId) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const postProductInquireInfo = await productDao.postProductInquireInfo(connection, productId);
+    connection.release();
+    return postProductInquireInfo;
+};

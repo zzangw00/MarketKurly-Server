@@ -58,4 +58,11 @@ module.exports = function (app) {
     );
     // 31. 상품 문의하기 API
     app.post('/app/users/product/:productId/inquire', jwtMiddleware, product.postProductInquire);
+
+    // 32. 상품 문의하기 화면 API
+    app.get(
+        '/app/users/product/:productId/inquire-info',
+        jwtMiddleware,
+        product.postProductInquireInfo,
+    );
 };

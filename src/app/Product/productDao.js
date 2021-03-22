@@ -371,6 +371,16 @@ values (?, ?, ?, ?, ?);
     ]);
     return productRows;
 }
+// 상품 문의하기 화면
+async function postProductInquireInfo(connection, productId) {
+    const productQuery = `
+    select productName
+from Product
+where productId = ?;
+    `;
+    const [productRows] = await connection.query(productQuery, productId);
+    return productRows;
+}
 module.exports = {
     getRawPriceProduct,
     getHighPriceProduct,
@@ -398,4 +408,5 @@ module.exports = {
     getProductInquireAll,
     getProductInquireDetail,
     postProductInquire,
+    postProductInquireInfo,
 };
