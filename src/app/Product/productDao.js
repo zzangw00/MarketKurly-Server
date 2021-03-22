@@ -25,8 +25,8 @@ async function getPreBasketInfo(connection, userIdFromJWT, productId) {
     select preBasketId, productName,
     pb.productId,
     detailCount,
-    format(p.price, 0) as price,
-    format(p.price * (1 - (p.discountRate / 100)), 0) as salePrice,
+    format(p.price * detailCount, 0) as price,
+    format(p.price * (1 - (p.discountRate / 100)) * detailCount, 0) as salePrice,
     format(p.price * (1 - (p.discountRate / 100)) * detailCount * 0.05, 0) as savingPrice,
     format(p.price * (1 - (p.discountRate / 100)) * detailCount, 0) as totalPrice
 from Product p
