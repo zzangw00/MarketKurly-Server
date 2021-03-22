@@ -299,3 +299,20 @@ exports.getPreBasket = async function (req, res) {
     );
     return res.send(response(baseResponse.SUCCESS, productCategoryDetailResult));
 };
+/**
+ * API No. 34
+ * API Name : 카테고리 별 상품 조회 API
+ * [GET] /app/product/productCategoryDetail/:productCategoryDetailId/info
+ */ exports.getProductByCategoryId = async function (req, res) {
+    const productCategoryDetailId = req.params.productCategoryDetailId;
+    const getCategory = await productProvider.getCategory(productCategoryDetailId);
+    const getProductByCategoryIdResult = await productProvider.getProductByCategoryId(
+        productCategoryDetailId,
+    );
+
+    const result = {
+        category: getCategory,
+        productInfo: getProductByCategoryIdResult,
+    };
+    return res.send(response(baseResponse.SUCCESS, result));
+};

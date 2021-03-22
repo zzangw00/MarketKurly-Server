@@ -175,3 +175,20 @@ exports.getProductCategoryDetail = async function (productCategoryId) {
     connection.release();
     return getProductCategoryDetail;
 };
+// 카테고리 조회
+exports.getCategory = async function (productCategoryDetailId) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const getCategory = await productDao.getCategory(connection, productCategoryDetailId);
+    connection.release();
+    return getCategory;
+};
+// 카테고리 별 상품 조회
+exports.getProductByCategoryId = async function (productCategoryDetailId) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const getProductByCategoryId = await productDao.getProductByCategoryId(
+        connection,
+        productCategoryDetailId,
+    );
+    connection.release();
+    return getProductByCategoryId;
+};

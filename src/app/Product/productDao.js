@@ -402,6 +402,31 @@ and productCategoryId = ?
     const [productRows] = await connection.query(productQuery, productCategoryId);
     return productRows;
 }
+// 카테고리 조회
+async function getCategory(connection, productCategoryDetailId) {
+    const productQuery = `
+    select p.productCategoryId, categoryName, p.detailCategoryId, detailCategoryName
+from Product p
+left join ProductCategory pc on p.productCategoryId = pc.productCategoryId
+left join DetailCategory dc on p.detailCategoryId = dc.detailCategoryId
+where p.detailCategoryId = ?
+and p.status = 1
+group by p.productCategoryId;
+    `;
+    const [productRows] = await connection.query(productQuery, productCategoryDetailId);
+    return productRows;
+}
+// 카테고리 별 상품 조회
+async function getProductByCategoryId(connection, productCategoryDetailId) {
+    const productQuery = `
+    select productId, productName, thumbnailImageUrl, price, discountRate, price * (1 - (discountRate / 100)) as salePrice, tag
+from Product p
+where p.detailCategoryId = ?
+and p.status = 1;
+    `;
+    const [productRows] = await connection.query(productQuery, productCategoryDetailId);
+    return productRows;
+}
 module.exports = {
     getRawPriceProduct,
     getHighPriceProduct,
@@ -432,4 +457,6 @@ module.exports = {
     postProductInquireInfo,
     getProductCategory,
     getProductCategoryDetail,
+    getCategory,
+    getProductByCategoryId,
 };
