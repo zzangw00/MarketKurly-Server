@@ -419,7 +419,7 @@ group by p.productCategoryId;
 // 카테고리 별 상품 조회
 async function getProductByDetailCategoryId(connection, detailCategoryId) {
     const productQuery = `
-    select productId, productName, thumbnailImageUrl, price, discountRate, price * (1 - (discountRate / 100)) as salePrice, tag
+    select productId, productName, thumbnailImageUrl, format(p.price, 0) as price, discountRate, format(price * (1 - (discountRate / 100)), 0) as salePrice, tag
 from Product p
 where p.detailCategoryId = ?
 and p.status = 1;
@@ -443,7 +443,7 @@ group by p.productCategoryId;
 // 카테고리 별 상품 전체 조회
 async function getProductByCategoryId(connection, productCategoryId) {
     const productQuery = `
-    select productId, productName, thumbnailImageUrl, price, discountRate, price * (1 - (discountRate / 100)) as salePrice, tag
+    select productId, productName, thumbnailImageUrl, format(p.price, 0), discountRate, format(price * (1 - (discountRate / 100)), 0) as salePrice, tag
 from Product p
 where p.productCategoryId = ?
 and p.status = 1;

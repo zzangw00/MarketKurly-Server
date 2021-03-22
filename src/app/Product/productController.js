@@ -311,7 +311,7 @@ exports.getPreBasket = async function (req, res) {
     );
 
     const result = {
-        category: getCategory,
+        category: getCategory[0],
         productInfo: getProductByByDetailCategoryIdResult,
     };
     return res.send(response(baseResponse.SUCCESS, result));
@@ -328,7 +328,7 @@ exports.getPreBasket = async function (req, res) {
     );
 
     const result = {
-        category: getCategory,
+        category: getCategory[0],
         productInfo: getProductByCategoryIdResult,
     };
     return res.send(response(baseResponse.SUCCESS, result));
