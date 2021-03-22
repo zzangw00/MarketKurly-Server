@@ -68,4 +68,10 @@ module.exports = function (app) {
 
     // 33. 상위 카테고리 조회 API
     app.get('/app/product/productCategory', product.getProductCategory);
+
+    // 34. 하위 카테고리 조회 API
+    app.get(
+        '/app/product/productCategory/:productCategoryId/detail',
+        product.getProductCategoryDetail,
+    );
 };

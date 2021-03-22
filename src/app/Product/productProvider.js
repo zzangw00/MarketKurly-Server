@@ -165,3 +165,13 @@ exports.getProductCategory = async function () {
     connection.release();
     return getProductCategory;
 };
+// 하위 카테고리 조회
+exports.getProductCategoryDetail = async function (productCategoryId) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const getProductCategoryDetail = await productDao.getProductCategoryDetail(
+        connection,
+        productCategoryId,
+    );
+    connection.release();
+    return getProductCategoryDetail;
+};

@@ -391,6 +391,17 @@ where status = 1
     const [productRows] = await connection.query(productQuery);
     return productRows;
 }
+// 하위 카테고리 조회
+async function getProductCategoryDetail(connection, productCategoryId) {
+    const productQuery = `
+    select detailCategoryId, detailCategoryName
+from DetailCategory
+where status = 1
+and productCategoryId = ?
+    `;
+    const [productRows] = await connection.query(productQuery, productCategoryId);
+    return productRows;
+}
 module.exports = {
     getRawPriceProduct,
     getHighPriceProduct,
@@ -420,4 +431,5 @@ module.exports = {
     postProductInquire,
     postProductInquireInfo,
     getProductCategory,
+    getProductCategoryDetail,
 };
