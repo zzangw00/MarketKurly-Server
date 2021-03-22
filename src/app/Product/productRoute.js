@@ -49,4 +49,11 @@ module.exports = function (app) {
 
     // 29. 상품 문의 전체 조회 API
     app.get('/app/product/:productId/inquire-all', product.getProductInquireAll);
+
+    // 30. 상품 문의 상세 조회 API
+    app.get(
+        '/app/productInquire/:productInquireId/inquire-detail',
+        jwtMiddleware,
+        product.getProductInquireDetail,
+    );
 };

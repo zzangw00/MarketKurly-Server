@@ -234,3 +234,19 @@ exports.getPreBasket = async function (req, res) {
 
     return res.send(response(baseResponse.SUCCESS, getProductInquireAllResult));
 };
+/**
+ * API No. 30
+ * API Name : 문의 상세보기 API
+ * [GET] /app/productInquire/:productInquireId/inquire-detail
+ */ exports.getProductInquireDetail = async function (req, res) {
+    const userIdFromJWT = req.verifiedToken.userId;
+    const productInquireId = req.params.productInquireId;
+    const getProductInquireDetailCheck = await productProvider.getProductInquireDetail(
+        productInquireId,
+    );
+    if (getProductInquireDetailCheck[0].userId == userIdFromJWT) {
+        return res.send(response(baseResponse.SUCCESS, getProductInquireDetailCheck));
+    } else {
+        return res.send(response(baseResponse.USER_ID_NOT_MATCHED));
+    }
+};

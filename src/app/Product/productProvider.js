@@ -141,3 +141,13 @@ exports.getProductInquireAll = async function (productId) {
     connection.release();
     return getProductInquireAll;
 };
+// 문의 상세보기 화면
+exports.getProductInquireDetail = async function (productInquireId) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const getProductInquireDetail = await productDao.getProductInquireDetail(
+        connection,
+        productInquireId,
+    );
+    connection.release();
+    return getProductInquireDetail;
+};

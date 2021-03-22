@@ -330,6 +330,25 @@ order by pi.createdAt desc;
     const [productRows] = await connection.query(productQuery, productId);
     return productRows;
 }
+// 문의 상세 보기
+async function getProductInquireDetail(connection, productInquireId) {
+    const productQuery = `
+    select pi.productInquireId,
+       title,
+       pi.content,
+       pi.userId,
+       name,
+       date_format(pi.createdAt, '%Y.%m.%d') as createdAt,
+       inquireAnswerId,
+       ia.content as answerContent
+from ProductInquire pi
+         join User u on pi.userId = u.userId
+         left join InquireAnswer ia on pi.productInquireId = ia.productInquireId
+where pi.productInquireId = ?
+    `;
+    const [productRows] = await connection.query(productQuery, productInquireId);
+    return productRows;
+}
 module.exports = {
     getRawPriceProduct,
     getHighPriceProduct,
@@ -355,4 +374,5 @@ module.exports = {
     getProductReviewDetail,
     getProductInquire,
     getProductInquireAll,
+    getProductInquireDetail,
 };
