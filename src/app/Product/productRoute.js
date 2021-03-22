@@ -40,4 +40,7 @@ module.exports = function (app) {
 
     // 26. 후기 전체보기 API
     app.get('/app/product/:productId/review-all', product.getProductReviewAll);
+
+    // 27. 상품 후기 상세 API
+    app.get('/app/productReview/:productReviewId/review-detail', product.getProductReviewDetail);
 };

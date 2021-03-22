@@ -99,3 +99,10 @@ exports.getCheckLocation = async function (userIdFromJWT, locationId) {
     connection.release();
     return locationResult;
 };
+// 배송지 체크 조회
+exports.getCheckLocation = async function (userIdFromJWT, locationId) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const locationResult = await userDao.getCheckLocation(connection, userIdFromJWT, locationId);
+    connection.release();
+    return locationResult;
+};

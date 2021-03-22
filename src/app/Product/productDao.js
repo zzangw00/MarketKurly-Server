@@ -271,6 +271,24 @@ order by pr.createdAt desc;
     const [productRows] = await connection.query(productQuery, productId);
     return productRows;
 }
+// 후기 상세 보기
+async function getProductReviewDetail(connection, productReviewId) {
+    const productQuery = `
+    select productReviewId,
+       pr.productId,
+       productName,
+       imageUrl,
+       title,
+       pr.content,
+       date_format(pr.createdAt, '%Y.%m.%d') as createdAt
+from ProductReviews pr
+         join Product p on pr.productId = p.productId
+where productReviewId = ?
+  and pr.status = 1;
+    `;
+    const [productRows] = await connection.query(productQuery, productReviewId);
+    return productRows;
+}
 module.exports = {
     getRawPriceProduct,
     getHighPriceProduct,
@@ -293,4 +311,5 @@ module.exports = {
     getProductReview,
     getProductReviewCount,
     getProductReviewAll,
+    getProductReviewDetail,
 };

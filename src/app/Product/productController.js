@@ -202,3 +202,15 @@ exports.getPreBasket = async function (req, res) {
 
     return res.send(response(baseResponse.SUCCESS, getProductReviewAllResult));
 };
+/**
+ * API No. 27
+ * API Name : 상품 후기 상세 API
+ * [GET] /app/productReview/:productReviewId/review-detail
+ */ exports.getProductReviewDetail = async function (req, res) {
+    const productReviewId = req.params.productReviewId;
+    const getProductReviewDetailResult = await productProvider.getProductReviewDetail(
+        productReviewId,
+    );
+
+    return res.send(response(baseResponse.SUCCESS, getProductReviewDetailResult));
+};

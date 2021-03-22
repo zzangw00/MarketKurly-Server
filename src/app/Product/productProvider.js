@@ -117,3 +117,13 @@ exports.getProductReviewAll = async function (productId) {
     connection.release();
     return getProductReviewAll;
 };
+// 상품 후기 상세
+exports.getProductReviewDetail = async function (productReviewId) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const getProductReviewDetail = await productDao.getProductReviewDetail(
+        connection,
+        productReviewId,
+    );
+    connection.release();
+    return getProductReviewDetail;
+};
