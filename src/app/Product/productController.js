@@ -289,7 +289,7 @@ exports.getPreBasket = async function (req, res) {
     return res.send(response(baseResponse.SUCCESS, productCategoryResult));
 };
 /**
- * API No. 33
+ * API No. 34
  * API Name : 하위 카테고리 조회 API
  * [GET] /app/product/productCategory/:productCategoryId/detail
  */ exports.getProductCategoryDetail = async function (req, res) {
@@ -300,14 +300,31 @@ exports.getPreBasket = async function (req, res) {
     return res.send(response(baseResponse.SUCCESS, productCategoryDetailResult));
 };
 /**
- * API No. 34
+ * API No. 35
  * API Name : 카테고리 별 상품 조회 API
- * [GET] /app/product/productCategoryDetail/:productCategoryDetailId/info
+ * [GET] /app/product/DetailCategory/:detailCategoryId/info
+ */ exports.getProductByDetailCategoryId = async function (req, res) {
+    const detailCategoryId = req.params.detailCategoryId;
+    const getCategory = await productProvider.getDetailCategory(detailCategoryId);
+    const getProductByByDetailCategoryIdResult = await productProvider.getProductByDetailCategoryId(
+        detailCategoryId,
+    );
+
+    const result = {
+        category: getCategory,
+        productInfo: getProductByByDetailCategoryIdResult,
+    };
+    return res.send(response(baseResponse.SUCCESS, result));
+};
+/**
+ * API No. 36
+ * API Name : 상위 카테고리 전체 상품 조회 API
+ * [GET] /app/product/productCategory/:productCategoryId/info
  */ exports.getProductByCategoryId = async function (req, res) {
-    const productCategoryDetailId = req.params.productCategoryDetailId;
-    const getCategory = await productProvider.getCategory(productCategoryDetailId);
+    const productCategoryId = req.params.productCategoryId;
+    const getCategory = await productProvider.getCategory(productCategoryId);
     const getProductByCategoryIdResult = await productProvider.getProductByCategoryId(
-        productCategoryDetailId,
+        productCategoryId,
     );
 
     const result = {

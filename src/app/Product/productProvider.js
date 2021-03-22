@@ -175,19 +175,36 @@ exports.getProductCategoryDetail = async function (productCategoryId) {
     connection.release();
     return getProductCategoryDetail;
 };
-// 카테고리 조회
-exports.getCategory = async function (productCategoryDetailId) {
+// 상세 카테고리 조회
+exports.getDetailCategory = async function (detailCategoryId) {
     const connection = await pool.getConnection(async (conn) => conn);
-    const getCategory = await productDao.getCategory(connection, productCategoryDetailId);
+    const getDetailCategory = await productDao.getDetailCategory(connection, detailCategoryId);
+    connection.release();
+    return getDetailCategory;
+};
+// 카테고리 별 상품 조회
+exports.getProductByDetailCategoryId = async function (detailCategoryId) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const getProductByDetailCategoryId = await productDao.getProductByDetailCategoryId(
+        connection,
+        detailCategoryId,
+    );
+    connection.release();
+    return getProductByDetailCategoryId;
+};
+// 카테고리 조회
+exports.getCategory = async function (productCategoryId) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const getCategory = await productDao.getCategory(connection, productCategoryId);
     connection.release();
     return getCategory;
 };
 // 카테고리 별 상품 조회
-exports.getProductByCategoryId = async function (productCategoryDetailId) {
+exports.getProductByCategoryId = async function (productCategoryId) {
     const connection = await pool.getConnection(async (conn) => conn);
     const getProductByCategoryId = await productDao.getProductByCategoryId(
         connection,
-        productCategoryDetailId,
+        productCategoryId,
     );
     connection.release();
     return getProductByCategoryId;

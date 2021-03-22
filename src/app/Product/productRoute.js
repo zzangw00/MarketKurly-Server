@@ -74,9 +74,13 @@ module.exports = function (app) {
         '/app/product/productCategory/:productCategoryId/detail',
         product.getProductCategoryDetail,
     );
+
     // 35. 카테고리 별 상품 조회 API
     app.get(
-        '/app/product/productCategoryDetail/:productCategoryDetailId/info',
-        product.getProductByCategoryId,
+        '/app/product/DetailCategory/:detailCategoryId/info',
+        product.getProductByDetailCategoryId,
     );
+
+    // 36. 상위 카테고리 전체 상품 조회 API
+    app.get('/app/product/productCategory/:productCategoryId/info', product.getProductByCategoryId);
 };

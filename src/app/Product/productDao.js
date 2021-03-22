@@ -402,8 +402,8 @@ and productCategoryId = ?
     const [productRows] = await connection.query(productQuery, productCategoryId);
     return productRows;
 }
-// 카테고리 조회
-async function getCategory(connection, productCategoryDetailId) {
+// 상세 카테고리 조회
+async function getDetailCategory(connection, detailCategoryId) {
     const productQuery = `
     select p.productCategoryId, categoryName, p.detailCategoryId, detailCategoryName
 from Product p
@@ -413,18 +413,42 @@ where p.detailCategoryId = ?
 and p.status = 1
 group by p.productCategoryId;
     `;
-    const [productRows] = await connection.query(productQuery, productCategoryDetailId);
+    const [productRows] = await connection.query(productQuery, detailCategoryId);
     return productRows;
 }
 // 카테고리 별 상품 조회
-async function getProductByCategoryId(connection, productCategoryDetailId) {
+async function getProductByDetailCategoryId(connection, detailCategoryId) {
     const productQuery = `
     select productId, productName, thumbnailImageUrl, price, discountRate, price * (1 - (discountRate / 100)) as salePrice, tag
 from Product p
 where p.detailCategoryId = ?
 and p.status = 1;
     `;
-    const [productRows] = await connection.query(productQuery, productCategoryDetailId);
+    const [productRows] = await connection.query(productQuery, detailCategoryId);
+    return productRows;
+}
+// 카테고리 조회
+async function getCategory(connection, productCategoryId) {
+    const productQuery = `
+    select p.productCategoryId, categoryName
+from Product p
+left join ProductCategory pc on p.productCategoryId = pc.productCategoryId
+where p.productCategoryId = ?
+and p.status = 1
+group by p.productCategoryId;
+    `;
+    const [productRows] = await connection.query(productQuery, productCategoryId);
+    return productRows;
+}
+// 카테고리 별 상품 전체 조회
+async function getProductByCategoryId(connection, productCategoryId) {
+    const productQuery = `
+    select productId, productName, thumbnailImageUrl, price, discountRate, price * (1 - (discountRate / 100)) as salePrice, tag
+from Product p
+where p.productCategoryId = ?
+and p.status = 1;
+    `;
+    const [productRows] = await connection.query(productQuery, productCategoryId);
     return productRows;
 }
 module.exports = {
@@ -457,6 +481,8 @@ module.exports = {
     postProductInquireInfo,
     getProductCategory,
     getProductCategoryDetail,
+    getDetailCategory,
+    getProductByDetailCategoryId,
     getCategory,
     getProductByCategoryId,
 };
