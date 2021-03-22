@@ -250,3 +250,23 @@ exports.getPreBasket = async function (req, res) {
         return res.send(response(baseResponse.USER_ID_NOT_MATCHED));
     }
 };
+/**
+ * API No. 31
+ * API Name : 상품 문의하기 API
+ * [POST] /app/users/product/:productId/inquire
+ */ exports.postProductInquire = async function (req, res) {
+    const userIdFromJWT = req.verifiedToken.userId;
+    const productId = req.params.productId;
+    const { title, content, secretStatus } = req.body;
+    const postProductInquireResult = await productService.postProductInquire(
+        userIdFromJWT,
+        productId,
+        title,
+        content,
+        secretStatus,
+    );
+    result = {
+        comment: '문의가 완료되었습니다.',
+    };
+    return res.send(response(baseResponse.SUCCESS, result));
+};

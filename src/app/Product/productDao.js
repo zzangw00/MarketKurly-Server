@@ -349,6 +349,28 @@ where pi.productInquireId = ?
     const [productRows] = await connection.query(productQuery, productInquireId);
     return productRows;
 }
+// 상품 문의 하기
+async function postProductInquire(
+    connection,
+    userIdFromJWT,
+    productId,
+    title,
+    content,
+    secretStatus,
+) {
+    const productQuery = `
+    insert into ProductInquire (userId, productId, title, content, secretStatus)
+values (?, ?, ?, ?, ?);
+    `;
+    const [productRows] = await connection.query(productQuery, [
+        userIdFromJWT,
+        productId,
+        title,
+        content,
+        secretStatus,
+    ]);
+    return productRows;
+}
 module.exports = {
     getRawPriceProduct,
     getHighPriceProduct,
@@ -375,4 +397,5 @@ module.exports = {
     getProductInquire,
     getProductInquireAll,
     getProductInquireDetail,
+    postProductInquire,
 };

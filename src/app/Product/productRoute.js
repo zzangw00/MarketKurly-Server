@@ -56,4 +56,6 @@ module.exports = function (app) {
         jwtMiddleware,
         product.getProductInquireDetail,
     );
+    // 31. 상품 문의하기 API
+    app.post('/app/users/product/:productId/inquire', jwtMiddleware, product.postProductInquire);
 };

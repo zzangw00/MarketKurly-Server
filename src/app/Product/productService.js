@@ -74,3 +74,23 @@ exports.updateBasket = async function (userIdFromJWT, productId, userIdFromJWT, 
     connection.release();
     return updateBasket;
 };
+// 장바구니 상품 개수 추가 시키기
+exports.postProductInquire = async function (
+    userIdFromJWT,
+    productId,
+    title,
+    content,
+    secretStatus,
+) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const postProductInquire = await productDao.postProductInquire(
+        connection,
+        userIdFromJWT,
+        productId,
+        title,
+        content,
+        secretStatus,
+    );
+    connection.release();
+    return postProductInquire;
+};
