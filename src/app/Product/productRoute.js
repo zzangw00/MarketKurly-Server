@@ -37,4 +37,7 @@ module.exports = function (app) {
 
     // 25. 후기 개수 API
     app.get('/app/product/:productId/review-count', product.getProductReviewCount);
+
+    // 26. 후기 전체보기 API
+    app.get('/app/product/:productId/review-all', product.getProductReviewAll);
 };

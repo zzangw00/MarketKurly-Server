@@ -110,3 +110,10 @@ exports.getProductReviewCount = async function (productId) {
     connection.release();
     return getProductReviewCount;
 };
+// 후기 전체보기 화면
+exports.getProductReviewAll = async function (productId) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const getProductReviewAll = await productDao.getProductReviewAll(connection, productId);
+    connection.release();
+    return getProductReviewAll;
+};

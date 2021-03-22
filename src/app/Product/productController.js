@@ -192,3 +192,13 @@ exports.getPreBasket = async function (req, res) {
 
     return res.send(response(baseResponse.SUCCESS, getProductReviewCountResult));
 };
+/**
+ * API No. 26
+ * API Name : 후기 전체보기 API
+ * [GET] /app/product/:productId/review-all
+ */ exports.getProductReviewAll = async function (req, res) {
+    const productId = req.params.productId;
+    const getProductReviewAllResult = await productProvider.getProductReviewAll(productId);
+
+    return res.send(response(baseResponse.SUCCESS, getProductReviewAllResult));
+};
