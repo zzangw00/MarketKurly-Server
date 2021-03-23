@@ -72,7 +72,6 @@ exports.postSignIn = async function (Id, password) {
             return errResponse(baseResponse.SIGNIN_INACTIVE_ACCOUNT);
         }
         console.log(userInfoRows[0].userId); // DB의 userId
-
         //토큰 생성 Service
         let token = await jwt.sign(
             {
@@ -85,7 +84,11 @@ exports.postSignIn = async function (Id, password) {
             }, // 유효 기간 365일
         );
 
-        return response(baseResponse.SUCCESS, { userId: userInfoRows[0].userId, jwt: token });
+        return response(baseResponse.SUCCESS, {
+            userId: userInfoRows[0].userId,
+            userName: userInfoRows[0].name,
+            jwt: token,
+        });
     } catch (err) {
         logger.error(`App - postSignIn Service error\n: ${err.message} \n${JSON.stringify(err)}`);
         return errResponse(baseResponse.DB_ERROR);

@@ -54,7 +54,7 @@ async function selectUserPassword(connection, selectUserPasswordParams) {
 // 유저 계정 상태 체크 (jwt 생성 위해 id 값도 가져온다.)
 async function selectUserAccount(connection, Id) {
     const selectUserAccountQuery = `
-        SELECT status, userId
+        SELECT status, userId, name
         FROM User 
         WHERE Id = ?;`;
     const selectUserAccountRow = await connection.query(selectUserAccountQuery, Id);

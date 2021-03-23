@@ -199,7 +199,7 @@ exports.getCategory = async function (productCategoryId) {
     connection.release();
     return getCategory;
 };
-// 카테고리 별 상품 조회
+// 카테고리 별 상품 전체 조회
 exports.getProductByCategoryId = async function (productCategoryId) {
     const connection = await pool.getConnection(async (conn) => conn);
     const getProductByCategoryId = await productDao.getProductByCategoryId(
