@@ -351,3 +351,12 @@ exports.getSalesProduct = async function (req, res) {
     const getSalesProductResult = await productProvider.getSalesProduct();
     return res.send(response(baseResponse.SUCCESS, getSalesProductResult));
 };
+/**
+ * API No. 39
+ * API Name : 금주혜택 조회 API
+ * [GET] /app/product/benefits
+ */
+exports.getBenefits = async function (req, res) {
+    const getBenefitsResult = await productProvider.getBenefits();
+    return res.send(response(baseResponse.SUCCESS, getBenefitsResult));
+};

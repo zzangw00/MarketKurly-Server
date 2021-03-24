@@ -89,4 +89,7 @@ module.exports = function (app) {
 
     // 38. 알뜰상품 조회 API
     app.get('/app/product/sales', product.getSalesProduct);
+
+    // 39. 금주혜택 조회 API
+    app.get('/app/product/benefits', product.getBenefits);
 };

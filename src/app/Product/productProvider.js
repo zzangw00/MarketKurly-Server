@@ -227,3 +227,12 @@ exports.getSalesProduct = async function () {
 
     return getSalesProductResult;
 };
+// 금주혜택 조회
+exports.getBenefits = async function () {
+    const connection = await pool.getConnection(async (conn) => conn);
+
+    const getBenefitsResult = await productDao.getBenefits(connection);
+    connection.release();
+
+    return getBenefitsResult;
+};

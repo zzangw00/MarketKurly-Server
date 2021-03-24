@@ -475,6 +475,16 @@ order by discountRate desc;
     const [productRows] = await connection.query(productQuery);
     return productRows;
 }
+// 금주혜택 조회
+async function getBenefits(connection) {
+    const productQuery = `
+    select benefitsId, content
+from Benefits
+where status = 1;
+    `;
+    const [productRows] = await connection.query(productQuery);
+    return productRows;
+}
 module.exports = {
     getRawPriceProduct,
     getHighPriceProduct,
@@ -511,4 +521,5 @@ module.exports = {
     getProductByCategoryId,
     getNewProduct,
     getSalesProduct,
+    getBenefits,
 };
