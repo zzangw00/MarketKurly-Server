@@ -236,3 +236,21 @@ exports.getBenefits = async function () {
 
     return getBenefitsResult;
 };
+// 금주혜택 상품 조회
+exports.getBenefitsProducts = async function (benefitsId) {
+    const connection = await pool.getConnection(async (conn) => conn);
+
+    const getBenefitsProductsResult = await productDao.getBenefitsProducts(connection, benefitsId);
+    connection.release();
+
+    return getBenefitsProductsResult;
+};
+// 금주혜택 이름 조회
+exports.getBenefitsName = async function (benefitsId) {
+    const connection = await pool.getConnection(async (conn) => conn);
+
+    const getBenefitsNameResult = await productDao.getBenefitsName(connection, benefitsId);
+    connection.release();
+
+    return getBenefitsNameResult;
+};

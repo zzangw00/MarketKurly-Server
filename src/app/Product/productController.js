@@ -360,3 +360,18 @@ exports.getBenefits = async function (req, res) {
     const getBenefitsResult = await productProvider.getBenefits();
     return res.send(response(baseResponse.SUCCESS, getBenefitsResult));
 };
+/**
+ * API No. 40
+ * API Name : 금주혜택 상품 조회 API
+ * [GET] /app/product/benefits/:benefitsId/info
+ */
+exports.getBenefitsProduct = async function (req, res) {
+    const benefitsId = req.params.benefitsId;
+    const getBenefitsName = await productProvider.getBenefitsName(benefitsId);
+    const getBenefitsProductResult = await productProvider.getBenefitsProducts(benefitsId);
+    const result = {
+        benefitsTitle: getBenefitsName[0],
+        benefitsProduct: getBenefitsProductResult,
+    };
+    return res.send(response(baseResponse.SUCCESS, result));
+};

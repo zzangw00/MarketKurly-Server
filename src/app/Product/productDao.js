@@ -485,6 +485,28 @@ where status = 1;
     const [productRows] = await connection.query(productQuery);
     return productRows;
 }
+// 금주혜택 상품 조회
+async function getBenefitsProducts(connection, benefitsId) {
+    const productQuery = `
+    select productId, thumbnailImageUrl, productName, format(p.price, 0) as price, discountRate, format(p.price * (1-(discountRate / 100)), 0) as salePrice, tag
+from Product p
+where benefitsId = ?
+and status = 1;
+    `;
+    const [productRows] = await connection.query(productQuery, benefitsId);
+    return productRows;
+}
+// 금주혜택 이름 조회
+async function getBenefitsName(connection, benefitsId) {
+    const productQuery = `
+    select benefitsId, title
+from Benefits
+where benefitsId = ?
+and status = 1;
+    `;
+    const [productRows] = await connection.query(productQuery, benefitsId);
+    return productRows;
+}
 module.exports = {
     getRawPriceProduct,
     getHighPriceProduct,
@@ -522,4 +544,6 @@ module.exports = {
     getNewProduct,
     getSalesProduct,
     getBenefits,
+    getBenefitsProducts,
+    getBenefitsName,
 };

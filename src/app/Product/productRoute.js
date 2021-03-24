@@ -92,4 +92,7 @@ module.exports = function (app) {
 
     // 39. 금주혜택 조회 API
     app.get('/app/product/benefits', product.getBenefits);
+
+    // 40. 금주혜택 상품 조회 API
+    app.get('/app/product/benefits/:benefitsId/info', product.getBenefitsProduct);
 };
