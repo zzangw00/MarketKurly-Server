@@ -43,4 +43,10 @@ module.exports = function (app) {
 
     // 20. 배송지 추가 API
     app.post('/app/users/deliveryLocation/location', jwtMiddleware, user.addLocation);
+
+    // 41. 주문서 조회하기 API
+    app.get('/app/users/order-info', jwtMiddleware, user.orderInfo);
+
+    // 42. 주문하기 API
+    app.post('/app/users/order', jwtMiddleware, user.order);
 };
