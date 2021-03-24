@@ -218,3 +218,12 @@ exports.getNewProduct = async function () {
 
     return getNewProductResult;
 };
+// 알뜰상품 조회
+exports.getSalesProduct = async function () {
+    const connection = await pool.getConnection(async (conn) => conn);
+
+    const getSalesProductResult = await productDao.getSalesProduct(connection);
+    connection.release();
+
+    return getSalesProductResult;
+};

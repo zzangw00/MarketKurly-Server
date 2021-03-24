@@ -342,3 +342,12 @@ exports.getNewProduct = async function (req, res) {
     const getNewProductResult = await productProvider.getNewProduct();
     return res.send(response(baseResponse.SUCCESS, getNewProductResult));
 };
+/**
+ * API No. 38
+ * API Name : 알뜰상품 조회 API
+ * [GET] /app/product/sales
+ */
+exports.getSalesProduct = async function (req, res) {
+    const getSalesProductResult = await productProvider.getSalesProduct();
+    return res.send(response(baseResponse.SUCCESS, getSalesProductResult));
+};

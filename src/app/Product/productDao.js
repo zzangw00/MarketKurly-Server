@@ -457,7 +457,20 @@ async function getNewProduct(connection) {
     select productId, thumbnailImageUrl, productName, format(p.price, 0) as price, discountRate, format(p.price * (1-(discountRate / 100)), 0) as salePrice, tag
 from Product p
 where createdAt between substr(date_add(now(), interval -7 day), 1, 10) and substr(now(), 1, 10)
+and status = 1
 order by createdAt desc;
+    `;
+    const [productRows] = await connection.query(productQuery);
+    return productRows;
+}
+// 알뜰상품 조회
+async function getSalesProduct(connection) {
+    const productQuery = `
+    select productId, thumbnailImageUrl, productName, format(p.price, 0) as price, discountRate, format(p.price * (1-(discountRate / 100)), 0) as salePrice, tag
+from Product p
+where discountRate >= 20
+and status = 1
+order by discountRate desc;
     `;
     const [productRows] = await connection.query(productQuery);
     return productRows;
@@ -497,4 +510,5 @@ module.exports = {
     getCategory,
     getProductByCategoryId,
     getNewProduct,
+    getSalesProduct,
 };
