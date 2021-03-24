@@ -333,3 +333,12 @@ exports.getPreBasket = async function (req, res) {
     };
     return res.send(response(baseResponse.SUCCESS, result));
 };
+/**
+ * API No. 37
+ * API Name : 신상품 조회 API
+ * [GET] /app/product/new
+ */
+exports.getNewProduct = async function (req, res) {
+    const getNewProductResult = await productProvider.getNewProduct();
+    return res.send(response(baseResponse.SUCCESS, getNewProductResult));
+};

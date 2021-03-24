@@ -451,6 +451,17 @@ and p.status = 1;
     const [productRows] = await connection.query(productQuery, productCategoryId);
     return productRows;
 }
+// 신상품 조회
+async function getNewProduct(connection) {
+    const productQuery = `
+    select productId, thumbnailImageUrl, productName, format(p.price, 0) as price, discountRate, format(p.price * (1-(discountRate / 100)), 0) as salePrice, tag
+from Product p
+where createdAt between substr(date_add(now(), interval -7 day), 1, 10) and substr(now(), 1, 10)
+order by createdAt desc;
+    `;
+    const [productRows] = await connection.query(productQuery);
+    return productRows;
+}
 module.exports = {
     getRawPriceProduct,
     getHighPriceProduct,
@@ -485,4 +496,5 @@ module.exports = {
     getProductByDetailCategoryId,
     getCategory,
     getProductByCategoryId,
+    getNewProduct,
 };

@@ -209,3 +209,12 @@ exports.getProductByCategoryId = async function (productCategoryId) {
     connection.release();
     return getProductByCategoryId;
 };
+// 신상품 조회
+exports.getNewProduct = async function () {
+    const connection = await pool.getConnection(async (conn) => conn);
+
+    const getNewProductResult = await productDao.getNewProduct(connection);
+    connection.release();
+
+    return getNewProductResult;
+};
