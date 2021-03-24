@@ -11,14 +11,23 @@ const { emit } = require('nodemon');
  * [GET] /app/product
  */
 exports.getBestProduct = async function (req, res) {
-    const value = req.query.value;
-
-    if (value == 'rawPrice') {
-        const getBestProductResult = await productProvider.rawPriceProduct(value);
-        return res.send(response(baseResponse.SUCCESS, getBestProductResult));
-    } else if (value == 'highPrice') {
-        const getBestProductResult = await productProvider.HighPriceProduct(value);
-        return res.send(response(baseResponse.SUCCESS, getBestProductResult));
+    const { value, page } = req.query;
+    if (!page) {
+        if (value == 'rawPrice') {
+            const getBestProductResult = await productProvider.rawPriceProduct();
+            return res.send(response(baseResponse.SUCCESS, getBestProductResult));
+        } else if (value == 'highPrice') {
+            const getBestProductResult = await productProvider.HighPriceProduct();
+            return res.send(response(baseResponse.SUCCESS, getBestProductResult));
+        }
+    } else {
+        if (value == 'rawPrice') {
+            const getBestProductResult = await productProvider.rawPriceProductPaging(page);
+            return res.send(response(baseResponse.SUCCESS, getBestProductResult));
+        } else if (value == 'highPrice') {
+            const getBestProductResult = await productProvider.HighPriceProductPaging(page);
+            return res.send(response(baseResponse.SUCCESS, getBestProductResult));
+        }
     }
 };
 

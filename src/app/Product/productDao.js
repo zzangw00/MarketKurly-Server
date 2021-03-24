@@ -1,22 +1,43 @@
+// best 상품 조회(raw_price)paging
+async function getRawPriceProductPaging(connection, pages) {
+    const rowPriceQuery = `
+    select productId, thumbnailImageUrl, productName, format(p.price, 0) as price, discountRate, format(p.price * (1-(discountRate / 100)), 0) as salePrice, tag
+from Product p
+order by price*1 limit ?, 4;
+    `;
+    const [productRows] = await connection.query(rowPriceQuery, pages);
+    return productRows;
+}
+
+// best 상품 조회(high_price)paging
+async function getHighPriceProductPaging(connection, pages) {
+    const highPriceQuery = `
+    select productId, thumbnailImageUrl, productName, format(p.price, 0) as price, discountRate, format(p.price * (1-(discountRate / 100)), 0) as salePrice, tag
+    from Product p
+    order by price*1 desc limit ?, 4;
+    `;
+    const [productRows] = await connection.query(highPriceQuery, pages);
+    return productRows;
+}
 // best 상품 조회(raw_price)
-async function getRawPriceProduct(connection, value) {
+async function getRawPriceProduct(connection) {
     const rowPriceQuery = `
     select productId, thumbnailImageUrl, productName, format(p.price, 0) as price, discountRate, format(p.price * (1-(discountRate / 100)), 0) as salePrice, tag
 from Product p
 order by price*1;
     `;
-    const [productRows] = await connection.query(rowPriceQuery, value);
+    const [productRows] = await connection.query(rowPriceQuery);
     return productRows;
 }
 
 // best 상품 조회(high_price)
-async function getHighPriceProduct(connection, value) {
+async function getHighPriceProduct(connection) {
     const highPriceQuery = `
     select productId, thumbnailImageUrl, productName, format(p.price, 0) as price, discountRate, format(p.price * (1-(discountRate / 100)), 0) as salePrice, tag
     from Product p
-    order by price*1 desc;
+    order by price*1;
     `;
-    const [productRows] = await connection.query(highPriceQuery, value);
+    const [productRows] = await connection.query(highPriceQuery);
     return productRows;
 }
 // 예비 장바구니 조회
@@ -508,6 +529,8 @@ and status = 1;
     return productRows;
 }
 module.exports = {
+    getRawPriceProductPaging,
+    getHighPriceProductPaging,
     getRawPriceProduct,
     getHighPriceProduct,
     getPreBasketInfo,
