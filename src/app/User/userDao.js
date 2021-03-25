@@ -76,7 +76,7 @@ and b.status = 1
 }
 
 // 장바구니 조회(나머지 정보)
-async function getBasketOther(connection, userIdFromJWT) {
+async function getBasketOther(connection, userIdFromJWT, userIdFromJWT, userIdFromJWT) {
     const basketQuery = `
     select ifnull(y.checkProductCount, 0)                               as checkProductCount,
     ifnull(x.productCount, 0)                               as productCount,
@@ -110,8 +110,11 @@ from Basket b
                    and checkStatus = 1) as y on b.userId = y.userId
 where b.userId = ?;
     `;
-    const params = [userIdFromJWT, userIdFromJWT, userIdFromJWT];
-    const [productRows] = await connection.query(basketQuery, params);
+    const [productRows] = await connection.query(basketQuery, [
+        userIdFromJWT,
+        userIdFromJWT,
+        userIdFromJWT,
+    ]);
     return productRows;
 }
 // 장바구니에서 배송지 조회

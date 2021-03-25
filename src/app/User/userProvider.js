@@ -46,7 +46,12 @@ exports.getBasketProduct = async function (userIdFromJWT) {
 exports.getBasketOthers = async function (userIdFromJWT) {
     const connection = await pool.getConnection(async (conn) => conn);
 
-    const basketOthersResult = await userDao.getBasketOther(connection, userIdFromJWT);
+    const basketOthersResult = await userDao.getBasketOther(
+        connection,
+        userIdFromJWT,
+        userIdFromJWT,
+        userIdFromJWT,
+    );
     connection.release();
 
     return basketOthersResult;
