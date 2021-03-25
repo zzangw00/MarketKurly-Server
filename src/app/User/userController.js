@@ -327,6 +327,7 @@ exports.check = async function (req, res) {
         payPrice,
     );
     const updateBasket2 = await userService.updateBasket2(userIdFromJWT);
+    const inputPay = await userService.inputPay(payPrice, payPrice, userIdFromJWT);
 
     return res.send(response(baseResponse.SUCCESS, '주문이 완료 되었습니다.'));
 };

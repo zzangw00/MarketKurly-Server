@@ -412,6 +412,15 @@ and checkStatus = 1
     const [orderRows] = await connection.query(orderQuery, userIdFromJWT);
     return orderRows;
 }
+async function inputPay(connection, payPrice, payPrice, userIdFromJWT) {
+    const orderQuery = `
+    Update User
+set savings = savings + (? * 0.05), payPrice = payPrice + ?
+where userId = ?
+    `;
+    const [orderRows] = await connection.query(orderQuery, [payPrice, payPrice, userIdFromJWT]);
+    return orderRows;
+}
 module.exports = {
     insertUserInfo,
     insertDeliveryLocation,
@@ -444,4 +453,5 @@ module.exports = {
     order,
     updateBasket1,
     updateBasket2,
+    inputPay,
 };

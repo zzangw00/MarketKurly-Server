@@ -227,3 +227,10 @@ exports.updateBasket2 = async function (userIdFromJWT) {
     connection.release();
     return updateBasket2;
 };
+// 주문하고 적립금, 결제금액 넣기
+exports.inputPay = async function (payPrice, payPrice, userIdFromJWT) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const inputPay = await userDao.inputPay(connection, payPrice, payPrice, userIdFromJWT);
+    connection.release();
+    return inputPay;
+};
