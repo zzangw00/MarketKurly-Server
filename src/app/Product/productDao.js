@@ -35,7 +35,7 @@ async function getHighPriceProduct(connection) {
     const highPriceQuery = `
     select productId, thumbnailImageUrl, productName, format(p.price, 0) as price, discountRate, format(p.price * (1-(discountRate / 100)), 0) as salePrice, tag
     from Product p
-    order by price*1;
+    order by price*1 desc;
     `;
     const [productRows] = await connection.query(highPriceQuery);
     return productRows;
