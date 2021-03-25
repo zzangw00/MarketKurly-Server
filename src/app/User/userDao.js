@@ -101,11 +101,11 @@ from Basket b
       join Product p on b.productId = p.productId
       left join (select count(b.basketId) as productCount, b.userId
                  from Basket b
-                 where userId = 15
+                 where userId = ?
                    and status = 1) as x on b.userId = x.userId
       left join (select count(b.basketId) as checkProductCount, b.userId
                  from Basket b
-                 where userId = 15
+                 where userId = ?
                    and status = 1
                    and checkStatus = 1) as y on b.userId = y.userId
 where b.userId = ?;
