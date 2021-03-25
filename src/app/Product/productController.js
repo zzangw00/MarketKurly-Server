@@ -384,3 +384,17 @@ exports.getBenefitsProduct = async function (req, res) {
     };
     return res.send(response(baseResponse.SUCCESS, result));
 };
+/**
+ * API No. 43
+ * API Name : 상품 검색 API
+ * [GET] /app/products
+ */
+exports.getProducts = async function (req, res) {
+    const { productName } = req.query;
+    if (!productName) {
+        return res.send(response(baseResponse.PRODUCT_NAME_EMPTY));
+    } else {
+        const productListByProductName = await productProvider.getProducts(productName);
+        return res.send(response(baseResponse.SUCCESS, productListByProductName));
+    }
+};

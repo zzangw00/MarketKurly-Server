@@ -77,6 +77,11 @@ module.exports = {
         code: 2014,
         message: '비공개 글입니다.',
     },
+    PRODUCT_NAME_EMPTY: {
+        isSuccess: false,
+        code: 2015,
+        message: '검색어를 입력해주세요.',
+    },
     // Response error
     SIGNUP_REDUNDANT_ID: { isSuccess: false, code: 3000, message: '중복된 아이디 입니다.' },
     SIGNIN_WRONG: { isSuccess: false, code: 3001, message: '아이디 혹은 비밀번호가 틀렸습니다.' },

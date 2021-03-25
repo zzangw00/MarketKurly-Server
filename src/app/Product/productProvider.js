@@ -270,3 +270,12 @@ exports.getBenefitsName = async function (benefitsId) {
 
     return getBenefitsNameResult;
 };
+// 상품 검색
+exports.getProducts = async function (productName) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const productName2 = '%' + productName + '%';
+    const getProductsResult = await productDao.getProducts(connection, productName2);
+    connection.release();
+
+    return getProductsResult;
+};

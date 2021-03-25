@@ -528,6 +528,22 @@ and status = 1;
     const [productRows] = await connection.query(productQuery, benefitsId);
     return productRows;
 }
+// 상품 검색
+async function getProducts(connection, productName) {
+    const productQuery = `
+    select productId,
+       thumbnailImageUrl,
+       productName,
+       format(p.price, 0)                              as price,
+       discountRate,
+       format(p.price * (1 - (discountRate / 100)), 0) as salePrice,
+       tag
+from Product p
+where productName like ?;
+    `;
+    const [productRows] = await connection.query(productQuery, productName);
+    return productRows;
+}
 module.exports = {
     getRawPriceProductPaging,
     getHighPriceProductPaging,
@@ -569,4 +585,5 @@ module.exports = {
     getBenefits,
     getBenefitsProducts,
     getBenefitsName,
+    getProducts,
 };
