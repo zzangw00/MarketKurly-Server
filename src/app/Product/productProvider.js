@@ -279,3 +279,19 @@ exports.getProducts = async function (productName) {
 
     return getProductsResult;
 };
+// 상품 산적이 있는지 검색
+exports.checkBuy = async function (userIdFromJWT) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const checkBuyResult = await productDao.checkBuy(connection, userIdFromJWT);
+    connection.release();
+
+    return checkBuyResult;
+};
+// 자주 사는 상품 조회
+exports.getOftenProducts = async function (userIdFromJWT) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const getOftenProductsResult = await productDao.getOftenProducts(connection, userIdFromJWT);
+    connection.release();
+
+    return getOftenProductsResult;
+};

@@ -544,6 +544,36 @@ where productName like ?;
     const [productRows] = await connection.query(productQuery, productName);
     return productRows;
 }
+// 상품 산적이 있는지 검색
+async function checkBuy(connection, userIdFromJWT) {
+    const productQuery = `
+    select exists(select basketId
+        from Basket
+        where userId = ?
+          and buyCount > 0) as exist;
+    `;
+    const [productRows] = await connection.query(productQuery, userIdFromJWT);
+    return productRows;
+}
+// 자주 사는 상품 조회
+async function getOftenProducts(connection, userIdFromJWT) {
+    const productQuery = `
+    select p.productId,
+       thumbnailImageUrl,
+       productName,
+       format(p.price, 0)                              as price,
+       discountRate,
+       format(p.price * (1 - (discountRate / 100)), 0) as salePrice,
+       tag
+from Product p
+         join Basket b on p.productId = b.productId
+where b.buyCount > 0
+  and userId = ?
+  and p.status = 1
+    `;
+    const [productRows] = await connection.query(productQuery, userIdFromJWT);
+    return productRows;
+}
 module.exports = {
     getRawPriceProductPaging,
     getHighPriceProductPaging,
@@ -586,4 +616,6 @@ module.exports = {
     getBenefitsProducts,
     getBenefitsName,
     getProducts,
+    checkBuy,
+    getOftenProducts,
 };

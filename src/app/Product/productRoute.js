@@ -98,4 +98,7 @@ module.exports = function (app) {
 
     // 43. 상품 검색하기 API
     app.get('/app/products', product.getProducts);
+
+    // 44. 자주 사는 상품 API
+    app.get('/app/products/often', jwtMiddleware, product.getOftenProducts);
 };

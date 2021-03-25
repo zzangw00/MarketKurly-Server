@@ -398,3 +398,18 @@ exports.getProducts = async function (req, res) {
         return res.send(response(baseResponse.SUCCESS, productListByProductName));
     }
 };
+/**
+ * API No. 44
+ * API Name : 자주 사는 상품 API
+ * [GET] /app/products/often
+ */
+exports.getOftenProducts = async function (req, res) {
+    const userIdFromJWT = req.verifiedToken.userId;
+    const checkBuy = await productProvider.checkBuy(userIdFromJWT);
+    if (checkBuy[0].exist == 0) {
+        return res.send(response(baseResponse.PRODUCT_BUY_EMPTY));
+    } else {
+        const getOftenProductsResult = await productProvider.getOftenProducts(userIdFromJWT);
+        return res.send(response(baseResponse.SUCCESS, getOftenProductsResult));
+    }
+};
