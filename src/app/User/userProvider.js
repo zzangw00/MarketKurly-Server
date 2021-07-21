@@ -3,7 +3,7 @@ const { logger } = require('../../../config/winston');
 const baseResponse = require('../../../config/baseResponseStatus');
 const userDao = require('./userDao');
 
-// Provider: Read 비즈니스 로직 처리
+// id가 있는지 체크
 exports.IdCheck = async function (Id) {
     const connection = await pool.getConnection(async (conn) => conn);
     const IdCheckResult = await userDao.selectId(connection, Id);

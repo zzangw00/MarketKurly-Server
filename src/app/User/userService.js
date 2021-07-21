@@ -11,8 +11,6 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const { connect } = require('http2');
 
-// Service: Create, Update, Delete 비즈니스 로직 처리
-
 exports.createUser = async function (Id, password, name, email, phoneNumber, location, birth, sex) {
     try {
         // 비밀번호 암호화
