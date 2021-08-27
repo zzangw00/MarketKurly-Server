@@ -1,39 +1,34 @@
-# MarketKurly
+## MarketKurly
 
-## 서버 구축
+### Introduction
 
--port : dev, prod로 나눠서 구축 완료
+2주 동안 클라이언트 한 명과 짝을 이뤄 진행한 마켓컬리 앱 클론 프로젝트입니다.
 
--ssl 적용 완료
+### Directory Structure
 
--RDS : dev, prod로 나눠서 구축 완료
+📂 config
+ ├── 📄 express.js
+ ├── 📄 jwtMiddleware.js
+ └── 📄 winston.js
+📂 src
+ └── 📂 app
+      ├── 📂 Product
+      |    ├── 📄 productController.js
+      |    ├── 📄 productDao.js
+      |    ├── 📄 productProvider.js
+      |    ├── 📄 productRoute.js
+      |    └── 📄 productService.js
+      └── 📂 User
+           ├── 📄 userController.js
+           ├── 📄 userDao.js
+           ├── 📄 userProvider.js
+           ├── 📄 userRoute.js
+           └── 📄 userService.js
+      
+📄 .gitignore
+📄 index.js
+📄 package.json
 
-## API
+### Role
 
--회원 가입 API 완료
 
--아이디 중복체크 API 완료
-
--로그인 API 완료
-
--베스트 상품 조회 API 완료
-
--장바구니 조회 API 완료
-
--자동 로그인 API 완료
-
--장바구니 전체 체크하기 API 완료
-
--장바구니 상품 개수 증가 시키기 API 완료
-
--장바구니 상품 개수 감소 시키기 API 완료
-
--예비 장바구니 조회 API 완료
-
--예비 장바구니 상품 개수 증가 시키기 API 완료
-
--예비 장바구니 상품 개수 감소 시키기 API 완료
-
--예비 장바구니 초기화 API 완료
-
--장바구니 추가 API 완료
