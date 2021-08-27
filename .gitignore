@@ -1,7 +1,8 @@
 .idea/*
 node_modules/*
-config/*
 package-lock.json
 log/*
 .DS_Store
+config/database.js
+config/secret.js
 .prettierrc
