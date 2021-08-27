@@ -33,10 +33,11 @@
 
 - 서버 구축
 - ERD 설계
+  - [Aquerytool](https://aquerytool.com/aquerymain/index/?rurl=6385f783-a240-41ae-a6e0-30f9da7bbd59)
   - password : 11au14
 
 <p align="center">
-    <a href="https://aquerytool.com/aquerymain/index/?rurl=6385f783-a240-41ae-a6e0-30f9da7bbd59"><img src="https://user-images.githubusercontent.com/64726822/131082826-1a134c8d-cee3-460f-bc3c-79af792ac0bd.png" border="0"</a>
+    <img src="https://user-images.githubusercontent.com/64726822/131082826-1a134c8d-cee3-460f-bc3c-79af792ac0bd.png" border="0">
 </p>
  
 - API 구현 및 명세서 작성
