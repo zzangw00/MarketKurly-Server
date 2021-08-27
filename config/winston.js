@@ -5,10 +5,8 @@ const fs = require('fs');
 const env = process.env.NODE_ENV || 'development';
 const logDir = 'log';
 
-// https://lovemewithoutall.github.io/it/winston-example/
-// Create the log directory if it does not exist
 if (!fs.existsSync(logDir)) {
-    fs.mkdirSync(logDir)
+    fs.mkdirSync(logDir);
 }
 
 const dailyRotateFileTransport = new transports.DailyRotateFile({
@@ -17,31 +15,29 @@ const dailyRotateFileTransport = new transports.DailyRotateFile({
     datePattern: 'YYYY-MM-DD',
     zippedArchive: true,
     maxSize: '20m',
-    maxFiles: '14d'
+    maxFiles: '14d',
 });
 
 const logger = createLogger({
     level: env === 'development' ? 'debug' : 'info',
     format: format.combine(
         format.timestamp({
-            format: 'YYYY-MM-DD HH:mm:ss'
+            format: 'YYYY-MM-DD HH:mm:ss',
         }),
-        format.json()
+        format.json(),
     ),
     transports: [
         new transports.Console({
             level: 'info',
             format: format.combine(
                 format.colorize(),
-                format.printf(
-                    info => `${info.timestamp} ${info.level}: ${info.message}`
-                )
-            )
+                format.printf((info) => `${info.timestamp} ${info.level}: ${info.message}`),
+            ),
         }),
-        dailyRotateFileTransport
-    ]
+        dailyRotateFileTransport,
+    ],
 });
 
 module.exports = {
-    logger: logger
+    logger: logger,
 };
