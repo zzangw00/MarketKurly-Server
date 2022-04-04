@@ -64,7 +64,7 @@ async function selectUserAccount(connection, Id) {
 // 장바구니 조회(상품 정보만)
 async function getBasketProductOnly(connection, userIdFromJWT) {
     const basketQuery = `
-    select thumbnailImageUrl, detailCount, checkStatus, basketId, p.productId, p.status, p.productStatus, p.productName, format(p.price * detailCount, 0) as price, format(p.price * (1 - (p.discountRate / 100)) * detailCount, 0) as salePrice, p.tag
+    select thumbnailImageUrl, detailCount, checkStatus, basketId, p.productId, p.status, p.productStatus, p.productName, format(p.price * detailCount, 0) as price, format(p.price * (1 - (p.discountRate / 100)) * detailCount, 0) as salePrice
 from Basket b
          left join User u on b.userId = u.userId
          left join Product p on b.productId = p.productId
