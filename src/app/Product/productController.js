@@ -413,3 +413,15 @@ exports.getOftenProducts = async function (req, res) {
         return res.send(response(baseResponse.SUCCESS, getOftenProductsResult));
     }
 };
+
+/**
+ * API No. 45
+ * API Name : 상품 검색 API
+ * [GET] /app/product/product-search
+ */
+exports.serchProduct = async function (req, res) {
+    const { searchName } = req.query;
+    const searchResult = await productProvider.getProduct(searchName);
+    const searchAdd = await productService.addSearch(searchName);
+    return res.send(response(baseResponse.SUCCESS, searchResult));
+};

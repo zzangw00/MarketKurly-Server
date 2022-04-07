@@ -295,3 +295,11 @@ exports.getOftenProducts = async function (userIdFromJWT) {
 
     return getOftenProductsResult;
 };
+// 자주 사는 상품 조회
+exports.getProduct = async function (searchName) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const getProductsResult = await productDao.getSearchProducts(connection, searchName);
+    connection.release();
+
+    return getProductsResult;
+};

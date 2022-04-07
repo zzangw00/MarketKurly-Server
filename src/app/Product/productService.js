@@ -92,3 +92,10 @@ exports.postProductInquire = async function (
     connection.release();
     return postProductInquire;
 };
+
+exports.addSearch = async function (searchName) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const addSearch = await productDao.addSearch(connection, searchName);
+    connection.release();
+    return addSearch;
+};

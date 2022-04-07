@@ -101,4 +101,7 @@ module.exports = function (app) {
 
     // 44. 자주 사는 상품 API
     app.get('/app/products/often', jwtMiddleware, product.getOftenProducts);
+
+    // 상품 검색 API
+    app.post('/app/product/product-search', product.serchProduct);
 };
