@@ -425,3 +425,23 @@ exports.serchProduct = async function (req, res) {
     const searchAdd = await productService.addSearch(searchName);
     return res.send(response(baseResponse.SUCCESS, searchResult));
 };
+
+/**
+ * API No. 45
+ * API Name : 상품 검색 API
+ * [GET] /app/products/popular
+ */
+exports.getPopularProducts = async function (req, res) {
+    let today = new Date();
+    let year = today.getFullYear();
+    let month = today.getMonth() + 1;
+    let date = today.getDate();
+    let hours = today.getHours();
+    if (month < 10) {
+        month = '0' + month;
+    }
+    let startHours = year + '-' + month + '-' + date + ' ' + (hours - 1) + ':00:00';
+    let endHours = year + '-' + month + '-' + date + ' ' + (hours - 1) + ':59:59';
+    const popularResult = await productProvider.getPopularProduct(startHours, endHours);
+    return res.send(response(baseResponse.SUCCESS, popularResult));
+};

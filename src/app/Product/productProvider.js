@@ -303,3 +303,11 @@ exports.getProduct = async function (searchName) {
 
     return getProductsResult;
 };
+// 자주 사는 상품 조회
+exports.getPopularProduct = async function (start, end) {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const getPopularProductsResult = await productDao.getPopularProducts(connection, start, end);
+    connection.release();
+
+    return getPopularProductsResult;
+};

@@ -104,4 +104,7 @@ module.exports = function (app) {
 
     // 상품 검색 API
     app.post('/app/product/product-search', product.serchProduct);
+
+    // 실시간 인기 검색어 조회 API
+    app.get('/app/products/popular', product.getPopularProducts);
 };

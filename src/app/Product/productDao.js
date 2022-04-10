@@ -599,6 +599,18 @@ async function addSearch(connection, searchName) {
     return productRows;
 }
 
+async function getPopularProducts(connection, start, end) {
+    const productQuery = `
+    select a.searchName
+    from (select searchName, count(searchName)
+          from Search
+          where updatedAt between ? and ?
+          group by searchName
+          order by count(searchName) desc) as a;
+    `;
+    const [productRows] = await connection.query(productQuery, [start, end]);
+    return productRows;
+}
 module.exports = {
     getRawPriceProductPaging,
     getHighPriceProductPaging,
@@ -645,4 +657,5 @@ module.exports = {
     getOftenProducts,
     getSearchProducts,
     addSearch,
+    getPopularProducts,
 };
