@@ -35,15 +35,6 @@ module.exports = function (app) {
     // 17. 장바구니 상품 선택 삭제 API
     app.patch('/app/users/basket/delete-check', jwtMiddleware, user.deleteCheckBasket);
 
-    // 18. 배송지 조회 API
-    app.get('/app/users/deliveryLocation', jwtMiddleware, user.getLocation);
-
-    // 19. 배송지 선택 API
-    app.patch('/app/users/deliveryLocation/:locationId/check', jwtMiddleware, user.checkLocation);
-
-    // 20. 배송지 추가 API
-    app.post('/app/users/deliveryLocation/location', jwtMiddleware, user.addLocation);
-
     // 41. 주문서 조회하기 API
     app.get('/app/users/order-info', jwtMiddleware, user.orderInfo);
 

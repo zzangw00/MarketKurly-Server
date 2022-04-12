@@ -3,7 +3,6 @@ const userProvider = require('../../app/User/userProvider');
 const userService = require('../../app/User/userService');
 const baseResponse = require('../../../config/baseResponseStatus');
 const { response, errResponse } = require('../../../config/response');
-const { emit } = require('nodemon');
 const regexEmail = require('regex-email');
 const IdRegExp = /^.*(?=.{6,16})(?=.*[0-9])(?=.*[a-zA-Z]).*$/; // 6~16 자 이내 숫자 + 영문
 
@@ -237,51 +236,6 @@ exports.check = async function (req, res) {
     return res.send(response(baseResponse.SUCCESS, '선택한 상품을 삭제 하였습니다.'));
 };
 
-/**
- * API No. 18
- * API Name : 배송지 조회 API
- * [GET] /app/users/deliveryLocation
- */ exports.getLocation = async function (req, res) {
-    const userIdFromJWT = req.verifiedToken.userId;
-    const getLocationResult = await userProvider.getLocation(userIdFromJWT);
-
-    return res.send(response(baseResponse.SUCCESS, getLocationResult));
-};
-
-/**
- * API No. 19
- * API Name : 배송지 선택 API
- * [PATCH] /app/users/deliveryLocation/check
- */ exports.checkLocation = async function (req, res) {
-    const userIdFromJWT = req.verifiedToken.userId;
-    const locationId = req.params.locationId;
-    const checkLocationResult1 = await userService.checkLocation1(userIdFromJWT);
-    const checkLocationResult2 = await userService.checkLocation2(userIdFromJWT, locationId);
-    const getCheckLocationResult = await userProvider.getCheckLocation(userIdFromJWT, locationId);
-    const result = {
-        countResult: getCheckLocationResult[0],
-        comment: '배송지로 선택 되었습니다.',
-    };
-    return res.send(response(baseResponse.SUCCESS, result));
-};
-/**
- * API No. 20
- * API Name : 배송지 추가 API
- * [PATCH] /app/users/deliveryLocation/check
- */ exports.addLocation = async function (req, res) {
-    const userIdFromJWT = req.verifiedToken.userId;
-    const { location } = req.body;
-    const addLocationResult1 = await userService.addLocation1(userIdFromJWT);
-    const addLocationResult2 = await userService.addLocation2(userIdFromJWT, location);
-    console.log(addLocationResult2.insertId);
-    const result = {
-        locationId: addLocationResult2.insertId,
-        location: location,
-        comment: '배송지가 추가 되었습니다.',
-    };
-
-    return res.send(response(baseResponse.SUCCESS, result));
-};
 /**
  * API No. 41
  * API Name : 주문서 조회 하기 API

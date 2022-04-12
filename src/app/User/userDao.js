@@ -258,71 +258,7 @@ and status = 1
     const [productRows] = await connection.query(basketQuery, userIdFromJWT);
     return productRows;
 }
-// 배송지 조회
-async function getLocation(connection, userIdFromJWT) {
-    const locationQuery = `
-    select locationId, location, checkStatus, basicStatus, name, phoneNumber
-from DeliveryLocation dl
-         join User u on dl.userId = u.userId
-where u.userId = ?
-  and dl.status = 1;
-    `;
-    const [productRows] = await connection.query(locationQuery, userIdFromJWT);
-    return productRows;
-}
-// 배송지 선택1
-async function checkLocation1(connection, userIdFromJWT) {
-    const locationQuery = `
-    update DeliveryLocation
-set checkStatus = 2
-where userId = ?
-and checkStatus = 1;
-    `;
-    const [productRows] = await connection.query(locationQuery, userIdFromJWT);
-    return productRows;
-}
-// 배송지 선택2
-async function checkLocation2(connection, userIdFromJWT, locationId) {
-    const locationQuery = `
-    update DeliveryLocation
-set checkStatus = 1
-where userId = ?
-and locationId = ?;
-    `;
-    const [productRows] = await connection.query(locationQuery, [userIdFromJWT, locationId]);
-    return productRows;
-}
-// 배송지 체크 조회
-async function getCheckLocation(connection, userIdFromJWT, locationId) {
-    const locationQuery = `
-    select locationId, location, checkStatus
-from DeliveryLocation
-where userId = ?
-and locationId = ?
-    `;
-    const [productRows] = await connection.query(locationQuery, [userIdFromJWT, locationId]);
-    return productRows;
-}
-// 배송지 추가1
-async function addLocation1(connection, userIdFromJWT) {
-    const locationQuery = `
-    update DeliveryLocation
-set checkStatus = 2
-where userId = ?
-and checkStatus = 1;
-    `;
-    const [productRows] = await connection.query(locationQuery, userIdFromJWT);
-    return productRows;
-}
-// 배송지 추가2
-async function addLocation2(connection, userIdFromJWT, location) {
-    const locationQuery = `
-    insert into DeliveryLocation (userId, location)
-values (?, ?)
-    `;
-    const [productRows] = await connection.query(locationQuery, [userIdFromJWT, location]);
-    return productRows;
-}
+
 // 주문서 조회하기(장바구니 상품)
 async function getBasket(connection, userIdFromJWT) {
     const orderQuery = `
@@ -444,12 +380,6 @@ module.exports = {
     getCountResult,
     basketDelete,
     checkBasketDelete,
-    getLocation,
-    checkLocation1,
-    checkLocation2,
-    getCheckLocation,
-    addLocation1,
-    addLocation2,
     getBasket,
     getUserInfo,
     getCoupon,

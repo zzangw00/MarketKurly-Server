@@ -1,9 +1,7 @@
-const jwtMiddleware = require('../../../config/jwtMiddleware');
 const productProvider = require('../../app/Product/productProvider');
 const productService = require('../../app/Product/productService');
 const baseResponse = require('../../../config/baseResponseStatus');
 const { response, errResponse } = require('../../../config/response');
-const { emit } = require('nodemon');
 
 /**
  * API No. 4
