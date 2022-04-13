@@ -13,10 +13,4 @@ module.exports = function (app) {
 
     // 6. 자동 로그인 API
     app.get('/app/users/auto-login', jwtMiddleware, user.check);
-
-    // 41. 주문서 조회하기 API
-    app.get('/app/users/order-info', jwtMiddleware, user.orderInfo);
-
-    // 42. 주문하기 API
-    app.post('/app/users/order', jwtMiddleware, user.order);
 };

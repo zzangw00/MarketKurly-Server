@@ -4,8 +4,7 @@ const secret_config = require('../../../config/secret');
 const basketProvider = require('./basketProvider');
 const basketDao = require('./basketDao');
 const baseResponse = require('../../../config/baseResponseStatus');
-const { response } = require('../../../config/response');
-const { errResponse } = require('../../../config/response');
+const { response, errResponse } = require('../../../config/response');
 
 // 장바구니 상품 개수 변경
 exports.changeBasketCount = async function (userIdFromJWT, basketId, count) {

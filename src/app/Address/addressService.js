@@ -3,8 +3,7 @@ const { pool } = require('../../../config/database');
 const addressProvider = require('./userProvider');
 const addressDao = require('./addressDao');
 const baseResponse = require('../../../config/baseResponseStatus');
-const { response } = require('../../../config/response');
-const { errResponse } = require('../../../config/response');
+const { response, errResponse } = require('../../../config/response');
 
 // 배송지 선택 하기
 exports.checkAddress = async function (userIdFromJWT, addressId) {
