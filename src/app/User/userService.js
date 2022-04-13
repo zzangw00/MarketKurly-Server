@@ -92,68 +92,6 @@ exports.postSignIn = async function (Id, password) {
         return errResponse(baseResponse.DB_ERROR);
     }
 };
-// 장바구니 체크 하기
-exports.checkUp = async function (basketId, userIdFromJWT) {
-    const params = [basketId, userIdFromJWT];
-    const connection = await pool.getConnection(async (conn) => conn);
-    const checkUp = await userDao.updateCheckUp(connection, params);
-
-    connection.release();
-    return checkUp;
-};
-// 장바구니 체크 취소 하기
-exports.checkDown = async function (basketId, userIdFromJWT) {
-    const params = [basketId, userIdFromJWT];
-    const connection = await pool.getConnection(async (conn) => conn);
-    const checkDown = await userDao.updateCheckDown(connection, params);
-
-    connection.release();
-    return checkDown;
-};
-// 전체 장바구니 체크 하기
-exports.checkAllUp = async function (userIdFromJWT) {
-    const connection = await pool.getConnection(async (conn) => conn);
-    const checkUp = await userDao.updateAllCheckUp(connection, userIdFromJWT);
-
-    connection.release();
-    return checkUp;
-};
-// 전체 장바구니 체크 취소 하기
-exports.checkAllDown = async function (userIdFromJWT) {
-    const connection = await pool.getConnection(async (conn) => conn);
-    const checkDown = await userDao.updateAllCheckDown(connection, userIdFromJWT);
-
-    connection.release();
-    return checkDown;
-};
-// 장바구니 상품 개수 증가 시키기
-exports.basketCountUp = async function (userIdFromJWT, basketId) {
-    const connection = await pool.getConnection(async (conn) => conn);
-    const countUp = await userDao.basketCountUp(connection, userIdFromJWT, basketId);
-    connection.release();
-    return countUp;
-};
-// 장바구니 상품 개수 감소 시키기
-exports.basketCountDown = async function (userIdFromJWT, basketId) {
-    const connection = await pool.getConnection(async (conn) => conn);
-    const countDown = await userDao.basketCountDown(connection, userIdFromJWT, basketId);
-    connection.release();
-    return countDown;
-};
-// 장바구니 상품 삭제 하기
-exports.basketDelete = async function (userIdFromJWT, basketId) {
-    const connection = await pool.getConnection(async (conn) => conn);
-    const basketDelete = await userDao.basketDelete(connection, userIdFromJWT, basketId);
-    connection.release();
-    return basketDelete;
-};
-// 장바구니 상품 선택 삭제 하기
-exports.checkBasketDelete = async function (userIdFromJWT) {
-    const connection = await pool.getConnection(async (conn) => conn);
-    const checkBasketDelete = await userDao.checkBasketDelete(connection, userIdFromJWT);
-    connection.release();
-    return checkBasketDelete;
-};
 // 주문하기
 exports.orders = async function (
     userIdFromJWT,

@@ -2,10 +2,10 @@
 async function getAddress(connection, userIdFromJWT) {
     const addressQuery = `
     select addressId, address, checkStatus, basicStatus, name, phoneNumber
-    from Address a
-             join User u on a.userId = u.userId
-    where u.userId = ?
-      and a.status = 1;
+      from Address a
+           join User u on a.userId = u.userId
+     where u.userId = ?
+       and a.status = 1;
     `;
     const [productRows] = await connection.query(addressQuery, userIdFromJWT);
     return productRows;
@@ -14,9 +14,9 @@ async function getAddress(connection, userIdFromJWT) {
 async function checkAddress1(connection, userIdFromJWT) {
     const addressQuery = `
     update Address
-    set checkStatus = 2
-    where userId = ?
-      and checkStatus = 1;
+       set checkStatus = 2
+     where userId = ?
+       and checkStatus = 1;
     `;
     const [productRows] = await connection.query(addressQuery, userIdFromJWT);
     return productRows;
@@ -25,9 +25,9 @@ async function checkAddress1(connection, userIdFromJWT) {
 async function checkAddress2(connection, userIdFromJWT, addressId) {
     const addressQuery = `
     update Address
-    set checkStatus = 1
-    where userId = ?
-      and addressId = ?;
+       set checkStatus = 1
+     where userId = ?
+       and addressId = ?;
     `;
     const [productRows] = await connection.query(addressQuery, [userIdFromJWT, addressId]);
     return productRows;
@@ -36,9 +36,9 @@ async function checkAddress2(connection, userIdFromJWT, addressId) {
 async function getCheckAddress(connection, userIdFromJWT, addressId) {
     const addressQuery = `
     select addressId, address, checkStatus
-    from Address
-    where userId = ?
-      and addressId = ?;
+      from Address
+     where userId = ?
+       and addressId = ?;
     `;
     const [productRows] = await connection.query(addressQuery, [userIdFromJWT, addressId]);
     return productRows;
@@ -47,9 +47,9 @@ async function getCheckAddress(connection, userIdFromJWT, addressId) {
 async function addAddress1(connection, userIdFromJWT) {
     const addressQuery = `
     update Address
-    set checkStatus = 2
-    where userId = ?
-      and checkStatus = 1;
+       set checkStatus = 2
+     where userId = ?
+       and checkStatus = 1;
     `;
     const [productRows] = await connection.query(addressQuery, userIdFromJWT);
     return productRows;
@@ -58,7 +58,7 @@ async function addAddress1(connection, userIdFromJWT) {
 async function addAddress2(connection, userIdFromJWT, address) {
     const addressQuery = `
     insert into Address (userId, address)
-    values (?, ?);
+                 values (?, ?);
     `;
     const [productRows] = await connection.query(addressQuery, [userIdFromJWT, address]);
     return productRows;

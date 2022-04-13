@@ -11,29 +11,8 @@ module.exports = function (app) {
     // 3. 로그인 API (JWT 생성)
     app.post('/app/users/login', user.login);
 
-    // 4. 장바구니 조회 API
-    app.get('/app/users/basket', jwtMiddleware, user.getBasketOnlyProduct);
-
     // 6. 자동 로그인 API
     app.get('/app/users/auto-login', jwtMiddleware, user.check);
-
-    // 7. 장바구니 체크하기 API
-    app.patch('/app/users/basket/:basketId/check', jwtMiddleware, user.basketCheck);
-
-    // 8. 장바구니 전체 체크하기 API
-    app.patch('/app/users/basket/check-all', jwtMiddleware, user.basketCheckAll);
-
-    // 9. 장바구니 상품 개수 증가 시키기 API
-    app.patch('/app/users/basket/:basketId/count-up', jwtMiddleware, user.updateProductCountUp);
-
-    // 10. 장바구니 상품 개수 감소 시키기 API
-    app.patch('/app/users/basket/:basketId/count-down', jwtMiddleware, user.updateProductCountDown);
-
-    // 16. 장바구니 상품 삭제 API
-    app.patch('/app/users/basket/:basketId/delete', jwtMiddleware, user.deleteBasket);
-
-    // 17. 장바구니 상품 선택 삭제 API
-    app.patch('/app/users/basket/delete-check', jwtMiddleware, user.deleteCheckBasket);
 
     // 41. 주문서 조회하기 API
     app.get('/app/users/order-info', jwtMiddleware, user.orderInfo);

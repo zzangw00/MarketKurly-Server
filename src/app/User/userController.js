@@ -112,26 +112,6 @@ exports.login = async function (req, res) {
 };
 
 /**
- * API No. 5
- * API Name : 장바구니 조회 API
- * [GET] /app/users/basket
- */
-exports.getBasketOnlyProduct = async function (req, res) {
-    const userIdFromJWT = req.verifiedToken.userId;
-
-    const basketProductResponse = await userProvider.getBasketProduct(userIdFromJWT);
-    const basketOtherResponse = await userProvider.getBasketOthers(userIdFromJWT);
-    const deliveryResponse = await userProvider.getDeliveryLocation(userIdFromJWT);
-    const result = {
-        deliveryInfo: deliveryResponse,
-        productInfo: basketProductResponse,
-        otherInfo: basketOtherResponse,
-    };
-
-    return res.send(response(baseResponse.SUCCESS, result));
-};
-
-/**
  * API No. 6
  * API Name : 자동 로그인 API
  * [GET] /app/auto-login
@@ -140,100 +120,6 @@ exports.check = async function (req, res) {
     const userIdFromJWT = req.verifiedToken.userId;
     console.log(userIdFromJWT);
     return res.send(response(baseResponse.TOKEN_VERIFICATION_SUCCESS));
-};
-
-//체크 되어있는지 확인 먼저 체크 되어있으면 해제, 안되어 있으면 체크
-/**
- * API No. 7
- * API Name : 장바구니 체크하기 API
- * [PATCH] /app/users/basket/:basketId/check
- */ exports.basketCheck = async function (req, res) {
-    const userIdFromJWT = req.verifiedToken.userId;
-    const basketId = req.params.basketId;
-    const basketCheckStatus = await userProvider.getCheckStatus(+basketId, userIdFromJWT);
-    if (basketCheckStatus[0].checkStatus == 1) {
-        const unCheck = await userService.checkDown(+basketId, userIdFromJWT);
-        return res.send(response(baseResponse.SUCCESS, '체크 해제 하였습니다.'));
-    } else {
-        const check = await userService.checkUp(+basketId, userIdFromJWT);
-        return res.send(response(baseResponse.SUCCESS, '체크 하였습니다.'));
-    }
-};
-/**
- * API No. 8
- * API Name : 장바구니 전체 체크하기 API
- * [PATCH] /app/users/basket/check-all
- */ exports.basketCheckAll = async function (req, res) {
-    const userIdFromJWT = req.verifiedToken.userId;
-    const basketCheckStatus = await userProvider.getCheckAllStatus(userIdFromJWT);
-    let count = 0;
-    for (let i = 0; i < basketCheckStatus.length; i++) {
-        if (basketCheckStatus[i].checkStatus == 2) {
-            count++;
-        }
-    }
-    if (count > 0) {
-        const check = await userService.checkAllUp(userIdFromJWT);
-        return res.send(response(baseResponse.SUCCESS, '전체 체크 하였습니다.'));
-    } else {
-        const unCheck = await userService.checkAllDown(userIdFromJWT);
-        return res.send(response(baseResponse.SUCCESS, '전체 체크 해제 하였습니다.'));
-    }
-};
-
-/**
- * API No. 9
- * API Name : 장바구니 상품 개수 증가 시키기 API
- * [PATCH] /app/users/basket/:basketId/count-up
- */ exports.updateProductCountUp = async function (req, res) {
-    const userIdFromJWT = req.verifiedToken.userId;
-    const basketId = req.params.basketId;
-    const basketCountUpResult = await userService.basketCountUp(userIdFromJWT, basketId);
-    const countResult = await userProvider.getCountResult(userIdFromJWT, basketId);
-    const result = {
-        countResult: countResult[0],
-        comment: '상품 개수를 증가 시켰습니다.',
-    };
-    return res.send(response(baseResponse.SUCCESS, result));
-};
-
-/**
- * API No. 10
- * API Name : 장바구니 상품 개수 감소 시키기 API
- * [PATCH] /app/users/basket/:basketId/count-down
- */ exports.updateProductCountDown = async function (req, res) {
-    const userIdFromJWT = req.verifiedToken.userId;
-    const basketId = req.params.basketId;
-    const basketCountDownResult = await userService.basketCountDown(userIdFromJWT, basketId);
-    const countResult = await userProvider.getCountResult(userIdFromJWT, basketId);
-    const result = {
-        countResult: countResult[0],
-        comment: '상품 개수를 감소 시켰습니다.',
-    };
-    return res.send(response(baseResponse.SUCCESS, result));
-};
-
-/**
- * API No. 16
- * API Name : 장바구니 상품 삭제 API
- * [PATCH] /app/users/basket/:basketId/delete
- */ exports.deleteBasket = async function (req, res) {
-    const userIdFromJWT = req.verifiedToken.userId;
-    const basketId = req.params.basketId;
-    const basketDeleteResult = await userService.basketDelete(userIdFromJWT, basketId);
-
-    return res.send(response(baseResponse.SUCCESS, '상품을 삭제 하였습니다.'));
-};
-
-/**
- * API No. 17
- * API Name : 장바구니 상품 선택 삭제 API
- * [PATCH] /app/users/basket/:basketId/delete-check
- */ exports.deleteCheckBasket = async function (req, res) {
-    const userIdFromJWT = req.verifiedToken.userId;
-    const checkBasketDeleteResult = await userService.checkBasketDelete(userIdFromJWT);
-
-    return res.send(response(baseResponse.SUCCESS, '선택한 상품을 삭제 하였습니다.'));
 };
 
 /**
