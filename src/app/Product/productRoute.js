@@ -6,10 +6,7 @@ module.exports = function (app) {
     app.get('/app/product/best', product.getBestProduct);
 
     // 21. 상품설명 API
-    app.get('/app/product/:productId/info', product.getProductInfo);
-
-    // 22. 상품이미지 API
-    app.get('/app/product/:productId/image', product.getProductImage);
+    app.get('/app/product/:productId', product.getProductInfo);
 
     // 23. 상품 상세정보 API
     app.get('/app/product/:productId/detail', product.getProductDetail);
@@ -17,14 +14,14 @@ module.exports = function (app) {
     // 24. 후기 전반적인 화면 API
     app.get('/app/product/:productId/review', product.getProductReview);
 
-    // 25. 후기 개수 API
-    app.get('/app/product/:productId/review-count', product.getProductReviewCount);
-
     // 26. 후기 전체보기 API
     app.get('/app/product/:productId/review-all', product.getProductReviewAll);
 
     // 27. 상품 후기 상세 API
     app.get('/app/productReview/:productReviewId/review-detail', product.getProductReviewDetail);
+
+    // 15. 장바구니 추가 API
+    app.post('/app/product/input-basket', jwtMiddleware, product.inputBasket);
 
     // 28. 상품 문의 전반적인 화면 API
     app.get('/app/product/:productId/inquire', product.getProductInquire);
@@ -78,18 +75,9 @@ module.exports = function (app) {
     // 40. 금주혜택 상품 조회 API
     app.get('/app/product/benefits/:benefitsId/info', product.getBenefitsProduct);
 
-    // 43. 상품 검색하기 API
-    app.get('/app/products', product.getProducts);
-
     // 44. 자주 사는 상품 API
     app.get('/app/products/often', jwtMiddleware, product.getOftenProducts);
 
-    // 상품 검색 API
-    app.post('/app/product/product-search', product.serchProduct);
-
     // 실시간 인기 검색어 조회 API
     app.get('/app/products/popular', product.getPopularProducts);
-
-    // 15. 장바구니 추가 API
-    app.post('/app/product/:productId/input-basket', jwtMiddleware, product.inputBasket);
 };

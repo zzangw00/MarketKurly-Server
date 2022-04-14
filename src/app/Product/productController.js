@@ -28,127 +28,6 @@ exports.getBestProduct = async function (req, res) {
         }
     }
 };
-
-/**
- * API No. 11
- * API Name : 예비 장바구니 조회 API
- * [GET] /app/product/:productId/pre-basket
- */
-exports.getPreBasket = async function (req, res) {
-    const userIdFromJWT = req.verifiedToken.userId;
-    const productId = req.params.productId;
-    const preBasketCheck = await productProvider.checkPreBasket(userIdFromJWT, productId);
-    if (preBasketCheck[0].exist == 0) {
-        const preBasketInput = await productService.inputPreBasket(userIdFromJWT, productId);
-        const preBasketResponse = await productProvider.getPreBasketInfo(userIdFromJWT, productId);
-        return res.send(response(baseResponse.SUCCESS, preBasketResponse[0]));
-    } else {
-        const preBasketResponse = await productProvider.getPreBasketInfo(userIdFromJWT, productId);
-        return res.send(response(baseResponse.SUCCESS, preBasketResponse[0]));
-    }
-};
-
-/**
- * API No. 12
- * API Name : 예비 장바구니 상품 개수 증가 시키기 API
- * [PATCH] /app/product/preBasket/:preBasketId/count-up
- */ exports.updateProductCountUp = async function (req, res) {
-    const userIdFromJWT = req.verifiedToken.userId;
-    const preBasketId = req.params.preBasketId;
-    const preBasketCountUpResult = await productService.basketCountUp(userIdFromJWT, preBasketId);
-    const countResult = await productProvider.getCountResult(userIdFromJWT, preBasketId);
-    const result = {
-        countResult: countResult[0],
-        comment: '상품 개수를 증가 시켰습니다.',
-    };
-    return res.send(response(baseResponse.SUCCESS, result));
-};
-
-/**
- * API No. 13
- * API Name : 예비 장바구니 상품 개수 감소 시키기 API
- * [PATCH] /app/product/preBasket/:preBasketId/count-down
- */ exports.updateProductCountDown = async function (req, res) {
-    const userIdFromJWT = req.verifiedToken.userId;
-    const preBasketId = req.params.preBasketId;
-    const preBasketCountUpResult = await productService.basketCountDown(userIdFromJWT, preBasketId);
-    const countResult = await productProvider.getCountResult(userIdFromJWT, preBasketId);
-    const result = {
-        countResult: countResult[0],
-        comment: '상품 개수를 감소 시켰습니다.',
-    };
-    return res.send(response(baseResponse.SUCCESS, result));
-};
-
-/**
- * API No. 14
- * API Name : 예비 장바구니 닫기 API
- * [PATCH] /app/preBasket/:preBasketId/reset
- */ exports.resetPreBasket = async function (req, res) {
-    const userIdFromJWT = req.verifiedToken.userId;
-    const preBasketId = req.params.preBasketId;
-    const resetPreBasketResult = await productService.preBasketReset(userIdFromJWT, preBasketId);
-    const countResult = await productProvider.getCountResult(userIdFromJWT, preBasketId);
-    const result = {
-        countResult: countResult[0],
-        comment: '상품 개수를 초기화 시켰습니다.',
-    };
-    return res.send(response(baseResponse.SUCCESS, result));
-};
-
-/**
- * API No. 15
- * API Name : 장바구니 추가 API 체크 했는데 없으면 추가, 있는데 현재 장바구니에 없으면 status = 1로 변경, 있는데 현재 장바구니에 있으면 detailCount +
- * [POST] /app/product/:productId/basket
- */ exports.inputBasket = async function (req, res) {
-    const userIdFromJWT = req.verifiedToken.userId;
-    const productId = req.params.productId;
-    const basketCheck = await productProvider.checkBasket(userIdFromJWT, productId);
-    const basketStatus = await productProvider.checkBasketStatus(userIdFromJWT, productId);
-    if (basketCheck[0].exist == 0) {
-        const inputBasket = await productService.inputBasket(userIdFromJWT, productId);
-        const inputBasketResult = await productProvider.inputBasketResult(userIdFromJWT, productId);
-        const result = {
-            countResult: inputBasketResult[0],
-            comment: '장바구니에 상품을 담았습니다.',
-        };
-        return res.send(response(baseResponse.SUCCESS, result));
-    } else {
-        if (basketStatus[0].status == 2) {
-            const changeBasket = await productService.changeBasket(
-                userIdFromJWT,
-                productId,
-                userIdFromJWT,
-                productId,
-            );
-            const inputBasketResult = await productProvider.inputBasketResult(
-                userIdFromJWT,
-                productId,
-            );
-            const result = {
-                countResult: inputBasketResult[0],
-                comment: '장바구니에 상품을 담았습니다.',
-            };
-            return res.send(response(baseResponse.SUCCESS, result));
-        } else {
-            const updateBasket = await productService.updateBasket(
-                userIdFromJWT,
-                productId,
-                userIdFromJWT,
-                productId,
-            );
-            const inputBasketResult = await productProvider.inputBasketResult(
-                userIdFromJWT,
-                productId,
-            );
-            const result = {
-                countResult: inputBasketResult[0],
-                comment: '이미 장바구니에 있어 상품을 추가로 담았습니다.',
-            };
-            return res.send(response(baseResponse.SUCCESS, result));
-        }
-    }
-};
 /**
  * API No. 21
  * API Name : 상품설명 API
@@ -158,16 +37,6 @@ exports.getPreBasket = async function (req, res) {
     const getProductInfoResult = await productProvider.getProductInfo(productId);
 
     return res.send(response(baseResponse.SUCCESS, getProductInfoResult));
-};
-/**
- * API No. 22
- * API Name : 상품이미지 API
- * [GET] /app/product/:productId/image
- */ exports.getProductImage = async function (req, res) {
-    const productId = req.params.productId;
-    const getProductImageResult = await productProvider.getProductImage(productId);
-
-    return res.send(response(baseResponse.SUCCESS, getProductImageResult));
 };
 /**
  * API No. 23
@@ -189,16 +58,7 @@ exports.getPreBasket = async function (req, res) {
 
     return res.send(response(baseResponse.SUCCESS, getProductReviewResult));
 };
-/**
- * API No. 25
- * API Name : 후기 개수 API
- * [GET] /app/product/:productId/review-count
- */ exports.getProductReviewCount = async function (req, res) {
-    const productId = req.params.productId;
-    const getProductReviewCountResult = await productProvider.getProductReviewCount(productId);
 
-    return res.send(response(baseResponse.SUCCESS, getProductReviewCountResult));
-};
 /**
  * API No. 26
  * API Name : 후기 전체보기 API
@@ -221,6 +81,43 @@ exports.getPreBasket = async function (req, res) {
 
     return res.send(response(baseResponse.SUCCESS, getProductReviewDetailResult));
 };
+/**
+ * API No. 15
+ * API Name : 장바구니 추가 API 체크 했는데 없으면 추가, 있는데 현재 장바구니에 없으면 status = 1로 변경, 있는데 현재 장바구니에 있으면 productCount +
+ * [POST] /app/product/input-basket
+ */ exports.inputBasket = async function (req, res) {
+    const userIdFromJWT = req.verifiedToken.userId;
+    const { productId, productCount } = req.body;
+    const basketCheck = await productProvider.checkBasket(userIdFromJWT, productId);
+    const basketStatus = await productProvider.checkBasketStatus(userIdFromJWT, productId);
+    if (basketCheck[0].exist == 0) {
+        const inputBasket = await productService.inputBasket(
+            userIdFromJWT,
+            productId,
+            productCount,
+        );
+        return res.send(response(baseResponse.SUCCESS, '장바구니에 상품을 담았습니다.'));
+    } else {
+        if (basketStatus[0].status == 2) {
+            const changeBasket = await productService.changeBasket(
+                userIdFromJWT,
+                productId,
+                productCount,
+            );
+            return res.send(response(baseResponse.SUCCESS, '장바구니에 상품을 담았습니다.'));
+        } else {
+            const updateBasket = await productService.updateBasket(
+                userIdFromJWT,
+                productId,
+                productCount,
+            );
+            return res.send(
+                response(baseResponse.SUCCESS, '이미 장바구니에 있어 상품을 추가로 담았습니다.'),
+            );
+        }
+    }
+};
+
 /**
  * API No. 28
  * API Name : 상품 문의 전반적인 화면 API
@@ -382,20 +279,7 @@ exports.getBenefitsProduct = async function (req, res) {
     };
     return res.send(response(baseResponse.SUCCESS, result));
 };
-/**
- * API No. 43
- * API Name : 상품 검색 API
- * [GET] /app/products
- */
-exports.getProducts = async function (req, res) {
-    const { productName } = req.query;
-    if (!productName) {
-        return res.send(response(baseResponse.PRODUCT_NAME_EMPTY));
-    } else {
-        const productListByProductName = await productProvider.getProducts(productName);
-        return res.send(response(baseResponse.SUCCESS, productListByProductName));
-    }
-};
+
 /**
  * API No. 44
  * API Name : 자주 사는 상품 API
@@ -414,19 +298,7 @@ exports.getOftenProducts = async function (req, res) {
 
 /**
  * API No. 45
- * API Name : 상품 검색 API
- * [GET] /app/product/product-search
- */
-exports.serchProduct = async function (req, res) {
-    const { searchName } = req.query;
-    const searchResult = await productProvider.getProduct(searchName);
-    const searchAdd = await productService.addSearch(searchName);
-    return res.send(response(baseResponse.SUCCESS, searchResult));
-};
-
-/**
- * API No. 45
- * API Name : 상품 검색 API
+ * API Name : 실시간 인기 상품 조회 API
  * [GET] /app/products/popular
  */
 exports.getPopularProducts = async function (req, res) {

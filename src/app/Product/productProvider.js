@@ -1,313 +1,433 @@
 const { pool } = require('../../../config/database');
 const { logger } = require('../../../config/winston');
-
+const baseResponse = require('../../../config/baseResponseStatus');
 const productDao = require('./productDao');
+const { response, errResponse } = require('../../../config/response');
 
 // best 상품 조회(낮은 가격 순)paging
 exports.rawPriceProductPaging = async function (page) {
-    const connection = await pool.getConnection(async (conn) => conn);
-    const pages = 4 * (page - 1);
-    const bestProductResult = await productDao.getRawPriceProductPaging(connection, pages);
-    connection.release();
-
-    return bestProductResult;
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        const pages = 4 * (page - 1);
+        const bestProductResult = await productDao.getRawPriceProductPaging(connection, pages);
+        connection.release();
+        return bestProductResult;
+    } catch (err) {
+        logger.error(
+            `App - rawPriceProductPaging Service error\n: ${err.message} \n${JSON.stringify(err)}`,
+        );
+        return errResponse(baseResponse.DB_ERROR);
+    }
 };
 // best 상품 조회(높은 가격 순)paging
 exports.HighPriceProductPaging = async function (page) {
-    const connection = await pool.getConnection(async (conn) => conn);
-    const pages = 4 * (page - 1);
-    const bestProductResult = await productDao.getHighPriceProductPaging(connection, pages);
-    connection.release();
-
-    return bestProductResult;
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        const pages = 4 * (page - 1);
+        const bestProductResult = await productDao.getHighPriceProductPaging(connection, pages);
+        connection.release();
+        return bestProductResult;
+    } catch (err) {
+        logger.error(
+            `App - HighPriceProductPaging Service error\n: ${err.message} \n${JSON.stringify(err)}`,
+        );
+        return errResponse(baseResponse.DB_ERROR);
+    }
 };
 // best 상품 조회(낮은 가격 순)
 exports.rawPriceProduct = async function () {
-    const connection = await pool.getConnection(async (conn) => conn);
-    const bestProductResult = await productDao.getRawPriceProduct(connection);
-    connection.release();
-
-    return bestProductResult;
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        const bestProductResult = await productDao.getRawPriceProduct(connection);
+        connection.release();
+        return bestProductResult;
+    } catch (err) {
+        logger.error(
+            `App - rawPriceProduct Service error\n: ${err.message} \n${JSON.stringify(err)}`,
+        );
+        return errResponse(baseResponse.DB_ERROR);
+    }
 };
 // best 상품 조회(높은 가격 순)
 exports.HighPriceProduct = async function () {
-    const connection = await pool.getConnection(async (conn) => conn);
-    const bestProductResult = await productDao.getHighPriceProduct(connection);
-    connection.release();
-
-    return bestProductResult;
-};
-// 예비 장바구니 조회
-exports.getPreBasketInfo = async function (userIdFromJWT, productId) {
-    const connection = await pool.getConnection(async (conn) => conn);
-
-    const getPreBasketInfoResult = await productDao.getPreBasketInfo(
-        connection,
-        userIdFromJWT,
-        productId,
-    );
-    connection.release();
-
-    return getPreBasketInfoResult;
-};
-// 예비 장바구니 상품 상세 개수 조회
-exports.getCountResult = async function (userIdFromJWT, preBasketId) {
-    const connection = await pool.getConnection(async (conn) => conn);
-    const countResult = await productDao.getCountResult(connection, userIdFromJWT, preBasketId);
-    connection.release();
-    return countResult;
-};
-// 예비 장바구니 상태 체크
-exports.checkPreBasket = async function (userIdFromJWT, productId) {
-    const connection = await pool.getConnection(async (conn) => conn);
-    const checkResult = await productDao.checkPreBasket(connection, userIdFromJWT, productId);
-    connection.release();
-    return checkResult;
-};
-// 장바구니 있는지 체크
-exports.checkBasket = async function (userIdFromJWT, productId) {
-    const connection = await pool.getConnection(async (conn) => conn);
-    const checkResult = await productDao.checkBasket(connection, userIdFromJWT, productId);
-    connection.release();
-    return checkResult;
-};
-// 장바구니 상태 체크
-exports.checkBasketStatus = async function (userIdFromJWT, productId) {
-    const connection = await pool.getConnection(async (conn) => conn);
-    const checkResult = await productDao.checkBasketStatus(connection, userIdFromJWT, productId);
-    connection.release();
-    return checkResult;
-};
-// 장바구니 조회
-exports.inputBasketResult = async function (userIdFromJWT, productId) {
-    const connection = await pool.getConnection(async (conn) => conn);
-
-    const getBasketInfoResult = await productDao.getBasketInfo(
-        connection,
-        userIdFromJWT,
-        productId,
-    );
-    connection.release();
-
-    return getBasketInfoResult;
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        const bestProductResult = await productDao.getHighPriceProduct(connection);
+        connection.release();
+        return bestProductResult;
+    } catch (err) {
+        logger.error(
+            `App - HighPriceProduct Service error\n: ${err.message} \n${JSON.stringify(err)}`,
+        );
+        return errResponse(baseResponse.DB_ERROR);
+    }
 };
 // 상품설명
 exports.getProductInfo = async function (productId) {
-    const connection = await pool.getConnection(async (conn) => conn);
-    const getProductInfo = await productDao.getProductInfo(connection, productId);
-    connection.release();
-    return getProductInfo;
-};
-// 상품이미지
-exports.getProductImage = async function (productId) {
-    const connection = await pool.getConnection(async (conn) => conn);
-    const getProductImage = await productDao.getProductImage(connection, productId);
-    connection.release();
-    return getProductImage;
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        const getProductInfo = await productDao.getProductInfo(connection, productId);
+        connection.release();
+        return getProductInfo;
+    } catch (err) {
+        logger.error(
+            `App - getProductInfo Service error\n: ${err.message} \n${JSON.stringify(err)}`,
+        );
+        return errResponse(baseResponse.DB_ERROR);
+    }
 };
 // 상품 상세설명
 exports.getProductDetail = async function (productId) {
-    const connection = await pool.getConnection(async (conn) => conn);
-    const getProductDetail = await productDao.getProductDetail(connection, productId);
-    connection.release();
-    return getProductDetail;
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        const getProductDetail = await productDao.getProductDetail(connection, productId);
+        connection.release();
+        return getProductDetail;
+    } catch (err) {
+        logger.error(
+            `App - getProductDetail Service error\n: ${err.message} \n${JSON.stringify(err)}`,
+        );
+        return errResponse(baseResponse.DB_ERROR);
+    }
 };
 // 후기 전반적인 화면
 exports.getProductReview = async function (productId) {
-    const connection = await pool.getConnection(async (conn) => conn);
-    const getProductReview = await productDao.getProductReview(connection, productId);
-    connection.release();
-    return getProductReview;
-};
-// 후기 개수
-exports.getProductReviewCount = async function (productId) {
-    const connection = await pool.getConnection(async (conn) => conn);
-    const getProductReviewCount = await productDao.getProductReviewCount(connection, productId);
-    connection.release();
-    return getProductReviewCount;
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        const getProductReview = await productDao.getProductReview(connection, productId);
+        connection.release();
+        return getProductReview;
+    } catch (err) {
+        logger.error(
+            `App - getProductReview Service error\n: ${err.message} \n${JSON.stringify(err)}`,
+        );
+        return errResponse(baseResponse.DB_ERROR);
+    }
 };
 // 후기 전체보기 화면
 exports.getProductReviewAll = async function (productId) {
-    const connection = await pool.getConnection(async (conn) => conn);
-    const getProductReviewAll = await productDao.getProductReviewAll(connection, productId);
-    connection.release();
-    return getProductReviewAll;
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        const getProductReviewAll = await productDao.getProductReviewAll(connection, productId);
+        connection.release();
+        return getProductReviewAll;
+    } catch (err) {
+        logger.error(
+            `App - getProductReviewAll Service error\n: ${err.message} \n${JSON.stringify(err)}`,
+        );
+        return errResponse(baseResponse.DB_ERROR);
+    }
 };
 // 상품 후기 상세
 exports.getProductReviewDetail = async function (productReviewId) {
-    const connection = await pool.getConnection(async (conn) => conn);
-    const getProductReviewDetail = await productDao.getProductReviewDetail(
-        connection,
-        productReviewId,
-    );
-    connection.release();
-    return getProductReviewDetail;
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        const getProductReviewDetail = await productDao.getProductReviewDetail(
+            connection,
+            productReviewId,
+        );
+        connection.release();
+        return getProductReviewDetail;
+    } catch (err) {
+        logger.error(
+            `App - getProductReviewDetail Service error\n: ${err.message} \n${JSON.stringify(err)}`,
+        );
+        return errResponse(baseResponse.DB_ERROR);
+    }
 };
+// 장바구니 있는지 체크
+exports.checkBasket = async function (userIdFromJWT, productId) {
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        const checkResult = await productDao.checkBasket(connection, userIdFromJWT, productId);
+        connection.release();
+        return checkResult;
+    } catch (err) {
+        logger.error(`App - checkBasket Service error\n: ${err.message} \n${JSON.stringify(err)}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
+};
+// 장바구니 상태 체크
+exports.checkBasketStatus = async function (userIdFromJWT, productId) {
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        const checkResult = await productDao.checkBasketStatus(
+            connection,
+            userIdFromJWT,
+            productId,
+        );
+        connection.release();
+        return checkResult;
+    } catch (err) {
+        logger.error(
+            `App - checkBasketStatus Service error\n: ${err.message} \n${JSON.stringify(err)}`,
+        );
+        return errResponse(baseResponse.DB_ERROR);
+    }
+};
+
 // 상품 문의 전반적인 화면
 exports.getProductInquire = async function (productId) {
-    const connection = await pool.getConnection(async (conn) => conn);
-    const getProductInquire = await productDao.getProductInquire(connection, productId);
-    connection.release();
-    return getProductInquire;
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        const getProductInquire = await productDao.getProductInquire(connection, productId);
+        connection.release();
+        return getProductInquire;
+    } catch (err) {
+        logger.error(
+            `App - getProductInquire Service error\n: ${err.message} \n${JSON.stringify(err)}`,
+        );
+        return errResponse(baseResponse.DB_ERROR);
+    }
 };
 // 문의 전체보기 화면
 exports.getProductInquireAll = async function (productId) {
-    const connection = await pool.getConnection(async (conn) => conn);
-    const getProductInquireAll = await productDao.getProductInquireAll(connection, productId);
-    connection.release();
-    return getProductInquireAll;
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        const getProductInquireAll = await productDao.getProductInquireAll(connection, productId);
+        connection.release();
+        return getProductInquireAll;
+    } catch (err) {
+        logger.error(
+            `App - getProductInquireAll Service error\n: ${err.message} \n${JSON.stringify(err)}`,
+        );
+        return errResponse(baseResponse.DB_ERROR);
+    }
 };
 // 문의 상세보기 화면
 exports.getProductInquireDetail = async function (productInquireId) {
-    const connection = await pool.getConnection(async (conn) => conn);
-    const getProductInquireDetail = await productDao.getProductInquireDetail(
-        connection,
-        productInquireId,
-    );
-    connection.release();
-    return getProductInquireDetail;
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        const getProductInquireDetail = await productDao.getProductInquireDetail(
+            connection,
+            productInquireId,
+        );
+        connection.release();
+        return getProductInquireDetail;
+    } catch (err) {
+        logger.error(
+            `App - getProductInquire Service error\n: ${err.message} \n${JSON.stringify(err)}`,
+        );
+        return errResponse(baseResponse.DB_ERROR);
+    }
 };
 // 상품 문의하기 화면
 exports.postProductInquireInfo = async function (productId) {
-    const connection = await pool.getConnection(async (conn) => conn);
-    const postProductInquireInfo = await productDao.postProductInquireInfo(connection, productId);
-    connection.release();
-    return postProductInquireInfo;
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        const postProductInquireInfo = await productDao.postProductInquireInfo(
+            connection,
+            productId,
+        );
+        connection.release();
+        return postProductInquireInfo;
+    } catch (err) {
+        logger.error(
+            `App - postProductInquireInfo Service error\n: ${err.message} \n${JSON.stringify(err)}`,
+        );
+        return errResponse(baseResponse.DB_ERROR);
+    }
 };
 // 상위 카테고리 조회
 exports.getProductCategory = async function () {
-    const connection = await pool.getConnection(async (conn) => conn);
-    const getProductCategory = await productDao.getProductCategory(connection);
-    connection.release();
-    return getProductCategory;
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        const getProductCategory = await productDao.getProductCategory(connection);
+        connection.release();
+        return getProductCategory;
+    } catch (err) {
+        logger.error(
+            `App - getProductCategory Service error\n: ${err.message} \n${JSON.stringify(err)}`,
+        );
+        return errResponse(baseResponse.DB_ERROR);
+    }
 };
 // 하위 카테고리 조회
 exports.getProductCategoryDetail = async function (productCategoryId) {
-    const connection = await pool.getConnection(async (conn) => conn);
-    const getProductCategoryDetail = await productDao.getProductCategoryDetail(
-        connection,
-        productCategoryId,
-    );
-    connection.release();
-    return getProductCategoryDetail;
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        const getProductCategoryDetail = await productDao.getProductCategoryDetail(
+            connection,
+            productCategoryId,
+        );
+        connection.release();
+        return getProductCategoryDetail;
+    } catch (err) {
+        logger.error(
+            `App - getProductCategory Service error\n: ${err.message} \n${JSON.stringify(err)}`,
+        );
+        return errResponse(baseResponse.DB_ERROR);
+    }
 };
 // 상세 카테고리 조회
 exports.getDetailCategory = async function (detailCategoryId) {
-    const connection = await pool.getConnection(async (conn) => conn);
-    const getDetailCategory = await productDao.getDetailCategory(connection, detailCategoryId);
-    connection.release();
-    return getDetailCategory;
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        const getDetailCategory = await productDao.getDetailCategory(connection, detailCategoryId);
+        connection.release();
+        return getDetailCategory;
+    } catch (err) {
+        logger.error(
+            `App - getDetailCategory Service error\n: ${err.message} \n${JSON.stringify(err)}`,
+        );
+        return errResponse(baseResponse.DB_ERROR);
+    }
 };
 // 카테고리 별 상품 조회
 exports.getProductByDetailCategoryId = async function (detailCategoryId) {
-    const connection = await pool.getConnection(async (conn) => conn);
-    const getProductByDetailCategoryId = await productDao.getProductByDetailCategoryId(
-        connection,
-        detailCategoryId,
-    );
-    connection.release();
-    return getProductByDetailCategoryId;
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        const getProductByDetailCategoryId = await productDao.getProductByDetailCategoryId(
+            connection,
+            detailCategoryId,
+        );
+        connection.release();
+        return getProductByDetailCategoryId;
+    } catch (err) {
+        logger.error(
+            `App - getDetailCategory Service error\n: ${err.message} \n${JSON.stringify(err)}`,
+        );
+        return errResponse(baseResponse.DB_ERROR);
+    }
 };
 // 카테고리 조회
 exports.getCategory = async function (productCategoryId) {
-    const connection = await pool.getConnection(async (conn) => conn);
-    const getCategory = await productDao.getCategory(connection, productCategoryId);
-    connection.release();
-    return getCategory;
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        const getCategory = await productDao.getCategory(connection, productCategoryId);
+        connection.release();
+        return getCategory;
+    } catch (err) {
+        logger.error(`App - getCategory Service error\n: ${err.message} \n${JSON.stringify(err)}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
 };
 // 카테고리 별 상품 전체 조회
 exports.getProductByCategoryId = async function (productCategoryId) {
-    const connection = await pool.getConnection(async (conn) => conn);
-    const getProductByCategoryId = await productDao.getProductByCategoryId(
-        connection,
-        productCategoryId,
-    );
-    connection.release();
-    return getProductByCategoryId;
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        const getProductByCategoryId = await productDao.getProductByCategoryId(
+            connection,
+            productCategoryId,
+        );
+        connection.release();
+        return getProductByCategoryId;
+    } catch (err) {
+        logger.error(`App - getProduct Service error\n: ${err.message} \n${JSON.stringify(err)}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
 };
 // 신상품 조회
 exports.getNewProduct = async function () {
-    const connection = await pool.getConnection(async (conn) => conn);
-
-    const getNewProductResult = await productDao.getNewProduct(connection);
-    connection.release();
-
-    return getNewProductResult;
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        const getNewProductResult = await productDao.getNewProduct(connection);
+        connection.release();
+        return getNewProductResult;
+    } catch (err) {
+        logger.error(
+            `App - getNewProduct Service error\n: ${err.message} \n${JSON.stringify(err)}`,
+        );
+        return errResponse(baseResponse.DB_ERROR);
+    }
 };
 // 알뜰상품 조회
 exports.getSalesProduct = async function () {
-    const connection = await pool.getConnection(async (conn) => conn);
-
-    const getSalesProductResult = await productDao.getSalesProduct(connection);
-    connection.release();
-
-    return getSalesProductResult;
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        const getSalesProductResult = await productDao.getSalesProduct(connection);
+        connection.release();
+        return getSalesProductResult;
+    } catch (err) {
+        logger.error(
+            `App - getSalesProduct Service error\n: ${err.message} \n${JSON.stringify(err)}`,
+        );
+        return errResponse(baseResponse.DB_ERROR);
+    }
 };
 // 금주혜택 조회
 exports.getBenefits = async function () {
-    const connection = await pool.getConnection(async (conn) => conn);
-
-    const getBenefitsResult = await productDao.getBenefits(connection);
-    connection.release();
-
-    return getBenefitsResult;
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        const getBenefitsResult = await productDao.getBenefits(connection);
+        connection.release();
+        return getBenefitsResult;
+    } catch (err) {
+        logger.error(`App - getBenefits Service error\n: ${err.message} \n${JSON.stringify(err)}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
 };
 // 금주혜택 상품 조회
 exports.getBenefitsProducts = async function (benefitsId) {
-    const connection = await pool.getConnection(async (conn) => conn);
-
-    const getBenefitsProductsResult = await productDao.getBenefitsProducts(connection, benefitsId);
-    connection.release();
-
-    return getBenefitsProductsResult;
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        const getBenefitsProductsResult = await productDao.getBenefitsProducts(
+            connection,
+            benefitsId,
+        );
+        connection.release();
+        return getBenefitsProductsResult;
+    } catch (err) {
+        logger.error(`App - getBenefits Service error\n: ${err.message} \n${JSON.stringify(err)}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
 };
 // 금주혜택 이름 조회
 exports.getBenefitsName = async function (benefitsId) {
-    const connection = await pool.getConnection(async (conn) => conn);
-
-    const getBenefitsNameResult = await productDao.getBenefitsName(connection, benefitsId);
-    connection.release();
-
-    return getBenefitsNameResult;
-};
-// 상품 검색
-exports.getProducts = async function (productName) {
-    const connection = await pool.getConnection(async (conn) => conn);
-    const productName2 = '%' + productName + '%';
-    const getProductsResult = await productDao.getProducts(connection, productName2);
-    connection.release();
-
-    return getProductsResult;
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        const getBenefitsNameResult = await productDao.getBenefitsName(connection, benefitsId);
+        connection.release();
+        return getBenefitsNameResult;
+    } catch (err) {
+        logger.error(
+            `App - getBenefitsName Service error\n: ${err.message} \n${JSON.stringify(err)}`,
+        );
+        return errResponse(baseResponse.DB_ERROR);
+    }
 };
 // 상품 산적이 있는지 검색
 exports.checkBuy = async function (userIdFromJWT) {
-    const connection = await pool.getConnection(async (conn) => conn);
-    const checkBuyResult = await productDao.checkBuy(connection, userIdFromJWT);
-    connection.release();
-
-    return checkBuyResult;
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        const checkBuyResult = await productDao.checkBuy(connection, userIdFromJWT);
+        connection.release();
+        return checkBuyResult;
+    } catch (err) {
+        logger.error(`App - checkBuy Service error\n: ${err.message} \n${JSON.stringify(err)}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
 };
 // 자주 사는 상품 조회
 exports.getOftenProducts = async function (userIdFromJWT) {
-    const connection = await pool.getConnection(async (conn) => conn);
-    const getOftenProductsResult = await productDao.getOftenProducts(connection, userIdFromJWT);
-    connection.release();
-
-    return getOftenProductsResult;
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        const getOftenProductsResult = await productDao.getOftenProducts(connection, userIdFromJWT);
+        connection.release();
+        return getOftenProductsResult;
+    } catch (err) {
+        logger.error(
+            `App - getOftenProducts Service error\n: ${err.message} \n${JSON.stringify(err)}`,
+        );
+        return errResponse(baseResponse.DB_ERROR);
+    }
 };
-// 자주 사는 상품 조회
-exports.getProduct = async function (searchName) {
-    const connection = await pool.getConnection(async (conn) => conn);
-    const getProductsResult = await productDao.getSearchProducts(connection, searchName);
-    connection.release();
 
-    return getProductsResult;
-};
-// 자주 사는 상품 조회
+// 실시간 인기 검색어 조회
 exports.getPopularProduct = async function (start, end) {
-    const connection = await pool.getConnection(async (conn) => conn);
-    const getPopularProductsResult = await productDao.getPopularProducts(connection, start, end);
-    connection.release();
-
-    return getPopularProductsResult;
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        const getPopularProductsResult = await productDao.getPopularProducts(
+            connection,
+            start,
+            end,
+        );
+        connection.release();
+        return getPopularProductsResult;
+    } catch (err) {
+        logger.error(
+            `App - getPopularProduct Service error\n: ${err.message} \n${JSON.stringify(err)}`,
+        );
+        return errResponse(baseResponse.DB_ERROR);
+    }
 };
