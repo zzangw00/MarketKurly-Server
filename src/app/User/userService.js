@@ -11,7 +11,7 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const { connect } = require('http2');
 
-exports.createUser = async function (Id, password, name, email, phoneNumber, location, birth, sex) {
+exports.createUser = async function (Id, password, name, email, phoneNumber, address, birth, sex) {
     try {
         // 비밀번호 암호화
         const hashedPassword = await crypto.createHash('sha512').update(password).digest('hex');
@@ -22,12 +22,7 @@ exports.createUser = async function (Id, password, name, email, phoneNumber, loc
             connection.beginTransaction(); // 트랜잭션 적용 시작
             const num = 1;
             const a = await userDao.insertUserInfo(connection, insertUserInfoParams);
-            const b = await userDao.insertDeliveryLocation(
-                connection,
-                a[0].insertId,
-                location,
-                num,
-            );
+            const b = await userDao.insertAddress(connection, a[0].insertId, address, num);
             await connection.commit(); // 커밋
             connection.release(); // conn 회수
             console.log(`추가된 회원 : ${a[0].insertId}`);

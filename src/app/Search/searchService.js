@@ -9,8 +9,13 @@ const { errResponse } = require('../../../config/response');
 
 // 검색어 추가
 exports.addSearch = async function (searchName) {
-    const connection = await pool.getConnection(async (conn) => conn);
-    const addSearch = await searchDao.addSearch(connection, searchName);
-    connection.release();
-    return addSearch;
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        const addSearch = await searchDao.addSearch(connection, searchName);
+        connection.release();
+        return addSearch;
+    } catch (err) {
+        logger.error(`App - addSearch Service error\n: ${err.message} \n${JSON.stringify(err)}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
 };

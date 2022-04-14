@@ -14,7 +14,7 @@ exports.postUsers = async function (req, res) {
     /**
      * Body: Id, password, email
      */
-    const { Id, password, name, email, phoneNumber, location, birth, sex } = req.body;
+    const { Id, password, name, email, phoneNumber, address, birth, sex } = req.body;
     var num = password.search(/[0-9]/g);
     var eng = password.search(/[a-z]/gi);
     var spe = password.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
@@ -50,7 +50,7 @@ exports.postUsers = async function (req, res) {
     if (!phoneNumber) {
         return res.send(response(baseResponse.SIGNUP_PHONENUMBER_ERROR_EMPTY));
     }
-    if (!location) {
+    if (!address) {
         return res.send(response(baseResponse.SIGNUP_LOCATION_ERROR_EMPTY));
     }
 
@@ -60,7 +60,7 @@ exports.postUsers = async function (req, res) {
         name,
         email,
         phoneNumber,
-        location,
+        address,
         birth,
         sex,
     );
