@@ -431,3 +431,30 @@ exports.getPopularProduct = async function (start, end) {
         return errResponse(baseResponse.DB_ERROR);
     }
 };
+
+// 찜했던적이 있는지 체크
+exports.checkWish = async function (userIdFromJWT, productId) {
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        const checkResult = await productDao.checkWish(connection, userIdFromJWT, productId);
+        connection.release();
+        return checkResult;
+    } catch (err) {
+        logger.error(`App - checWish Service error\n: ${err.message} \n${JSON.stringify(err)}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
+};
+// 찜 상태 체크
+exports.checkWishStatus = async function (userIdFromJWT, productId) {
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        const checkResult = await productDao.checkWishStatus(connection, userIdFromJWT, productId);
+        connection.release();
+        return checkResult;
+    } catch (err) {
+        logger.error(
+            `App - checkWishStatus Service error\n: ${err.message} \n${JSON.stringify(err)}`,
+        );
+        return errResponse(baseResponse.DB_ERROR);
+    }
+};

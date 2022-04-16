@@ -315,3 +315,26 @@ exports.getPopularProducts = async function (req, res) {
     const popularResult = await productProvider.getPopularProduct(startHours, endHours);
     return res.send(response(baseResponse.SUCCESS, popularResult));
 };
+
+/**
+ * API No. 15
+ * API Name : 찜하기
+ * [POST] /app/product/wish-product
+ */ exports.wishProduct = async function (req, res) {
+    const userIdFromJWT = req.verifiedToken.userId;
+    const { productId } = req.body;
+    const wishCheck = await productProvider.checkWish(userIdFromJWT, productId);
+    const wishStatus = await productProvider.checkWishStatus(userIdFromJWT, productId);
+    if (wishCheck[0].exist == 0) {
+        const inputWish = await productService.inputWish(userIdFromJWT, productId);
+        return res.send(response(baseResponse.SUCCESS, '해당 상품을 찜 했습니다.'));
+    } else {
+        if (wishStatus[0].status == 2) {
+            const changeWish = await productService.changeWish(userIdFromJWT, productId);
+            return res.send(response(baseResponse.SUCCESS, '해당 상품을 찜 했습니다.'));
+        } else {
+            const deleteBasket = await productService.deleteWish(userIdFromJWT, productId);
+            return res.send(response(baseResponse.SUCCESS, '해당 상품 찜을 취소했습니다.'));
+        }
+    }
+};

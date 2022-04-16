@@ -47,8 +47,6 @@ const { response, errResponse } = require('../../../config/response');
         payMethod,
         payPrice,
     );
-    const updateBasket2 = await orderService.updateBasket2(userIdFromJWT);
-    const inputPay = await orderService.inputPay(payPrice, payPrice, userIdFromJWT);
 
     return res.send(response(baseResponse.SUCCESS, '주문이 완료 되었습니다.'));
 };

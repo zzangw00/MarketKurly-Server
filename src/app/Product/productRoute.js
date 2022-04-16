@@ -80,4 +80,7 @@ module.exports = function (app) {
 
     // 실시간 인기 검색어 조회 API
     app.get('/app/products/popular', product.getPopularProducts);
+
+    // 찜하기 API
+    app.post('/app/product/wish-product', jwtMiddleware, product.wishProduct);
 };

@@ -80,3 +80,39 @@ exports.postProductInquire = async function (
         return errResponse(baseResponse.DB_ERROR);
     }
 };
+// 찜하기
+exports.inputWish = async function (userIdFromJWT, productId) {
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        const inputWish = await productDao.inputWish(connection, userIdFromJWT, productId);
+        connection.release();
+        return inputWish;
+    } catch (err) {
+        logger.error(`App - inputWish Service error\n: ${err.message} \n${JSON.stringify(err)}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
+};
+// 다시 찜하기
+exports.changeWish = async function (userIdFromJWT, productId) {
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        const changeWish = await productDao.changeWish(connection, userIdFromJWT, productId);
+        connection.release();
+        return changeWish;
+    } catch (err) {
+        logger.error(`App - changeWish Service error\n: ${err.message} \n${JSON.stringify(err)}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
+};
+// 찜 취소하기
+exports.deleteWish = async function (userIdFromJWT, productId) {
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        const deleteWish = await productDao.deleteWish(connection, userIdFromJWT, productId);
+        connection.release();
+        return deleteWish;
+    } catch (err) {
+        logger.error(`App - deleteWish Service error\n: ${err.message} \n${JSON.stringify(err)}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
+};

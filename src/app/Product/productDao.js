@@ -189,9 +189,9 @@ async function inputBasket(connection, userIdFromJWT, productId, productCount) {
 async function checkBasket(connection, userIdFromJWT, productId) {
     const basketQuery = `
     select exists(select basketId
-      from Basket
-     where userId = ?
-       and productId= ?) as exist
+                    from Basket
+                   where userId = ?
+                     and productId= ?) as exist
     `;
     const [productRows] = await connection.query(basketQuery, [userIdFromJWT, productId]);
     return productRows;
@@ -531,6 +531,59 @@ async function getPopularProducts(connection, start, end) {
     const [productRows] = await connection.query(productQuery, [start, end]);
     return productRows;
 }
+// 찜 목록에 있는지 체크
+async function checkWish(connection, userIdFromJWT, productId) {
+    const productQuery = `
+    select exists(select wishId
+                    from Wish
+                   where userId = ?
+                     and productId= ?) as exist
+    `;
+    const [productRows] = await connection.query(productQuery, [userIdFromJWT, productId]);
+    return productRows;
+}
+// 찜 상태 체크
+async function checkWishStatus(connection, userIdFromJWT, productId) {
+    const productQuery = `
+    select status
+      from Wish
+     where userId = ?
+       and productId = ?
+    `;
+    const [productRows] = await connection.query(productQuery, [userIdFromJWT, productId]);
+    return productRows;
+}
+// 찜하기
+async function inputWish(connection, userIdFromJWT, productId) {
+    const productQuery = `
+    insert into Wish (userId, productId)
+              values (?, ?)
+    `;
+    const [productRows] = await connection.query(productQuery, [userIdFromJWT, productId]);
+    return productRows;
+}
+// 다시 찜하기
+async function changeWish(connection, userIdFromJWT, productId) {
+    const productQuery = `
+    update Wish
+       set status = 1
+     where userId = ?
+       and productId = ?;
+    `;
+    const [productRows] = await connection.query(productQuery, [userIdFromJWT, productId]);
+    return productRows;
+}
+// 찜 취소하기
+async function deleteWish(connection, userIdFromJWT, productId) {
+    const productQuery = `
+    update Wish
+       set status = 2
+     where userId = ?
+       and productId = ?;
+    `;
+    const [productRows] = await connection.query(productQuery, [userIdFromJWT, productId]);
+    return productRows;
+}
 module.exports = {
     getRawPriceProductPaging,
     getHighPriceProductPaging,
@@ -566,4 +619,9 @@ module.exports = {
     checkBuy,
     getOftenProducts,
     getPopularProducts,
+    checkWish,
+    checkWishStatus,
+    inputWish,
+    changeWish,
+    deleteWish,
 };
