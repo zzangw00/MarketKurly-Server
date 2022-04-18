@@ -62,7 +62,7 @@
 - ERD 설계
   - [Aquerytool](https://aquerytool.com/aquerymain/index/?rurl=6385f783-a240-41ae-a6e0-30f9da7bbd59)
   - password : 11au14
-- DOS공격과 개인의 너무많은 API요청을 막기 위한 레이트리미팅
+- [DOS공격과 개인의 너무많은 API요청을 막기 위한 레이트리미팅](https://zzangwoolog.tistory.com/179)
 
 <p align="center">
     <img src="https://user-images.githubusercontent.com/64726822/131082826-1a134c8d-cee3-460f-bc3c-79af792ac0bd.png" border="0">
