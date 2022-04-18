@@ -17,6 +17,10 @@ module.exports = function () {
 
     require('../src/app/User/userRoute')(app);
     require('../src/app/Product/productRoute')(app);
+    require('../src/app/Address/addressRoute')(app);
+    require('../src/app/Basket/basketRoute')(app);
+    require('../src/app/Order/orderRoute')(app);
+    require('../src/app/Search/searchRoute')(app);
 
     return app;
 };

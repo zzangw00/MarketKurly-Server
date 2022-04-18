@@ -1,6 +1,7 @@
 module.exports = function (app) {
     const product = require('./productController');
     const jwtMiddleware = require('../../../config/jwtMiddleware');
+    const limiter = require('../../../config/limiter');
 
     // 4. 베스트 상품 조회 API
     app.get('/app/product/best', product.getBestProduct);

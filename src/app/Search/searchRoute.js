@@ -1,6 +1,7 @@
 module.exports = function (app) {
     const search = require('./searchController');
     const jwtMiddleware = require('../../../config/jwtMiddleware');
+    const { apiLimiter } = require('../../../config/limiter');
     // 상품 검색 API
-    app.post('/app/search/product-search', search.searchProduct);
+    app.post('/app/search/product-search', apiLimiter, search.searchProduct);
 };

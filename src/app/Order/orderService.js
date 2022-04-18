@@ -1,6 +1,6 @@
 const { logger } = require('../../../config/winston');
 const { pool } = require('../../../config/database');
-const orderProvider = require('./userProvider');
+const orderProvider = require('./orderProvider');
 const orderDao = require('./orderDao');
 const baseResponse = require('../../../config/baseResponseStatus');
 const { response, errResponse } = require('../../../config/response');

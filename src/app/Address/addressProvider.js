@@ -1,14 +1,14 @@
 const { pool } = require('../../../config/database');
 const { logger } = require('../../../config/winston');
 const baseResponse = require('../../../config/baseResponseStatus');
-const userDao = require('./userDao');
+const addressDao = require('./addressDao');
 const { response, errResponse } = require('../../../config/response');
 
 // 배송지 조회
 exports.getAddress = async function (userIdFromJWT) {
     try {
         const connection = await pool.getConnection(async (conn) => conn);
-        const addressResult = await userDao.getLocation(connection, userIdFromJWT);
+        const addressResult = await addressDao.getLocation(connection, userIdFromJWT);
         connection.release();
         return addressResult;
     } catch (err) {
@@ -20,7 +20,11 @@ exports.getAddress = async function (userIdFromJWT) {
 exports.getCheckLocation = async function (userIdFromJWT, addressId) {
     try {
         const connection = await pool.getConnection(async (conn) => conn);
-        const addressResult = await userDao.getCheckAddress(connection, userIdFromJWT, addressId);
+        const addressResult = await addressDao.getCheckAddress(
+            connection,
+            userIdFromJWT,
+            addressId,
+        );
         connection.release();
         return addressResult;
     } catch (err) {
@@ -34,7 +38,11 @@ exports.getCheckLocation = async function (userIdFromJWT, addressId) {
 exports.getCheckAddress = async function (userIdFromJWT, addressId) {
     try {
         const connection = await pool.getConnection(async (conn) => conn);
-        const addressResult = await userDao.getCheckAddress(connection, userIdFromJWT, addressId);
+        const addressResult = await addressDao.getCheckAddress(
+            connection,
+            userIdFromJWT,
+            addressId,
+        );
         connection.release();
         return addressResult;
     } catch (err) {
