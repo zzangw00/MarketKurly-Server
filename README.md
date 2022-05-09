@@ -62,6 +62,7 @@
 - ERD 설계
   - [Aquerytool](https://aquerytool.com/aquerymain/index/?rurl=6385f783-a240-41ae-a6e0-30f9da7bbd59)
   - password : 11au14
+- 완전하게 주문할 시 적립금 적립과 주문 목록에 들어갈 수 있도록 트랜잭션을 통해 무결성 보장
 - [DOS공격과 개인의 너무많은 API요청을 막기 위한 레이트리미팅](https://zzangwoolog.tistory.com/179)
 - [성능 개선을 위해 redis로 cache처리하기](https://zzangwoolog.tistory.com/180?category=959189)
 
