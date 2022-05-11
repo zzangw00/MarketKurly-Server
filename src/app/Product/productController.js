@@ -2,6 +2,7 @@ const productProvider = require('../../app/Product/productProvider');
 const productService = require('../../app/Product/productService');
 const baseResponse = require('../../../config/baseResponseStatus');
 const { response, errResponse } = require('../../../config/response');
+const { setCache, deleteCache } = require('../../../config/redis');
 
 /**
  * API No. 4
@@ -35,8 +36,19 @@ exports.getBestProduct = async function (req, res) {
  */ exports.getProductInfo = async function (req, res) {
     const productId = req.params.productId;
     const getProductInfoResult = await productProvider.getProductInfo(productId);
-
-    return res.send(response(baseResponse.SUCCESS, getProductInfoResult));
+    if (getProductInfoResult.length) {
+        setCache('productId/' + req.params.productId, getProductInfoResult);
+        res.status(200).send({
+            ok: true,
+            data: getProductInfoResult,
+        });
+    } else {
+        res.status(400).send({
+            ok: false,
+            message: 'No more pages',
+        });
+    }
+    //return res.send(response(baseResponse.SUCCESS, getProductInfoResult));
 };
 /**
  * API No. 23
@@ -337,4 +349,14 @@ exports.getPopularProducts = async function (req, res) {
             return res.send(response(baseResponse.SUCCESS, '해당 상품 찜을 취소했습니다.'));
         }
     }
+};
+
+/**
+ * API No. 15
+ * API Name : 상품 삭제 API
+ * [PATCH] /app/product/:productId/delete
+ */ exports.deleteProduct = async function (req, res) {
+    const productId = req.params.productId;
+    deleteCache('productId/' + productId);
+    return res.send(response(baseResponse.SUCCESS, '키를 삭제했습니다.'));
 };

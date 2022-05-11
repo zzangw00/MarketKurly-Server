@@ -1,13 +1,14 @@
 module.exports = function (app) {
     const product = require('./productController');
     const jwtMiddleware = require('../../../config/jwtMiddleware');
-    const limiter = require('../../../config/limiter');
+    const { apiLimiter } = require('../../../config/limiter');
+    const { getProductIdCache } = require('../../../config/redis');
 
     // 4. 베스트 상품 조회 API
     app.get('/app/product/best', product.getBestProduct);
 
     // 21. 상품설명 API
-    app.get('/app/product/:productId', product.getProductInfo);
+    app.get('/app/product/:productId', getProductIdCache, product.getProductInfo);
 
     // 23. 상품 상세정보 API
     app.get('/app/product/:productId/detail', product.getProductDetail);
@@ -84,4 +85,7 @@ module.exports = function (app) {
 
     // 찜하기 API
     app.post('/app/product/wish-product', jwtMiddleware, product.wishProduct);
+
+    // 상품 삭제 API
+    app.patch('/app/product/:productId/delete', product.deleteProduct);
 };

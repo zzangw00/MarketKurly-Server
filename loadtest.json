@@ -1,0 +1,20 @@
+{
+    "config": {
+        "target": "http://localhost:3000",
+        "phases": [
+            {
+               "duration": 60,
+               "arrivalRate": 500
+            }
+        ]
+    },
+    "scenarios": [
+      {
+         "flow": [
+             {"post": {"url": "/app/search/product-search?searchName=키위"}}
+         ]
+      }
+    ]
+  }
+
+  

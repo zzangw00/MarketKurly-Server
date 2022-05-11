@@ -24,6 +24,6 @@ exports.searchProduct = async function (req, res) {
             message: 'No more pages',
         });
     }
-    const searchAdd = await searchService.addSearch(searchName);
-    return res.send(response(baseResponse.SUCCESS, searchResult));
+    //const searchAdd = await searchService.addSearch(searchName);
+    //return res.send(response(baseResponse.SUCCESS, searchResult));
 };
