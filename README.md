@@ -65,6 +65,7 @@
 - 완전하게 주문할 시 적립금 적립과 주문 목록에 들어갈 수 있도록 트랜잭션을 통해 무결성 보장
 - [DOS공격과 개인의 너무많은 API요청을 막기 위한 레이트리미팅](https://zzangwoolog.tistory.com/179)
 - [성능 개선을 위해 redis로 cache처리하기](https://zzangwoolog.tistory.com/180?category=959189)
+- [더욱 성능을 개선하기 위해 pm2로 로드밸런싱 적용 후 Artillery로 성능 측정하기](https://zzangwoolog.tistory.com/184)
 
 <p align="center">
     <img src="https://user-images.githubusercontent.com/64726822/131082826-1a134c8d-cee3-460f-bc3c-79af792ac0bd.png" border="0">
